@@ -67,8 +67,9 @@ var sketch = function( p ) {
     p.text(Math.round(shared_weight*100)/100, x, screen_height+25);
 
     if (drag_me) {
+      p.stroke(255, 165, 0);
       p.fill(255, 165, 0);
-      p.text("drag me\n  ⬇", x, screen_height-10-16);
+      p.text("⬇ drag me", x, screen_height-10);
     }
   }
 
