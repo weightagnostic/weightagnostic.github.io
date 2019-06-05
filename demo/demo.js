@@ -52,7 +52,7 @@ var sketch = function( p ) {
   }
 
   var draw_weight_bar = function() {
-    var x = screen_width/2*(1+shared_weight/2.0);
+    var x = screen_width/2*(1+(shared_weight/2.0)*7/8);
 
     p.stroke(0);
     p.strokeWeight(0.5);
@@ -67,8 +67,8 @@ var sketch = function( p ) {
     p.text(Math.round(shared_weight*100)/100, x, screen_height+25);
 
     if (drag_me) {
-      p.stroke(255, 165, 0);
-      p.fill(255, 165, 0);
+      p.stroke(255,108,0);
+      p.fill(255,108,0);
       p.text("⬇ drag me", x, screen_height-10);
     }
   }
@@ -172,7 +172,9 @@ var sketch = function( p ) {
     var my = p.mouseY;
     if (mx >= 0 && mx < screen_width && my >= 0 && my < screen_height+50) {
       drag_me = false;
-      shared_weight = 2.0 * (mx - screen_width/2) / (screen_width/2);
+      shared_weight = 2.0 * (mx - screen_width/2) / ((screen_width/2)*7/8);
+      if (shared_weight >= 2.0) shared_weight = 2.0;
+      if (shared_weight <= -2.0) shared_weight = -2.0;
       wann_agent.set_weight(shared_weight);
       title_text="shared weight: "+Math.round(shared_weight*100)/100;
     }
