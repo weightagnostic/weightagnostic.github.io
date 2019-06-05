@@ -30,6 +30,7 @@ var sketch = function( p ) {
   var shared_weight = -1.50;
 
   var title_text="shared weight: "+Math.round(shared_weight*100)/100;
+  var drag_me = true;
 
   var tune_button, restart_button;
   var tune_button_mode = true;
@@ -64,6 +65,11 @@ var sketch = function( p ) {
 
     p.fill(0);
     p.text(Math.round(shared_weight*100)/100, x, screen_height+25);
+
+    if (drag_me) {
+      p.fill(255, 165, 0);
+      p.text("drag me\n  ⬇", x, screen_height-10-16);
+    }
   }
 
   var restart = function() {
@@ -164,6 +170,7 @@ var sketch = function( p ) {
     var mx = p.mouseX;
     var my = p.mouseY;
     if (mx >= 0 && mx < screen_width && my >= 0 && my < screen_height+50) {
+      drag_me = false;
       shared_weight = 2.0 * (mx - screen_width/2) / (screen_width/2);
       wann_agent.set_weight(shared_weight);
       title_text="shared weight: "+Math.round(shared_weight*100)/100;
