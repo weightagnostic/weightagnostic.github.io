@@ -260,7 +260,7 @@ ______
 | WANN | Test Accuracy |
 |---|---|
 | Random Weight | 82.0% $\pm$ 18.7% |
-| Ensemble Weights | 91.6% |
+| Ensemble Weights&nbsp;&nbsp; | 91.6% |
 | Tuned Weight | 91.9% |
 | Trained Weights | 94.2%  |
 
@@ -268,7 +268,7 @@ ______
 
 | ANN | Test Accuracy |
 |---|---|
-| Linear Regression | 91.6% <dt-cite key="lecun1998gradient"></dt-cite> |
+| Linear Regression&nbsp;&nbsp; | 91.6% <dt-cite key="lecun1998gradient"></dt-cite> |
 | Two-Layer CNN | 99.3% <dt-cite key="chollet2015keras"></dt-cite> |
 
 <div style="text-align: center;">
