@@ -9,8 +9,9 @@ ______
 In biology, precocial species are those whose young already possess certain abilities from the moment of birth <dt-cite key="bbc_islands"></dt-cite>. There is evidence to show that lizard <dt-cite key="miles1995morphological"></dt-cite> and snake <dt-cite key="burger1998antipredator,mori2000does"></dt-cite> hatchlings already possess behaviors to escape from predators. Shortly after hatching, ducks are able to swim and eat on their own <dt-cite key="starck1998patterns"></dt-cite>, and turkeys can visually recognize predators <dt-cite key="goth2001innate"></dt-cite>. In contrast, when we train artificial agents to perform a task, we typically choose a neural network architecture we believe to be suitable for encoding a policy for the task, and find the weight parameters of this policy using a learning algorithm. Inspired by precocial behaviors evolved in nature, in this work, we develop neural networks with architectures that are naturally capable of performing a given task even when its weight parameters are randomly sampled. By using such neural network architectures, our agents can already perform well in their environment without the need to learn weight parameters.
 
 <div style="text-align: center;">
-<br/>
-<img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
+<video class="b-lazy" data-src="assets/mp4/square_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video><video class="b-lazy" data-src="assets/mp4/square_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video>
+<br/><br/>
+<img src="assets/png/rl_cover.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Examples of Weight Agnostic Neural Networks: Bipedal Walker (left), Car Racing (right)</b><br/>
@@ -22,11 +23,11 @@ Decades of neural network research have provided building blocks with strong ind
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
+<img src="assets/png/mnist_cover.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
-<figcaption style="color:#FF6C00;">Interactive Demo</figcaption>
 <figcaption style="text-align: left;">
-A weight agnostic neural network performing <i>CartpoleSwingup</i> task. Drag the slider to control the weight parameter and observe the performance at various shared weight parameters. You can also finetune the individual weights of all connections in this demo.
+<b>MNIST classification network evolved to work with random weights</b><br/>
+Networks that already work with random weight parameters are not only easily trainable, but as we will demonstrate later, we can also use the same network with an ensemble of different weights to increase performance, without the need to explicitly train the weight parameters.
 </figcaption>
 </div>
 
@@ -36,9 +37,9 @@ In order to find neural network architectures with strong inductive biases, we p
 <br/>
 <img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
 <br/>
+<figcaption style="color:#FF6C00;">Interactive Demo</figcaption>
 <figcaption style="text-align: left;">
-<b>MNIST classification network evolved to work with random weights</b><br/>
-Try to add a figure to the intro, and see if it “works”.
+A weight agnostic neural network performing <i>CartpoleSwingup</i> task. Drag the slider to control the weight parameter and observe the performance at various shared weight parameters. You can also finetune the individual weights of all connections in this demo.
 </figcaption>
 </div>
 
@@ -52,7 +53,7 @@ Our work has connections to existing work not only in deep learning, but also to
 
 **Bayesian Neural Networks**&nbsp; The weight parameters of a BNN <dt-cite key="mackay1992bayesian,hinton1993keeping,barber1998ensemble"></dt-cite><dt-cite key="bishop2006pattern,neal2012bayesian,gal2016uncertainty"></dt-cite> are not fixed values, but sampled from a distribution. While the parameters of this distribution can be learned <dt-cite key="graves2011practical,krueger2017bayesian"></dt-cite>, the number of parameters is often greater than the number of weights. Recently, <dt-cite key="neklyudov2018variance">Neklyudov et al.</dt-cite> proposed variance networks, which sample each weight from a distribution with a zero mean and a learned variance parameter, and show that ensemble evaluations can improve performance on image recognition tasks. We employ a similar approach, sampling weights from a fixed uniform distribution with zero mean, as well as evaluating performance on network ensembles.
 
-**Algorithmic Information Theory**&nbsp; In AIT <dt-cite key="solomonoff1964formal"></dt-cite>, the Kolmogorov complexity <dt-cite key="kolmogorov1965three"></dt-cite> of a computable object is the minimum length of the program that can compute it. The Minimal Description Length (MDL) <dt-cite key="rissanen1978modeling,grunwald2007minimum,rissanen2007information"></dt-cite> is a formalization of Occam's razor, in which a good model is one that is best at compressing its data, including the cost of describing of the model itself. Ideas related to MDL for making neural networks “simple” was proposed in the 1990s, such as simplifying networks by soft-weight sharing <dt-cite key="nowlan1992simplifying"></dt-cite>, reducing the amount of information in weights by making them noisy <dt-cite key="hinton1993keeping"></dt-cite>, and simplifying the search space of its weights <dt-cite key="schmidhuber1997discovering"></dt-cite>. Recent works offer a modern treatment <dt-cite key="blier2018description"></dt-cite> and application <dt-cite key="li2018measuring,trask2018neural"></dt-cite> of these principles in the context of larger, deep neural network architectures.
+**Algorithmic Information Theory**&nbsp; In AIT <dt-cite key="solomonoff1964formal"></dt-cite>, the Kolmogorov complexity <dt-cite key="kolmogorov1965three"></dt-cite> of a computable object is the minimum length of the program that can compute it. The Minimal Description Length (MDL) <dt-cite key="rissanen1978modeling,grunwald2007minimum,rissanen2007information"></dt-cite> is a formalization of Occam's razor, in which a good model is one that is best at compressing its data, including the cost of describing of the model itself. Ideas related to MDL for making neural networks “simple” was proposed in the 1990s, such as simplifying networks by soft-weight sharing <dt-cite key="nowlan1992simplifying"></dt-cite>, reducing the amount of information in weights by making them noisy <dt-cite key="hinton1993keeping"></dt-cite>, and simplifying the search space of its weights <dt-cite key="schmidhuber1997discovering"></dt-cite>. Recent works offer a modern treatment <dt-cite key="blier2018description"></dt-cite> and application <dt-cite key="li2018measuring,trask2018neural"></dt-cite> of these principles in the context of larger network architectures.
 
 While the aforementioned works focus on the information capacity required to represent the *weights* of a predefined network architecture, in this work we focus on finding minimal *architectures* that can represent solutions to various tasks. As our networks still require weights, we borrow ideas from AIT and BNN, and take them a bit further. Motivated by MDL, in our approach, we apply weight-sharing to the entire network and treat the weight as a random variable sampled from a fixed distribution.
 
@@ -74,7 +75,7 @@ To produce architectures that themselves encode solutions, the importance of wei
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
+<img src="assets/png/schematic.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Overview of Weight Agnostic Neural Network Search</b><br/>
@@ -98,7 +99,7 @@ The algorithm then repeats from **(2)**, yielding weight agnostic topologies of 
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
+<img src="assets/png/operators.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Operators for searching the space of network topologies</b><br/>
@@ -144,11 +145,11 @@ Hand-designed networks found in the literature <dt-cite key="ha2018designrl,ha20
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
+<img src="assets/png/control_results.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Performance of Randomly Sampled and Trained Weights for Continuous Control Tasks</b><br/>
-We compare the mean performance (over 100 trials) of the best weight agnostic network architectures found with standard feed forward network policies commonly used in previous work (i.e. <dt-cite key="ha2018designrl,ha2018worldmodels"></dt-cite>). The intrinsic bias of a network topology can be observed by measuring its performance using a shared weight sampled from a uniform distribution. By tuning this shared weight parameter we can measure its maximum performance. To facilitate comparison to baseline architectures we also conduct experiments where networks are allowed unique weight parameters and tuned.
+We compare the mean performance (over 100 trials) of the best weight agnostic network architectures found with standard feed forward network policies commonly used in previous work (i.e. we use SOTA baselines from <dt-cite key="ha2018designrl"></dt-cite> for Biped and <dt-cite key="ha2018worldmodels"></dt-cite> for CarRacing). The intrinsic bias of a network topology can be observed by measuring its performance using a shared weight sampled from a uniform distribution. By tuning this shared weight parameter we can measure its maximum performance. To facilitate comparison to baseline architectures we also conduct experiments where networks are allowed unique weight parameters and tuned.
 </figcaption>
 </div>
 
@@ -158,7 +159,11 @@ The best performing shared weight value produces satisfactory if not optimal beh
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
+<img src="assets/png/swingup_top.png" style="display: block; margin: auto; width: 100%;"/>
+<b>TO DO: add mini-demos of cartpole using these nets.</b><br/>
+<br/>
+<img src="assets/png/swingup_bottom.png" style="display: block; margin: auto; width: 100%;"/>
+<b>TO DO: add mini-demos of cartpole using these nets.</b><br/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Development of Weight Agnostic topologies over time</b><br/>
@@ -174,12 +179,20 @@ The best performing shared weight value produces satisfactory if not optimal beh
 
 As the networks discovered are small enough to interpret, we can derive insights into how they function by looking at network diagrams (See above figure). Examining the development of a WANN which solves *CartPoleSwingUp* is also illustrative of how relationships are encoded within an architecture. In the earliest generations the space of networks is explored in an essentially random fashion. By generation 32, preliminary structures arise which allow for consistent performance: the three inverters applied to the $x$ position keep the cart from leaving the track. The center of the track is at $0$, left is negative, right is positive. By applying positive force when the cart is in a negative position and vice versa a strong attractor towards the center of the track is encoded.
 
+<div style="text-align: center;">
+<br/>
+<img src="assets/png/champ_swingup.png" style="display: block; margin: auto; width: 100%;"/>
+<!--<br/><img src="assets/png/champ_swingup_profile.png" style="display: block; margin: auto; width: 70%;"/><br/>-->
+<figcaption style="text-align: center;">
+CartpoleSwingUp champion network<br/>
+</figcaption>
+</div>
+
 The interaction between the regulation of position and the Gaussian activation on $d\theta$ is responsible for the swing-up behavior, also developed by generation 32. At the start of the trial the pole is stationary: the Gaussian activation of $d\theta$ is 1 and force is applied. As the pole moves toward the edge the nodes connected to the $x$ input, which keep the cart in the center, begin sending an opposing force signal. The cart's progress toward the edge is slowed and the change in acceleration causes the pole to swing, increasing $d\theta$ and so decreasing the signal that is pushing the cart toward the edge. This slow down causes further acceleration of the pole, setting in motion a feedback loop that results in the rapid dissipation of signal from $d\theta$. The resulting snap back of the cart towards the center causes the pole to swing up. As the pole falls and settles the same swing up behavior is repeated, and the controller is rewarded whenever the pole is upright.
 
 <div style="text-align: center;">
 <br/>
 <img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
-<br/>
 <figcaption style="color:#FF6C00;">Interactive Demo</figcaption>
 <figcaption style="text-align: left;">
 <b>Tuned weights for champion network at generation 1024</b><br/>
@@ -189,35 +202,76 @@ TO DO, add description about interactive demo that starts off using tuned-weight
 
 As the search process continues, some of these controllers linger in the upright position longer than others, and by generation 128, the lingering duration is long enough for the pole to be kept balanced. Though this more complicated balancing mechanism is less reliable under variable weights than the swing-up and centering behaviors, the more reliable behaviors ensure that the system recovers and tries again until a balanced state is found. Notably, as these networks encode relationships and rely on tension between systems set against each other, their behavior is consistent with a wide range of shared weight values. TO DO: Add description about generation 1024, the demo above, and fine-tuning.
 
-<div style="text-align: center;">
-<br/>
-<img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
-<br/>
-<figcaption style="text-align: left;">
-<b>TO DO: champion networks for biped</b><br/>
-TO DO, champion networks and video demos for biped.
-</figcaption>
-</div>
-
 WANN controllers for *BipedalWalker-v2* and *CarRacing-v0* are likewise remarkable in their simplicity and modularity. The biped controller uses only 17 of the 25 possible inputs, ignoring many LIDAR sensors and knee speeds. The WANN architecture not only solves the task without training the individual weights, but uses only 210 connections, an order of magnitude fewer than commonly used topologies (2804 connections used in the SOTA baseline <dt-cite key="ha2018designrl"></dt-cite>).
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
-<br/>
-<figcaption style="text-align: left;">
-<b>TO DO: champion networks for carracing</b><br/>
-TO DO, champion networks and video demos for carracing.
+<img src="assets/png/champ_biped.png" style="display: block; margin: auto; width: 100%;"/>
+<!--<br/><img src="assets/png/champ_biped_profile.png" style="display: block; margin: auto; width: 70%;"/><br/>-->
+<figcaption style="text-align: center;">
+BipedalWalker champion network<br/>
+</figcaption>
+</div>
+<div style="text-align: center;">
+<video class="b-lazy" data-src="assets/mp4/trial_biped_-1.5.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: center;">
+Weight set to -1.5<br/>
+</figcaption>
+<video class="b-lazy" data-src="assets/mp4/trial_example_biped_-1.0.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: center;">
+Weight set to -1.0<br/>
+</figcaption>
+<video class="b-lazy" data-src="assets/mp4/trained_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: center;">
+Fine-tuned individual weights of champion network (Average score 332 ± 1)<br/>
 </figcaption>
 </div>
 
 The architecture which encodes stable driving behavior in the car racer is also striking in its simplicity. Only a sparsely connected two layer network and a single weight value is required to encode competent driving behavior. While the SOTA baseline <dt-cite key="ha2018worldmodels"></dt-cite> also gave the hidden states of a pre-trained RNN world model, in addition to the VAE's representation to its controller, our controller operates on the VAE's latent space alone. Nonetheless, it was able to develop a feed-forward controller that achieves a comparable score. Future work will explore removing the feed-forward constraint from the search to allow WANNs to develop recurrent connections with memory states.
 
-**Classification**&nbsp; Promising results on reinforcement learning tasks lead us to consider how widely a WANN approach can be applied. WANNs which encode relationships between inputs are well suited to RL tasks: low-dimensional inputs coupled with internal states and environmental interaction allow discovery of reactive and adaptive controllers. Classification, however, is a far less fuzzy and forgiving problem. A problem where, unlike RL, design of architectures has long been a focus. As a proof of concept, we investigate how WANNs perform on the <dt-cite key="lecun1998mnist">MNIST</dt-cite> dataset, an image classification task which has been a focus of human-led architecture design for decades <dt-cite key="lecun1998gradient,chollet2015keras,sabour2017dynamic"></dt-cite>.
-
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
+<img src="assets/png/champ_carracing.png" style="display: block; margin: auto; width: 100%;"/>
+<!--<br/><img src="assets/png/champ_carracing_profile.png" style="display: block; margin: auto; width: 70%;"/><br/>-->
+<figcaption style="text-align: center;">
+Champion network for <i>CarRacing-v0</i><br/>
+</figcaption>
+</div>
+
+<div style="text-align: center;">
+<video class="b-lazy" data-src="assets/mp4/trial_racer_-1.4.800px.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: center;">
+Weight set to -1.4<br/>
+</figcaption>
+<video class="b-lazy" data-src="assets/mp4/trial_racer_+1.0.800px.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: center;">
+Weight set to +1.0<br/>
+</figcaption>
+<video class="b-lazy" data-src="assets/mp4/trained_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: center;">
+Fine-tuned individual weights of champion network (Average score 893 ± 74)<br/>
+</figcaption>
+</div>
+
+______
+
+**Classification**&nbsp; Promising results on reinforcement learning tasks lead us to consider how widely a WANN approach can be applied. WANNs which encode relationships between inputs are well suited to RL tasks: low-dimensional inputs coupled with internal states and environmental interaction allow discovery of reactive and adaptive controllers. Classification, however, is a far less fuzzy and forgiving problem. A problem where, unlike RL, design of architectures has long been a focus. As a proof of concept, we investigate how WANNs perform on the <dt-cite key="lecun1998mnist">MNIST</dt-cite> dataset, an image classification task which has been a focus of human-led architecture design for decades <dt-cite key="lecun1998gradient,chollet2015keras,sabour2017dynamic"></dt-cite>.
+
+| WANN | Test Accuracy |
+|---|---|
+| Random Weight | 82.0% $\pm$ 18.7% |
+| Ensemble Weights | 91.6% |
+| Tuned Weight | 91.9% |
+| Trained Weights | 94.2%  |
+
+<br/>
+
+| ANN | Test Accuracy |
+|---|---|
+| Linear Regression | 91.6% <dt-cite key="lecun1998gradient"></dt-cite> |
+| Two-Layer CNN | 99.3% <dt-cite key="chollet2015keras"></dt-cite> |
+
+<div style="text-align: center;">
 <br/>
 <figcaption style="text-align: left;">
 <b>Classification Accuracy on MNIST</b><br/>
@@ -229,7 +283,7 @@ Even in this high-dimensional classification task WANNs perform remarkably well.
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
+<img src="assets/png/digit_accuracy_by_weight.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Digit Accuracy by Weight</b><br/>
@@ -241,11 +295,11 @@ It is straight forward to sweep over the range of weights to find the value whic
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
+<img src="assets/png/mnist_all.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>MNIST Classifier</b><br/>
-Show diagrams (maybe interactive swipe left for digits) of the crazy classifier here.
+TO DO: Show more diagrams (maybe interactive selection for digits) of the classifier here.
 </figcaption>
 </div>
 
@@ -262,3 +316,5 @@ While our approach learns network architectures of increasing complexity by addi
 The success of deep learning is attributed to our ability to train the weights of large neural networks that consist of well-designed building blocks on large datasets, using gradient descent. While much progress has been made, there are also limitations, as we are confined to the space of architectures that gradient descent is able to train. For instance, effectively training models that rely on discrete components <dt-cite key="jang2016categorical,graves2014neural"></dt-cite> or utilize adaptive computation <dt-cite key="graves2016adaptive"></dt-cite> mechanisms with gradient-based methods remain a challenging research area. We hope this work will encourage further research that facilitates the discovery of new architectures that not only possess inductive biases for practical domains, but can also be trained with algorithms that may not require gradient computation.
 
 That the networks found in this work do not match the performance of convolutional neural networks is not surprising. It would be an almost embarrassing achievement if they did. For decades CNN architectures have been refined by human scientists and engineers -- but it was not the reshuffling of existing structures which originally unlocked the capabilities of CNNs. Convolutional layers were themselves once novel building blocks, building blocks with strong biases toward vision tasks, whose discovery and application have been instrumental in the incredible progress made in deep learning. Compute resources available to the research community has grown significantly since the time convolutional neural networks have been discovered. If we are devoting such resources to automated discovery and hope to achieve more than incremental improvements in network architectures, we believe it is also worth experimenting with new building blocks, not just their arrangements.
+
+*If you would like to discuss any issues or give feedback, please visit the [GitHub](https://github.com/weightagnostic/weightagnostic.github.io/issues) repository of this page for more information.*
