@@ -11,7 +11,7 @@ In biology, precocial species are those whose young already possess certain abil
 <div style="text-align: center;">
 <video class="b-lazy" data-src="assets/mp4/square_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video><video class="b-lazy" data-src="assets/mp4/square_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video>
 <br/><br/>
-<img src="assets/png/rl_cover.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/rl_cover.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Examples of Weight Agnostic Neural Networks: Bipedal Walker (left), Car Racing (right)</b><br/>
@@ -23,7 +23,7 @@ Decades of neural network research have provided building blocks with strong ind
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/mnist_cover.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/mnist_cover.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>MNIST classification network evolved to work with random weights</b><br/>
@@ -77,7 +77,7 @@ To produce architectures that themselves encode solutions, the importance of wei
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/schematic.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/schematic.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Overview of Weight Agnostic Neural Network Search</b><br/>
@@ -101,7 +101,7 @@ The algorithm then repeats from **(2)**, yielding weight agnostic topologies of 
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/operators.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/operators.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Operators for searching the space of network topologies</b><br/>
@@ -147,7 +147,7 @@ Hand-designed networks found in the literature <dt-cite key="ha2018designrl,ha20
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/control_results.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/control_results.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Performance of Randomly Sampled and Trained Weights for Continuous Control Tasks</b><br/>
@@ -161,7 +161,7 @@ The best performing shared weight value produces satisfactory if not optimal beh
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/swingup_top.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/swingup_top.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <table cellspacing="0" cellpadding="0" style="border: none; width:100%">
   <tr>
@@ -169,7 +169,7 @@ The best performing shared weight value produces satisfactory if not optimal beh
     <td style="width:50%; border:none;"><div id="demo_0032" class="unselectable"></div></td>
   </tr>
 </table>
-<img src="assets/png/swingup_bottom.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/swingup_bottom.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <table cellspacing="0" cellpadding="0" style="border: none; width:100%">
   <tr>
@@ -194,8 +194,7 @@ As the networks discovered are small enough to interpret, we can derive insights
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/champ_swingup.png" style="display: block; margin: auto; width: 100%;"/>
-<!--<br/><img src="assets/png/champ_swingup_profile.png" style="display: block; margin: auto; width: 70%;"/><br/>-->
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/champ_swingup.png" style="display: block; margin: auto; width: 100%;"/>
 <figcaption style="text-align: center;">
 CartpoleSwingUp champion network<br/>
 </figcaption>
@@ -222,8 +221,7 @@ WANN controllers for *BipedalWalker-v2* and *CarRacing-v0* are likewise remarkab
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/champ_biped.png" style="display: block; margin: auto; width: 100%;"/>
-<!--<br/><img src="assets/png/champ_biped_profile.png" style="display: block; margin: auto; width: 70%;"/><br/>-->
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/champ_biped.png" style="display: block; margin: auto; width: 100%;"/>
 <figcaption style="text-align: center;">
 BipedalWalker champion network<br/>
 </figcaption>
@@ -247,8 +245,7 @@ The architecture which encodes stable driving behavior in the car racer is also 
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/champ_carracing.png" style="display: block; margin: auto; width: 100%;"/>
-<!--<br/><img src="assets/png/champ_carracing_profile.png" style="display: block; margin: auto; width: 70%;"/><br/>-->
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/champ_carracing.png" style="display: block; margin: auto; width: 100%;"/>
 <figcaption style="text-align: center;">
 Champion network for <i>CarRacing-v0</i><br/>
 </figcaption>
@@ -299,7 +296,7 @@ Even in this high-dimensional classification task WANNs perform remarkably well.
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/digit_accuracy_by_weight.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/digit_accuracy_by_weight.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Digit Accuracy by Weight</b><br/>
