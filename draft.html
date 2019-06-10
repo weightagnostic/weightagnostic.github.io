@@ -107,6 +107,20 @@ dt-article figcaption b {
     background: none;
     pointer-events: none;
 }
+
+.btn-group button {
+  background-color: orange;
+  border: 1px solid #FF6C00;
+  color: white; /* White text */
+  padding: 5px 12px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  float: center; /* Float the buttons side by side */
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+  background-color: #FF6C00;
+}
 </style>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -186,12 +200,14 @@ We search for architectures by deemphasizing weights. In place of training, netw
 <figcaption style="text-align: left;">
 <b>MNIST classification network evolved to work with random weights</b><br/>
 Networks that already work with random weight parameters are not only easily trainable, but as we will demonstrate later, we can also use the same network with an ensemble of different weights to increase performance, without the need to explicitly train the weight parameters.
+<br/><br/>
+While a conventional network with random initialization will get ~ 10% accuracy on MNIST, this particular network architecture achieves a much better than chance accuracy on MNIST (> 80%) with random weights. Without any weight training, the accuracy increases to > 90% when we use an ensemble of untrained weights.
 </figcaption>
 </div>
 <p>In order to find neural network architectures with strong inductive biases, we propose to search for architectures by deemphasizing the importance of weights. This is accomplished by <strong>(1)</strong> assigning a single shared weight parameter to every network connection and <strong>(2)</strong> evaluating the network on a wide range of this single weight parameter. In place of optimizing weights of a fixed network, we optimize instead for architectures that perform well over a wide range of weights. We demonstrate our approach can produce networks that can be expected to perform various continuous control tasks with a random weight parameter. As a proof of concept, we also apply our search method on a supervised learning domain, and find it can discover networks that, even without explicit weight training, can achieve a much higher than chance test accuracy of <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>∼</mo></mrow><annotation encoding="application/x-tex">\sim</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.36687em;"></span><span class="strut bottom" style="height:0.36687em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mrel">∼</span></span></span></span> 92% on MNIST. We hope our demonstration of such weight agnostic neural networks will encourage further research exploring novel neural network building blocks that not only possess useful inductive biases, but can also learn using algorithms that are not necessarily limited to gradient-based methods.</p>
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
+<div id="intro_demo" class="unselectable" style="text-align: center;"></div>
 <br/>
 <figcaption style="color:#FF6C00;">Interactive Demo</figcaption>
 <figcaption style="text-align: left;">
@@ -207,7 +223,7 @@ A weight agnostic neural network performing <i>CartpoleSwingup</i> task. Drag th
 <p>While the aforementioned works focus on the information capacity required to represent the <em>weights</em> of a predefined network architecture, in this work we focus on finding minimal <em>architectures</em> that can represent solutions to various tasks. As our networks still require weights, we borrow ideas from AIT and BNN, and take them a bit further. Motivated by MDL, in our approach, we apply weight-sharing to the entire network and treat the weight as a random variable sampled from a fixed distribution.</p>
 <p><strong>Network Pruning</strong>  By removing connections with small weight values from a trained neural network, pruning approaches <dt-cite key="lecun1990optimal,hassibi1993second,han2015learning"></dt-cite><dt-cite key="guo2016dynamic,li2016pruning,molchanov2016pruning"></dt-cite><dt-cite key="luo2017thinet,liu2018rethinking,mallya2018piggyback"></dt-cite> can produce sparse networks that keep only a small fraction of the connections, while maintaining similar performance on image classification tasks compared to the full network. By retaining the original weight initialization values, these sparse networks can even be trained from scratch to achieve a higher test accuracy <dt-cite key="frankle2018lottery"></dt-cite> than the original network. Similar to our work, a concurrent work <dt-cite key="zhou2019deconstructing"></dt-cite> found pruned networks that can achieve image classification accuracies that are much better than chance even with randomly initialized weights.</p>
 <p>Network pruning is a complementary approach to ours; it starts with a full, trained network, and takes away connections, while in our approach, we start with no connections, and add complexity as needed. Compared to our approach, pruning requires prior training of the full network to obtain useful information about each weight in advance. In addition, the architectures produced by pruning is limited to the full network, while in our method there is no upper bound on the network's complexity.</p>
-<p><strong>Neuroscience</strong>  A <em>connectome</em> <dt-cite key="seung2012connectome"></dt-cite> is the “wiring diagram” or mapping of all neural connections of the brain. While it is a challenge to map out the human connectome <dt-cite key="sporns2005human"></dt-cite>, with our 90 billion neurons and 150 trillion synapses, the connectome of simple organisms such as roundworms <dt-cite key="white1986structure,varshney2011structural"></dt-cite> has been constructed, and recent works <dt-cite key="eichler2017complete,takemura2017connectome"></dt-cite> mapped out the entire brain of a small fruit fly. A motivation for examining the connectome, even of an insect, is that it will help guide future research on how the brain learns and represents memories in its connections. For humans it is evident, especially during early childhood <dt-cite key="huttenlocher1990morphometric,tierney2009brain"></dt-cite>, that we learn skills and form memories by forming new synaptic connections, and our brain rewires itself based on our new experiences <dt-cite key="black1990learning,bruer1999neural,kleim2002motor,dayan2011neuroplasticity"></dt-cite>.</p>
+<p><strong>Neuroscience</strong>  A <em>connectome</em> <dt-cite key="seung2012connectome,seung2012ted"></dt-cite> is the “wiring diagram” or mapping of all neural connections of the brain. While it is a challenge to map out the human connectome <dt-cite key="sporns2005human"></dt-cite>, with our 90 billion neurons and 150 trillion synapses, the connectome of simple organisms such as roundworms <dt-cite key="white1986structure,varshney2011structural"></dt-cite> has been constructed, and recent works <dt-cite key="eichler2017complete,takemura2017connectome"></dt-cite> mapped out the entire brain of a small fruit fly. A motivation for examining the connectome, even of an insect, is that it will help guide future research on how the brain learns and represents memories in its connections. For humans it is evident, especially during early childhood <dt-cite key="huttenlocher1990morphometric,tierney2009brain"></dt-cite>, that we learn skills and form memories by forming new synaptic connections, and our brain rewires itself based on our new experiences <dt-cite key="black1990learning,bruer1999neural,kleim2002motor,dayan2011neuroplasticity"></dt-cite>.</p>
 <p>The connectome can be viewed as a graph <dt-cite key="bullmore2009complex,he2010graph,van2011rich"></dt-cite>, and analyzed using rich tools from graph theory, network science and computer simulation. Our work also aims to learn network graphs that can encode skills and knowledge for an artificial agent in a simulation environment. By deemphasizing learning of weight parameters, we encourage the agent instead to develop ever-growing networks that can encode acquired skills based on its interactions with the environment. Like the connectome of simple organisms, the networks discovered by our approach are small enough to be analyzed.</p>
 <hr>
 <h2>Weight Agnostic Neural Network Search</h2>
@@ -273,11 +289,22 @@ We compare the mean performance (over 100 trials) of the best weight agnostic ne
 <div style="text-align: center;">
 <br/>
 <img src="assets/png/swingup_top.png" style="display: block; margin: auto; width: 100%;"/>
-<b>TO DO: add mini-demos of cartpole using these nets.</b><br/>
 <br/>
+<table cellspacing="0" cellpadding="0" style="border: none; width:100%">
+  <tr>
+    <td style="width:50%; border:none;"><div id="demo_0008" class="unselectable"></div></td>
+    <td style="width:50%; border:none;"><div id="demo_0032" class="unselectable"></div></td>
+  </tr>
+</table>
 <img src="assets/png/swingup_bottom.png" style="display: block; margin: auto; width: 100%;"/>
-<b>TO DO: add mini-demos of cartpole using these nets.</b><br/>
 <br/>
+<table cellspacing="0" cellpadding="0" style="border: none; width:100%">
+  <tr>
+    <td style="width:50%; border:none;"><div id="demo_0128" class="unselectable"></div></td>
+    <td style="width:50%; border:none;"><div id="demo_1024" class="unselectable"></div></td>
+  </tr>
+</table>
+<figcaption style="color:#FF6C00;">Interactive Demo</figcaption>
 <figcaption style="text-align: left;">
 <b>Development of Weight Agnostic topologies over time</b><br/>
 <i>Generation 8</i>: An early network which performs poorly with nearly all weights.
@@ -286,7 +313,7 @@ We compare the mean performance (over 100 trials) of the best weight agnostic ne
 <br/>
 <i>Generation 128</i>: Complexity is added to refine the balancing behavior of the elevated pole.
 <br/>
-<i>Generation 1024</i>: TO DO, add blurb here.
+<i>Generation 1024</i>: Letting the evolution run for many more generations to further refine the architecture.
 </figcaption>
 </div>
 <p>As the networks discovered are small enough to interpret, we can derive insights into how they function by looking at network diagrams (See above figure). Examining the development of a WANN which solves <em>CartPoleSwingUp</em> is also illustrative of how relationships are encoded within an architecture. In the earliest generations the space of networks is explored in an essentially random fashion. By generation 32, preliminary structures arise which allow for consistent performance: the three inverters applied to the <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span></span></span></span> position keep the cart from leaving the track. The center of the track is at <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">0</span></span></span></span>, left is negative, right is positive. By applying positive force when the cart is in a negative position and vice versa a strong attractor towards the center of the track is encoded.</p>
@@ -301,14 +328,17 @@ CartpoleSwingUp champion network<br/>
 <p>The interaction between the regulation of position and the Gaussian activation on <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mi>θ</mi></mrow><annotation encoding="application/x-tex">d\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">d</span><span class="mord mathit" style="margin-right:0.02778em;">θ</span></span></span></span> is responsible for the swing-up behavior, also developed by generation 32. At the start of the trial the pole is stationary: the Gaussian activation of <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mi>θ</mi></mrow><annotation encoding="application/x-tex">d\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">d</span><span class="mord mathit" style="margin-right:0.02778em;">θ</span></span></span></span> is 1 and force is applied. As the pole moves toward the edge the nodes connected to the <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span></span></span></span> input, which keep the cart in the center, begin sending an opposing force signal. The cart's progress toward the edge is slowed and the change in acceleration causes the pole to swing, increasing <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mi>θ</mi></mrow><annotation encoding="application/x-tex">d\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">d</span><span class="mord mathit" style="margin-right:0.02778em;">θ</span></span></span></span> and so decreasing the signal that is pushing the cart toward the edge. This slow down causes further acceleration of the pole, setting in motion a feedback loop that results in the rapid dissipation of signal from <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mi>θ</mi></mrow><annotation encoding="application/x-tex">d\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">d</span><span class="mord mathit" style="margin-right:0.02778em;">θ</span></span></span></span>. The resulting snap back of the cart towards the center causes the pole to swing up. As the pole falls and settles the same swing up behavior is repeated, and the controller is rewarded whenever the pole is upright.</p>
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
+<div id="final_demo" class="unselectable" style="text-align: center;"></div>
+<br/>
 <figcaption style="color:#FF6C00;">Interactive Demo</figcaption>
 <figcaption style="text-align: left;">
 <b>Tuned weights for champion network at generation 1024</b><br/>
-TO DO, add description about interactive demo that starts off using tuned-weights for 1024-gen champion.
+We can easily train each individual weight connection of our network by using the best shared weight as a starting point and solving for the offsets from the shared weight parameter. We used population-based REINFORCE <dt-cite key="williams1992simple"></dt-cite> to fine-tune our weights, but in principle any learning algorithm can be used.
+<br/><br/>
+To visualize the agent's performance outside of the training distribution, this demo uses more chaotic initial conditions than the original settings (in both the architecture search and individual fine-tuned training).
 </figcaption>
 </div>
-<p>As the search process continues, some of these controllers linger in the upright position longer than others, and by generation 128, the lingering duration is long enough for the pole to be kept balanced. Though this more complicated balancing mechanism is less reliable under variable weights than the swing-up and centering behaviors, the more reliable behaviors ensure that the system recovers and tries again until a balanced state is found. Notably, as these networks encode relationships and rely on tension between systems set against each other, their behavior is consistent with a wide range of shared weight values. TO DO: Add description about generation 1024, the demo above, and fine-tuning.</p>
+<p>As the search process continues, some of these controllers linger in the upright position longer than others, and by generation 128, the lingering duration is long enough for the pole to be kept balanced. Though this more complicated balancing mechanism is less reliable under variable weights than the swing-up and centering behaviors, the more reliable behaviors ensure that the system recovers and tries again until a balanced state is found. Notably, as these networks encode relationships and rely on tension between systems set against each other, their behavior is consistent with a wide range of shared weight values.</p>
 <p>WANN controllers for <em>BipedalWalker-v2</em> and <em>CarRacing-v0</em> are likewise remarkable in their simplicity and modularity. The biped controller uses only 17 of the 25 possible inputs, ignoring many LIDAR sensors and knee speeds. The WANN architecture not only solves the task without training the individual weights, but uses only 210 connections, an order of magnitude fewer than commonly used topologies (2804 connections used in the SOTA baseline <dt-cite key="ha2018designrl"></dt-cite>).</p>
 <div style="text-align: center;">
 <br/>
@@ -422,11 +452,25 @@ No single weight value has better accuracy on all digits. That WANNs can be inst
 <p>It is straight forward to sweep over the range of weights to find the value which performs best on the training set, but the structure of WANNs offers another intriguing possibility. At each weight value the prediction of a WANN is different. On MNIST this can be seen in the varied accuracy on each digit. Each weight value of the network can be thought of as a distinct classifier, creating the possibility of using a single WANN with multiple weight values as self-contained ensemble.</p>
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/mnist_all.png" style="display: block; margin: auto; width: 100%;"/>
+<img id="mnist_figure" src="assets/png/mnist_all.png" style="display: block; margin: auto; width: 100%;"/>
+<div class="btn-group">
+  <button id="mnist_all">All</button>&nbsp;
+  <button id="mnist_0">0</button>&nbsp;
+  <button id="mnist_1">1</button>&nbsp;
+  <button id="mnist_2">2</button>&nbsp;
+  <button id="mnist_3">3</button>&nbsp;
+  <button id="mnist_4">4</button>&nbsp;
+  <button id="mnist_5">5</button>&nbsp;
+  <button id="mnist_6">6</button>&nbsp;
+  <button id="mnist_7">7</button>&nbsp;
+  <button id="mnist_8">8</button>&nbsp;
+  <button id="mnist_9">9</button>
+</div>
 <br/>
+<figcaption style="color:#FF6C00;">Interactive Demo</figcaption>
 <figcaption style="text-align: left;">
 <b>MNIST Classifier</b><br/>
-TO DO: Show more diagrams (maybe interactive selection for digits) of the classifier here.
+Not all neurons and connections are used to predict each digit. Starting from the output connection for a particular digit, we can map out the part of the network used to classify that digit. We can also see which parts of the inputs are used for classification.
 </figcaption>
 </div>
 <p>In the simplest ensemble approach, a collection of networks are created by instantiating a WANN with a range of weight values. Each of these networks is given a single vote, and the ensemble classifies samples according to the category which received the most votes. This approach yields predictions far more accurate than randomly selected weight values, and only slightly worse than the best possible weight. That the result of this naive ensemble is successful is encouraging for experimenting with more sophisticated ensemble techniques when making predictions or searching for architectures.</p>
@@ -440,9 +484,9 @@ TO DO: Show more diagrams (maybe interactive selection for digits) of the classi
 </dt-article>
 <dt-appendix>
 <h2>Acknowledgements</h2>
-<p>We would like to thank (to do: include list of people).</p>
+<p>We would like to thank Douglas Eck, Geoffrey Hinton, Anja Austermann, Jeff Dean, Luke Metz, Ben Poole, Jean-Baptiste Mouret, Michiel Adriaan Unico Bacchiani, Heiga Zen, and Alexander M. Lamb for their thoughtful feedback.</p>
+<p>The experiments in this work were performed on 96-core CPU Linux virtual machines provided by <a href="https://cloud.google.com/">Google Cloud Platform</a>.</p>
 <p>This article was prepared using the <a href="https://distill.pub">Distill</a> <a href="https://github.com/distillpub/template">template</a>.</p>
-<p>The experiments in this work were performed on both a P100 GPU and a multi-core CPU Linux virtual machine provided by <a href="https://cloud.google.com/">Google Cloud Platform</a>.</p>
 <p>Any errors here are our own and do not reflect opinions of our proofreaders and colleagues. If you see mistakes or want to suggest changes, feel free to contribute feedback by participating in the discussion <a href="https://github.com/weightagnostic/weightagnostic.github.io/issues">forum</a> for this article.</p>
 <h3 id="citation">Citation</h3>
 <p>For attribution in academic contexts, please cite this work as</p>
@@ -457,8 +501,8 @@ TO DO: Show more diagrams (maybe interactive selection for digits) of the classi
   year   = {2019}
 }</pre>
 <h2>Open Source Code</h2>
-<!--The instructions to reproduce the experiments in this work is available [here](https://github.com/somewhere/).-->
-<p>The instructions to reproduce the experiments in this work will be released soon! (we promise ;-)</p>
+<p>We plan to release a general purpose tool, not only to facilitate reproduction, but also for further research in this direction. Our NumPy <dt-cite key="van2011numpy"></dt-cite> implementation of NEAT <dt-cite key="neat"></dt-cite> supports MPI <dt-cite key="mpi_library"></dt-cite> and OpenAI Gym <dt-cite key="openai_gym"></dt-cite> environments.</p>
+<p>The code to reproduce the experiments in this work will be released soon! (we promise ;-)</p>
 <h2>Reuse</h2>
 <p>Diagrams and text are licensed under Creative Commons Attribution <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> with the <a href="https://github.com/designrl/designrl.github.io">source available on GitHub</a>, unless noted otherwise. The figures that have been reused from other sources don’t fall under this license and can be recognized by the citations in their caption.</p>
 <h2>Supplementary Materials</h2>
@@ -1014,13 +1058,15 @@ CarRacing-v0
   title={The minimum description length principle},
   author={Gr{\"u}nwald, Peter D},
   year={2007},
-  publisher={MIT press}
+  publisher={MIT press},
+  url={https://mitpress.mit.edu/books/minimum-description-length-principle},
 }
 @book{rissanen2007information,
   title={Information and complexity in statistical modeling},
   author={Rissanen, Jorma},
   year={2007},
-  publisher={Springer Science and Business Media}
+  publisher={Springer Science and Business Media},
+  url={https://www.springer.com/gp/book/9780387366104},
 }
 @article{nowlan1992simplifying,
   title={Simplifying neural networks by soft weight-sharing},
@@ -1162,8 +1208,15 @@ CarRacing-v0
   title={Connectome: How the brain's wiring makes us who we are},
   author={Seung, Sebastian},
   year={2012},
-  url={https://www.ted.com/talks/sebastian_seung},
+  url={https://en.wikipedia.org/wiki/Connectome_(book)},
   publisher={HMH}
+}
+@misc{seung2012ted,
+    title = {I am my connectome},
+    year = {2010},
+    journal = {TED Talk},
+    author = {Seung, Sebastian},
+    url = {https://www.ted.com/talks/sebastian_seung},
 }
 @article{sporns2005human,
   title={The human connectome: a structural description of the human brain},
@@ -1525,25 +1578,36 @@ CarRacing-v0
   url={https://arxiv.org/abs/1603.08983},
   year={2016}
 }
+@article{van2011numpy,
+  title={The NumPy array: a structure for efficient numerical computation},
+  author={Van Der Walt, Stefan and Colbert, S Chris and Varoquaux, Gael},
+  journal={Computing in Science and Engineering},
+  volume={13},
+  number={2},
+  pages={22},
+  year={2011},
+  publisher={IEEE Computer Society},
+  url={https://www.numpy.org/},
+}
+@book{mpi_library,
+  title={Using MPI: portable parallel programming with the message-passing interface},
+  author={Gropp, William D and Gropp, William and Lusk, Ewing and Skjellum, Anthony},
+  year={1999},
+  publisher={MIT press},
+  url={https://www.mpi-forum.org/},
+}
 </script>
 <!--
 
 
 -->
+<script language="javascript" type="text/javascript" src="lib/p5.min.js"></script>
+<script language="javascript" type="text/javascript" src="lib/p5.dom.js"></script>
+<script language="javascript" type="text/javascript" src="lib/numjs.js"></script>
+<script language="javascript" type="text/javascript" src="lib/agent.js"></script>
+<script language="javascript" type="text/javascript" src="lib/wann_agent.js"></script>
+<script language="javascript" type="text/javascript" src="lib/swingup.js"></script>
 <script src="lib/blazy.js"></script>
-<script>
-  // blazy code
-  var bLazy = new Blazy({
-    success: function(){
-      updateCounter();
-    }
-  });
-
-  // not needed, only here to illustrate amount of loaded images
-  var imageLoaded = 0;
-
-  function updateCounter() {
-    imageLoaded++;
-    console.log("blazy image loaded: "+imageLoaded);
-  }
-</script>
+<script language="javascript" type="text/javascript" src="lib/jquery-1.12.4.min.js"></script>
+<script language="javascript" type="text/javascript" src="lib/demo.js"></script>
+<script language="javascript" type="text/javascript" src="lib/controller.js"></script>

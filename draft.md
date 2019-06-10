@@ -28,6 +28,8 @@ Decades of neural network research have provided building blocks with strong ind
 <figcaption style="text-align: left;">
 <b>MNIST classification network evolved to work with random weights</b><br/>
 Networks that already work with random weight parameters are not only easily trainable, but as we will demonstrate later, we can also use the same network with an ensemble of different weights to increase performance, without the need to explicitly train the weight parameters.
+<br/><br/>
+While a conventional network with random initialization will get ~ 10% accuracy on MNIST, this particular network architecture achieves a much better than chance accuracy on MNIST (> 80%) with random weights. Without any weight training, the accuracy increases to > 90% when we use an ensemble of untrained weights.
 </figcaption>
 </div>
 
@@ -35,7 +37,7 @@ In order to find neural network architectures with strong inductive biases, we p
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
+<div id="intro_demo" class="unselectable" style="text-align: center;"></div>
 <br/>
 <figcaption style="color:#FF6C00;">Interactive Demo</figcaption>
 <figcaption style="text-align: left;">
@@ -61,7 +63,7 @@ While the aforementioned works focus on the information capacity required to rep
 
 Network pruning is a complementary approach to ours; it starts with a full, trained network, and takes away connections, while in our approach, we start with no connections, and add complexity as needed. Compared to our approach, pruning requires prior training of the full network to obtain useful information about each weight in advance. In addition, the architectures produced by pruning is limited to the full network, while in our method there is no upper bound on the network's complexity.
 
-**Neuroscience**&nbsp; A *connectome* <dt-cite key="seung2012connectome"></dt-cite> is the “wiring diagram” or mapping of all neural connections of the brain. While it is a challenge to map out the human connectome <dt-cite key="sporns2005human"></dt-cite>, with our 90 billion neurons and 150 trillion synapses, the connectome of simple organisms such as roundworms <dt-cite key="white1986structure,varshney2011structural"></dt-cite> has been constructed, and recent works <dt-cite key="eichler2017complete,takemura2017connectome"></dt-cite> mapped out the entire brain of a small fruit fly. A motivation for examining the connectome, even of an insect, is that it will help guide future research on how the brain learns and represents memories in its connections. For humans it is evident, especially during early childhood <dt-cite key="huttenlocher1990morphometric,tierney2009brain"></dt-cite>, that we learn skills and form memories by forming new synaptic connections, and our brain rewires itself based on our new experiences <dt-cite key="black1990learning,bruer1999neural,kleim2002motor,dayan2011neuroplasticity"></dt-cite>.
+**Neuroscience**&nbsp; A *connectome* <dt-cite key="seung2012connectome,seung2012ted"></dt-cite> is the “wiring diagram” or mapping of all neural connections of the brain. While it is a challenge to map out the human connectome <dt-cite key="sporns2005human"></dt-cite>, with our 90 billion neurons and 150 trillion synapses, the connectome of simple organisms such as roundworms <dt-cite key="white1986structure,varshney2011structural"></dt-cite> has been constructed, and recent works <dt-cite key="eichler2017complete,takemura2017connectome"></dt-cite> mapped out the entire brain of a small fruit fly. A motivation for examining the connectome, even of an insect, is that it will help guide future research on how the brain learns and represents memories in its connections. For humans it is evident, especially during early childhood <dt-cite key="huttenlocher1990morphometric,tierney2009brain"></dt-cite>, that we learn skills and form memories by forming new synaptic connections, and our brain rewires itself based on our new experiences <dt-cite key="black1990learning,bruer1999neural,kleim2002motor,dayan2011neuroplasticity"></dt-cite>.
 
 The connectome can be viewed as a graph <dt-cite key="bullmore2009complex,he2010graph,van2011rich"></dt-cite>, and analyzed using rich tools from graph theory, network science and computer simulation. Our work also aims to learn network graphs that can encode skills and knowledge for an artificial agent in a simulation environment. By deemphasizing learning of weight parameters, we encourage the agent instead to develop ever-growing networks that can encode acquired skills based on its interactions with the environment. Like the connectome of simple organisms, the networks discovered by our approach are small enough to be analyzed.
 
@@ -160,11 +162,22 @@ The best performing shared weight value produces satisfactory if not optimal beh
 <div style="text-align: center;">
 <br/>
 <img src="assets/png/swingup_top.png" style="display: block; margin: auto; width: 100%;"/>
-<b>TO DO: add mini-demos of cartpole using these nets.</b><br/>
 <br/>
+<table cellspacing="0" cellpadding="0" style="border: none; width:100%">
+  <tr>
+    <td style="width:50%; border:none;"><div id="demo_0008" class="unselectable"></div></td>
+    <td style="width:50%; border:none;"><div id="demo_0032" class="unselectable"></div></td>
+  </tr>
+</table>
 <img src="assets/png/swingup_bottom.png" style="display: block; margin: auto; width: 100%;"/>
-<b>TO DO: add mini-demos of cartpole using these nets.</b><br/>
 <br/>
+<table cellspacing="0" cellpadding="0" style="border: none; width:100%">
+  <tr>
+    <td style="width:50%; border:none;"><div id="demo_0128" class="unselectable"></div></td>
+    <td style="width:50%; border:none;"><div id="demo_1024" class="unselectable"></div></td>
+  </tr>
+</table>
+<figcaption style="color:#FF6C00;">Interactive Demo</figcaption>
 <figcaption style="text-align: left;">
 <b>Development of Weight Agnostic topologies over time</b><br/>
 <i>Generation 8</i>: An early network which performs poorly with nearly all weights.
@@ -173,7 +186,7 @@ The best performing shared weight value produces satisfactory if not optimal beh
 <br/>
 <i>Generation 128</i>: Complexity is added to refine the balancing behavior of the elevated pole.
 <br/>
-<i>Generation 1024</i>: TO DO, add blurb here.
+<i>Generation 1024</i>: Letting the evolution run for many more generations to further refine the architecture.
 </figcaption>
 </div>
 
@@ -192,15 +205,18 @@ The interaction between the regulation of position and the Gaussian activation o
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/blank.png" style="display: block; margin: auto; width: 25%;"/>
+<div id="final_demo" class="unselectable" style="text-align: center;"></div>
+<br/>
 <figcaption style="color:#FF6C00;">Interactive Demo</figcaption>
 <figcaption style="text-align: left;">
 <b>Tuned weights for champion network at generation 1024</b><br/>
-TO DO, add description about interactive demo that starts off using tuned-weights for 1024-gen champion.
+We can easily train each individual weight connection of our network by using the best shared weight as a starting point and solving for the offsets from the shared weight parameter. We used population-based REINFORCE <dt-cite key="williams1992simple"></dt-cite> to fine-tune our weights, but in principle any learning algorithm can be used.
+<br/><br/>
+To visualize the agent's performance outside of the training distribution, this demo uses more chaotic initial conditions than the original settings (in both the architecture search and individual fine-tuned training).
 </figcaption>
 </div>
 
-As the search process continues, some of these controllers linger in the upright position longer than others, and by generation 128, the lingering duration is long enough for the pole to be kept balanced. Though this more complicated balancing mechanism is less reliable under variable weights than the swing-up and centering behaviors, the more reliable behaviors ensure that the system recovers and tries again until a balanced state is found. Notably, as these networks encode relationships and rely on tension between systems set against each other, their behavior is consistent with a wide range of shared weight values. TO DO: Add description about generation 1024, the demo above, and fine-tuning.
+As the search process continues, some of these controllers linger in the upright position longer than others, and by generation 128, the lingering duration is long enough for the pole to be kept balanced. Though this more complicated balancing mechanism is less reliable under variable weights than the swing-up and centering behaviors, the more reliable behaviors ensure that the system recovers and tries again until a balanced state is found. Notably, as these networks encode relationships and rely on tension between systems set against each other, their behavior is consistent with a wide range of shared weight values.
 
 WANN controllers for *BipedalWalker-v2* and *CarRacing-v0* are likewise remarkable in their simplicity and modularity. The biped controller uses only 17 of the 25 possible inputs, ignoring many LIDAR sensors and knee speeds. The WANN architecture not only solves the task without training the individual weights, but uses only 210 connections, an order of magnitude fewer than commonly used topologies (2804 connections used in the SOTA baseline <dt-cite key="ha2018designrl"></dt-cite>).
 
@@ -295,11 +311,25 @@ It is straight forward to sweep over the range of weights to find the value whic
 
 <div style="text-align: center;">
 <br/>
-<img src="assets/png/mnist_all.png" style="display: block; margin: auto; width: 100%;"/>
+<img id="mnist_figure" src="assets/png/mnist_all.png" style="display: block; margin: auto; width: 100%;"/>
+<div class="btn-group">
+  <button id="mnist_all">All</button>&nbsp;
+  <button id="mnist_0">0</button>&nbsp;
+  <button id="mnist_1">1</button>&nbsp;
+  <button id="mnist_2">2</button>&nbsp;
+  <button id="mnist_3">3</button>&nbsp;
+  <button id="mnist_4">4</button>&nbsp;
+  <button id="mnist_5">5</button>&nbsp;
+  <button id="mnist_6">6</button>&nbsp;
+  <button id="mnist_7">7</button>&nbsp;
+  <button id="mnist_8">8</button>&nbsp;
+  <button id="mnist_9">9</button>
+</div>
 <br/>
+<figcaption style="color:#FF6C00;">Interactive Demo</figcaption>
 <figcaption style="text-align: left;">
 <b>MNIST Classifier</b><br/>
-TO DO: Show more diagrams (maybe interactive selection for digits) of the classifier here.
+Not all neurons and connections are used to predict each digit. Starting from the output connection for a particular digit, we can map out the part of the network used to classify that digit. We can also see which parts of the inputs are used for classification.
 </figcaption>
 </div>
 

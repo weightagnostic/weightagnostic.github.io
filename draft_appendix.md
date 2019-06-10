@@ -1,10 +1,10 @@
 ## Acknowledgements
 
-We would like to thank (to do: include list of people).
+We would like to thank Douglas Eck, Geoffrey Hinton, Anja Austermann, Jeff Dean, Luke Metz, Ben Poole, Jean-Baptiste Mouret, Michiel Adriaan Unico Bacchiani, Heiga Zen, and Alexander M. Lamb for their thoughtful feedback.
+
+The experiments in this work were performed on 96-core CPU Linux virtual machines provided by [Google Cloud Platform](https://cloud.google.com/).
 
 This article was prepared using the [Distill](https://distill.pub) [template](https://github.com/distillpub/template).
-
-The experiments in this work were performed on both a P100 GPU and a multi-core CPU Linux virtual machine provided by [Google Cloud Platform](https://cloud.google.com/).
 
 Any errors here are our own and do not reflect opinions of our proofreaders and colleagues. If you see mistakes or want to suggest changes, feel free to contribute feedback by participating in the discussion [forum](https://github.com/weightagnostic/weightagnostic.github.io/issues) for this article.
 
@@ -27,9 +27,9 @@ BibTeX citation
 
 ## Open Source Code
 
-<!--The instructions to reproduce the experiments in this work is available [here](https://github.com/somewhere/).-->
+We plan to release a general purpose tool, not only to facilitate reproduction, but also for further research in this direction. Our NumPy <dt-cite key="van2011numpy"></dt-cite> implementation of NEAT <dt-cite key="neat"></dt-cite> supports MPI <dt-cite key="mpi_library"></dt-cite> and OpenAI Gym <dt-cite key="openai_gym"></dt-cite> environments.
 
-The instructions to reproduce the experiments in this work will be released soon! (we promise ;-)
+The code to reproduce the experiments in this work will be released soon! (we promise ;-)
 
 ## Reuse
 

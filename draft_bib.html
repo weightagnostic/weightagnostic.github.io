@@ -511,13 +511,15 @@
   title={The minimum description length principle},
   author={Gr{\"u}nwald, Peter D},
   year={2007},
-  publisher={MIT press}
+  publisher={MIT press},
+  url={https://mitpress.mit.edu/books/minimum-description-length-principle},
 }
 @book{rissanen2007information,
   title={Information and complexity in statistical modeling},
   author={Rissanen, Jorma},
   year={2007},
-  publisher={Springer Science and Business Media}
+  publisher={Springer Science and Business Media},
+  url={https://www.springer.com/gp/book/9780387366104},
 }
 @article{nowlan1992simplifying,
   title={Simplifying neural networks by soft weight-sharing},
@@ -659,8 +661,15 @@
   title={Connectome: How the brain's wiring makes us who we are},
   author={Seung, Sebastian},
   year={2012},
-  url={https://www.ted.com/talks/sebastian_seung},
+  url={https://en.wikipedia.org/wiki/Connectome_(book)},
   publisher={HMH}
+}
+@misc{seung2012ted,
+    title = {I am my connectome},
+    year = {2010},
+    journal = {TED Talk},
+    author = {Seung, Sebastian},
+    url = {https://www.ted.com/talks/sebastian_seung},
 }
 @article{sporns2005human,
   title={The human connectome: a structural description of the human brain},
@@ -1022,25 +1031,36 @@
   url={https://arxiv.org/abs/1603.08983},
   year={2016}
 }
+@article{van2011numpy,
+  title={The NumPy array: a structure for efficient numerical computation},
+  author={Van Der Walt, Stefan and Colbert, S Chris and Varoquaux, Gael},
+  journal={Computing in Science and Engineering},
+  volume={13},
+  number={2},
+  pages={22},
+  year={2011},
+  publisher={IEEE Computer Society},
+  url={https://www.numpy.org/},
+}
+@book{mpi_library,
+  title={Using MPI: portable parallel programming with the message-passing interface},
+  author={Gropp, William D and Gropp, William and Lusk, Ewing and Skjellum, Anthony},
+  year={1999},
+  publisher={MIT press},
+  url={https://www.mpi-forum.org/},
+}
 </script>
 <!--
 
 
 -->
+<script language="javascript" type="text/javascript" src="lib/p5.min.js"></script>
+<script language="javascript" type="text/javascript" src="lib/p5.dom.js"></script>
+<script language="javascript" type="text/javascript" src="lib/numjs.js"></script>
+<script language="javascript" type="text/javascript" src="lib/agent.js"></script>
+<script language="javascript" type="text/javascript" src="lib/wann_agent.js"></script>
+<script language="javascript" type="text/javascript" src="lib/swingup.js"></script>
 <script src="lib/blazy.js"></script>
-<script>
-  // blazy code
-  var bLazy = new Blazy({
-    success: function(){
-      updateCounter();
-    }
-  });
-
-  // not needed, only here to illustrate amount of loaded images
-  var imageLoaded = 0;
-
-  function updateCounter() {
-    imageLoaded++;
-    console.log("blazy image loaded: "+imageLoaded);
-  }
-</script>
+<script language="javascript" type="text/javascript" src="lib/jquery-1.12.4.min.js"></script>
+<script language="javascript" type="text/javascript" src="lib/demo.js"></script>
+<script language="javascript" type="text/javascript" src="lib/controller.js"></script>
