@@ -62,11 +62,11 @@ CarRacing-v0
 
 ## Additional Bipedal Walker Results
 
-### Increasing search space
+### Increasing the search space
 
 <div style="text-align: center;">
 <img src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/biped_net_outConns.png" style="display: block; margin: auto; width: 100%;"/>
-<figcaption style="text-align: left;">If we allow connection between outputs (a small modification to the search space), we discovered a simple and elegant WANN for the Bipedal Walker task.</figcaption>
+<figcaption style="text-align: left;">If we allow connection between outputs (a small modification to the search space), we discovered a simple and elegant WANN for the Bipedal Walker task. This particular network notably ignores many LIDAR, angle, and other input signals that are not required for the task. Refer to section on <i>Performance and Complexity</i> in the main text.</figcaption>
 </div>
 
 <div style="text-align: center;">
