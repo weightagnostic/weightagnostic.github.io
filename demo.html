@@ -13,16 +13,6 @@
     margin: 0;
   } 
 </style>
-</head>
-<body>
-
-<div>
-
-<div id="intro_demo"></div>
-
-</div>
-
-</body>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-141682504-1"></script>
@@ -33,6 +23,29 @@
 
   gtag('config', 'UA-141682504-1');
 </script>
+<!-- SEO -->
+<meta property="og:title" content="Weight Agnostic Neural Networks" />
+<meta property="og:type" content="article" />
+<meta property="og:description" content="Networks that can already (sort of) perform tasks with random weights." />
+<meta property="og:image" content="https://weightagnostic.github.io/assets/img/wann_card_rect_v2.png" />
+<meta property="og:url" content="https://weightagnostic.github.io/" />
+<!-- Twitter Card data -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Weight Agnostic Neural Networks" />
+<meta name="twitter:description" content="" />
+<meta property="og:site_name" content="Weight Agnostic Neural Networks" />
+<meta name="twitter:image" content="https://weightagnostic.github.io/assets/img/wann_card_square_v2.png" />
+
+</head>
+<body>
+<p><br/></p><p><br/></p><p><br/></p><p><br/></p>
+<div>
+
+<div id="intro_demo"></div>
+
+</div>
+
+</body>
 
 <script>
 
@@ -43,6 +56,7 @@ $(document).scroll(function(){
   scroll_bottom = scroll_top + $(document).height();
 });
 
+/*
 var full_demo_settings = {
   divName: 'intro_demo',
   smallMode: false,
@@ -50,6 +64,21 @@ var full_demo_settings = {
   useFineTune: false,
   drawBar: true,
   showInstructions: true,
+  hardMode: false,
+  aVec: [1,1,1,1,1,1,7,7,5,1,5,5,4,1,7,3,9,1,3,7,9,5,4,3,9,7,1,7,1],
+  wKey: [10,35,36,41,64,69,95,97,108,125,128,142,157,202,231,257,289,302,331,361,362,363,364,367,368,373,374,376,394,395,398,401,403,425,461,484,517,543,574,576,602,603,604,606,633,662,692,722,723,753,782,811],
+  weights: [-0.1783,-0.0303,1.5435,1.8088,-0.857,1.024,-0.3872,0.2639,-1.138,-0.2857,0.3797,-0.199,1.3008,-1.4126,-1.3841,7.1232,-1.5903,-0.6301,0.8013,-1.1348,-0.7306,0.006,1.4754,1.1144,-1.5251,-1.277,1.0933,0.1666,-0.5483,2.6779,-1.2728,0.4593,-0.2608,0.1183,-2.1036,-0.3119,-1.0469,0.2662,0.7156,0.0328,0.3441,-0.1147,-0.0553,-0.4123,-3.2276,2.5201,1.7362,-2.9654,0.9641,-1.7355,-0.1573,2.9135],
+  wBias: -1.5,
+  displayTitle: true,
+};
+*/
+var full_demo_settings = {
+  divName: 'intro_demo',
+  smallMode: false,
+  timeLimit: 500,
+  useFineTune: false,
+  drawBar: false,
+  showInstructions: false,
   hardMode: false,
   aVec: [1,1,1,1,1,1,7,7,5,1,5,5,4,1,7,3,9,1,3,7,9,5,4,3,9,7,1,7,1],
   wKey: [10,35,36,41,64,69,95,97,108,125,128,142,157,202,231,257,289,302,331,361,362,363,364,367,368,373,374,376,394,395,398,401,403,425,461,484,517,543,574,576,602,603,604,606,633,662,692,722,723,753,782,811],

@@ -18,6 +18,17 @@ In biology, precocial species are those whose young already possess certain abil
 We search for architectures by deemphasizing weights. In place of training, networks are assigned a single shared weight value at each rollout. Architectures that are optimized for expected performance over a wide range of weight values are still able to perform various tasks without weight training.
 </figcaption>
 </div>
+<!--<div style="text-align: center;">
+<br/><br/>
+<video class="b-lazy" data-src="assets/mp4/square_swingup.mp4" type="video/mp4" autoplay muted playsinline loop style="width:33.33%;" ></video><video class="b-lazy" data-src="assets/mp4/square_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="width:33.33%;" ></video><video class="b-lazy" data-src="assets/mp4/square_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="width:33.33%;" ></video>
+<br/><br/>
+<img class="b-lazy" src="assets/png/rl_cover_all.png" style="display: block; margin: auto; width: 100%;"/>
+<br/>
+<figcaption style="text-align: left;">
+<b>(all three demos)</b><br/>
+We search for architectures by deemphasizing weights. In place of training, networks are assigned a single shared weight value at each rollout. Architectures that are optimized for expected performance over a wide range of weight values are still able to perform various tasks without weight training.
+</figcaption>
+</div>-->
 
 Decades of neural network research have provided building blocks with strong inductive biases for various task domains. Convolutional networks <dt-cite key="lecun1995convolutional,fukushima1982neocognitron"></dt-cite> are especially suited for image processing <dt-cite key="cohen2016inductive"></dt-cite>. For example, <dt-cite key="ulyanov2018deep">Ulyanov et al.</dt-cite> demonstrated that even a randomly-initialized CNN can be used as a handcrafted prior for image processing tasks such as superresolution and inpainting. <dt-cite key="evolino">Schmidhuber et al.</dt-cite> have shown that a randomly-initialized LSTM <dt-cite key="lstm"></dt-cite> with a learned linear output layer can predict time series where traditional RNNs fail. More recent developments in self-attention <dt-cite key="vaswani2017attention"></dt-cite> and capsule <dt-cite key="sabour2017dynamic"></dt-cite> networks expand the toolkit of building blocks for creating architectures with strong inductive biases for various tasks. Fascinated by the intrinsic capabilities of randomly-initialized CNNs and LSTMs, we aim to search for *weight agnostic neural networks*, architectures with strong inductive biases that can already perform various tasks with random weights.
 
@@ -27,9 +38,10 @@ Decades of neural network research have provided building blocks with strong ind
 <br/>
 <figcaption style="text-align: left;">
 <b>MNIST classification network evolved to work with random weights</b><br/>
-While a conventional network with random initialization will get ~ 10% accuracy on MNIST, this particular network architecture achieves a much better than chance accuracy on MNIST (> 80%) with random weights. Without any weight training, the accuracy increases to > 90% when we use an ensemble of untrained weights.
+<!--Networks that already work with random weight parameters are not only easily trainable, but as we will demonstrate, we can also use the same network architecture with an ensemble of different weights to increase performance, without the need to explicitly train the weight parameters.-->
+Network architectures that already work with random weights are not only easily trainable, they also offer other advantages too. For instance, we can give the same network an ensemble of (untrained) weights to increase performance, without the need to explicitly train any weight parameters.
 <br/><br/>
-Networks that already work with random weight parameters are not only easily trainable, but as we will demonstrate, we can also use the same network architecture with an ensemble of different weights to increase performance, without the need to explicitly train the weight parameters.
+While a conventional network with random initialization will get ~ 10% accuracy on MNIST, this particular network architecture achieves a much better than chance accuracy on MNIST (> 80%) with random weights. Without any weight training, the accuracy increases to > 90% when we use an ensemble of untrained weights.
 </figcaption>
 </div>
 
