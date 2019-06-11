@@ -44,17 +44,17 @@ For further discussion about the implementation details of the experiments, and 
 ### Average Performance (100 trial) versus Weight for Champion Networks
 
 <div style="text-align: center;">
-<img src="assets/png/champ_swingup_profile.png" style="display: block; margin: auto; width: 60%;"/>
+<img src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_swingup_profile.png" style="display: block; margin: auto; width: 60%;"/>
 <figcaption style="text-align: center;">
 CartpoleSwingUp
 </figcaption>
 <br/>
-<img src="assets/png/champ_biped_profile.png" style="display: block; margin: auto; width: 60%;"/>
+<img src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_biped_profile.png" style="display: block; margin: auto; width: 60%;"/>
 <figcaption style="text-align: center;">
 BipedalWalker-v2
 </figcaption>
 <br/>
-<img src="assets/png/champ_carracing_profile.png" style="display: block; margin: auto; width: 60%;"/>
+<img src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_carracing_profile.png" style="display: block; margin: auto; width: 60%;"/>
 <figcaption style="text-align: center;">
 CarRacing-v0
 </figcaption>
@@ -65,23 +65,23 @@ CarRacing-v0
 ### Increasing search space
 
 <div style="text-align: center;">
-<img src="assets/png/biped_net_outConns.png" style="display: block; margin: auto; width: 100%;"/>
+<img src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/biped_net_outConns.png" style="display: block; margin: auto; width: 100%;"/>
 <figcaption style="text-align: left;">If we allow connection between outputs (a small modification to the search space), we discovered a simple and elegant WANN for the Bipedal Walker task.</figcaption>
 </div>
 
 <div style="text-align: center;">
-<video class="b-lazy" data-src="assets/mp4/trial_outConns_-1.0.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_outConns_-1.0.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: left;">Rollout of policy using above network, weight set to -1.0. Gait is simpler compared to the network in the main text, possibly due to network's simplicity.</figcaption>
 </div>
 
 ### Bloopers
 
 <div style="text-align: center;">
-<video class="b-lazy" data-src="assets/mp4/trial_biped_failures.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_biped_failures.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: left;">Failure cases at bad weight values.</figcaption>
 </div>
 
 <div style="text-align: center;">
-<video class="b-lazy" data-src="assets/mp4/trial_balancer.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_balancer.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: left;">But even at some bad weights (here, weight set to +1.14), our agent performs non trivial actions like balancing.</figcaption>
 </div>

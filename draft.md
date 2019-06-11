@@ -9,9 +9,9 @@ ______
 In biology, precocial species are those whose young already possess certain abilities from the moment of birth <dt-cite key="bbc_islands"></dt-cite>. There is evidence to show that lizard <dt-cite key="miles1995morphological"></dt-cite> and snake <dt-cite key="burger1998antipredator,mori2000does"></dt-cite> hatchlings already possess behaviors to escape from predators. Shortly after hatching, ducks are able to swim and eat on their own <dt-cite key="starck1998patterns"></dt-cite>, and turkeys can visually recognize predators <dt-cite key="goth2001innate"></dt-cite>. In contrast, when we train artificial agents to perform a task, we typically choose a neural network architecture we believe to be suitable for encoding a policy for the task, and find the weight parameters of this policy using a learning algorithm. Inspired by precocial behaviors evolved in nature, in this work, we develop neural networks with architectures that are naturally capable of performing a given task even when its weight parameters are randomly sampled. By using such neural network architectures, our agents can already perform well in their environment without the need to learn weight parameters.
 
 <div style="text-align: center;">
-<video class="b-lazy" data-src="assets/mp4/square_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video><video class="b-lazy" data-src="assets/mp4/square_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/square_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/square_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video>
 <br/><br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/rl_cover.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/rl_cover.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Examples of Weight Agnostic Neural Networks: Bipedal Walker (left), Car Racing (right)</b><br/>
@@ -23,7 +23,7 @@ Decades of neural network research have provided building blocks with strong ind
 
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/mnist_cover.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/mnist_cover.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>MNIST classification network evolved to work with random weights</b><br/>
@@ -77,7 +77,7 @@ To produce architectures that themselves encode solutions, the importance of wei
 
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/schematic.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/schematic.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Overview of Weight Agnostic Neural Network Search</b><br/>
@@ -101,7 +101,7 @@ The algorithm then repeats from **(2)**, yielding weight agnostic topologies of 
 
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/operators.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/operators.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Operators for searching the space of network topologies</b><br/>
@@ -147,7 +147,7 @@ Hand-designed networks found in the literature <dt-cite key="ha2018designrl,ha20
 
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/control_results.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/control_results.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Performance of Randomly Sampled and Trained Weights for Continuous Control Tasks</b><br/>
@@ -161,7 +161,7 @@ The best performing shared weight value produces satisfactory if not optimal beh
 
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/swingup_top.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/swingup_top.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <table cellspacing="0" cellpadding="0" style="border: none; width:100%">
   <tr>
@@ -169,7 +169,7 @@ The best performing shared weight value produces satisfactory if not optimal beh
     <td style="width:50%; border:none;"><div id="demo_0032" class="unselectable"></div></td>
   </tr>
 </table>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/swingup_bottom.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/swingup_bottom.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <table cellspacing="0" cellpadding="0" style="border: none; width:100%">
   <tr>
@@ -194,7 +194,7 @@ As the networks discovered are small enough to interpret, we can derive insights
 
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/champ_swingup.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_swingup.png" style="display: block; margin: auto; width: 100%;"/>
 <figcaption style="text-align: center;">
 CartpoleSwingUp champion network<br/>
 </figcaption>
@@ -221,21 +221,21 @@ WANN controllers for *BipedalWalker-v2* and *CarRacing-v0* are likewise remarkab
 
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/champ_biped.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_biped.png" style="display: block; margin: auto; width: 100%;"/>
 <figcaption style="text-align: center;">
 BipedalWalker champion network<br/>
 </figcaption>
 </div>
 <div style="text-align: center;">
-<video class="b-lazy" data-src="assets/mp4/trial_biped_-1.5.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_biped_-1.5.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: center;">
 Weight set to -1.5<br/>
 </figcaption>
-<video class="b-lazy" data-src="assets/mp4/trial_example_biped_-1.0.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_example_biped_-1.0.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: center;">
 Weight set to -1.0<br/>
 </figcaption>
-<video class="b-lazy" data-src="assets/mp4/trained_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trained_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: center;">
 Fine-tuned individual weights of champion network (Average score 332 ± 1)<br/>
 </figcaption>
@@ -245,22 +245,22 @@ The architecture which encodes stable driving behavior in the car racer is also 
 
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/champ_carracing.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_carracing.png" style="display: block; margin: auto; width: 100%;"/>
 <figcaption style="text-align: center;">
 Champion network for <i>CarRacing-v0</i><br/>
 </figcaption>
 </div>
 
 <div style="text-align: center;">
-<video class="b-lazy" data-src="assets/mp4/trial_racer_-1.4.800px.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_racer_-1.4.800px.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: center;">
 Weight set to -1.4<br/>
 </figcaption>
-<video class="b-lazy" data-src="assets/mp4/trial_racer_+1.0.800px.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_racer_+1.0.800px.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: center;">
 Weight set to +1.0<br/>
 </figcaption>
-<video class="b-lazy" data-src="assets/mp4/trained_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trained_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: center;">
 Fine-tuned individual weights of champion network (Average score 893 ± 74)<br/>
 </figcaption>
@@ -296,7 +296,7 @@ Even in this high-dimensional classification task WANNs perform remarkably well.
 
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/digit_accuracy_by_weight.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/digit_accuracy_by_weight.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Digit Accuracy by Weight</b><br/>
@@ -308,7 +308,7 @@ It is straight forward to sweep over the range of weights to find the value whic
 
 <div style="text-align: center;">
 <br/>
-<img id="mnist_figure" src="assets/png/mnist_all.png" style="display: block; margin: auto; width: 100%;"/>
+<img id="mnist_figure" src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/mnist_all.png" style="display: block; margin: auto; width: 100%;"/>
 <div class="btn-group">
   <button id="mnist_all">All</button>&nbsp;
   <button id="mnist_0">0</button>&nbsp;

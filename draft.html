@@ -142,7 +142,7 @@ dt-article figcaption b {
 </script>
 <body>
 <div style="text-align: center;">
-<video class="b-lazy" data-src="assets/mp4/wann_cover.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/wann_cover.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <table style="width: 100%;" cellspacing="0" cellpadding="0"><tr>
 <td width="50%"><figcaption style="text-align: center;">A weight agnostic neural network performing <i>BipedalWalker-v2</i> task at various different weight parameters.</figcaption></td>
 </tr></table>
@@ -183,9 +183,9 @@ dt-article figcaption b {
 <h2>Introduction</h2>
 <p>In biology, precocial species are those whose young already possess certain abilities from the moment of birth <dt-cite key="bbc_islands"></dt-cite>. There is evidence to show that lizard <dt-cite key="miles1995morphological"></dt-cite> and snake <dt-cite key="burger1998antipredator,mori2000does"></dt-cite> hatchlings already possess behaviors to escape from predators. Shortly after hatching, ducks are able to swim and eat on their own <dt-cite key="starck1998patterns"></dt-cite>, and turkeys can visually recognize predators <dt-cite key="goth2001innate"></dt-cite>. In contrast, when we train artificial agents to perform a task, we typically choose a neural network architecture we believe to be suitable for encoding a policy for the task, and find the weight parameters of this policy using a learning algorithm. Inspired by precocial behaviors evolved in nature, in this work, we develop neural networks with architectures that are naturally capable of performing a given task even when its weight parameters are randomly sampled. By using such neural network architectures, our agents can already perform well in their environment without the need to learn weight parameters.</p>
 <div style="text-align: center;">
-<video class="b-lazy" data-src="assets/mp4/square_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video><video class="b-lazy" data-src="assets/mp4/square_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/square_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/square_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video>
 <br/><br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/rl_cover.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/rl_cover.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Examples of Weight Agnostic Neural Networks: Bipedal Walker (left), Car Racing (right)</b><br/>
@@ -195,7 +195,7 @@ We search for architectures by deemphasizing weights. In place of training, netw
 <p>Decades of neural network research have provided building blocks with strong inductive biases for various task domains. Convolutional networks <dt-cite key="lecun1995convolutional,fukushima1982neocognitron"></dt-cite> are especially suited for image processing <dt-cite key="cohen2016inductive"></dt-cite>. For example, <dt-cite key="ulyanov2018deep">Ulyanov et al.</dt-cite> demonstrated that even a randomly-initialized CNN can be used as a handcrafted prior for image processing tasks such as superresolution and inpainting. <dt-cite key="evolino">Schmidhuber et al.</dt-cite> have shown that a randomly-initialized LSTM <dt-cite key="lstm"></dt-cite> with a learned linear output layer can predict time series where traditional RNNs fail. More recent developments in self-attention <dt-cite key="vaswani2017attention"></dt-cite> and capsule <dt-cite key="sabour2017dynamic"></dt-cite> networks expand the toolkit of building blocks for creating architectures with strong inductive biases for various tasks. Fascinated by the intrinsic capabilities of randomly-initialized CNNs and LSTMs, we aim to search for <em>weight agnostic neural networks</em>, architectures with strong inductive biases that can already perform various tasks with random weights.</p>
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/mnist_cover.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/mnist_cover.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>MNIST classification network evolved to work with random weights</b><br/>
@@ -231,7 +231,7 @@ A weight agnostic neural network performing <i>CartpoleSwingup</i> task. Drag th
 <p>To produce architectures that themselves encode solutions, the importance of weights must be minimized. Rather than judging networks by their performance with optimal weight values, we can instead measure their performance when their weight values are drawn from a random distribution. Replacing weight training with weight sampling ensures that performance is a product of the network topology alone. Unfortunately, due to the high dimensionality, reliable sampling of the weight space is infeasible for all but the simplest of networks. Though the curse of dimensionality prevents us from efficiently sampling high dimensional weight spaces, by enforcing weight-sharing on <em>all</em> weights, the number of weight values is reduced to one. Systematically sampling a single weight value is straight-forward and efficient, enabling us to approximate network performance in only a handful of trials. This approximation can then be used to drive the search for ever better architectures.</p>
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/schematic.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/schematic.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Overview of Weight Agnostic Neural Network Search</b><br/>
@@ -247,7 +247,7 @@ Weight Agnostic Neural Network Search avoids weight training while exploring the
 <p><strong>Topology Search</strong>  The operators used to search for neural network topologies are inspired by the well-established neuroevolution algorithm NEAT <dt-cite key="neat"></dt-cite>. While in NEAT the topology and weight values are optimized simultaneously, we ignore the weights and apply only topological search operators.</p>
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/operators.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/operators.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Operators for searching the space of network topologies</b><br/>
@@ -277,7 +277,7 @@ Weight Agnostic Neural Network Search avoids weight training while exploring the
 <p><strong>4.</strong>  <em>Tuned weights</em>:  individual weights tuned using population-based REINFORCE <dt-cite key="williams1992simple"></dt-cite>.</p>
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/control_results.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/control_results.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Performance of Randomly Sampled and Trained Weights for Continuous Control Tasks</b><br/>
@@ -288,7 +288,7 @@ We compare the mean performance (over 100 trials) of the best weight agnostic ne
 <p>The best performing shared weight value produces satisfactory if not optimal behaviors: a balanced pole after a few swings, effective if inefficient gaits, wild driving behaviour that cuts corners. These basic behaviors are encoded entirely within the architecture of the network. And while WANNs are able to perform without training, this predisposition does not prevent them from reaching similar state-of-the-art performance when the weights <em>are</em> trained.</p>
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/swingup_top.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/swingup_top.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <table cellspacing="0" cellpadding="0" style="border: none; width:100%">
   <tr>
@@ -296,7 +296,7 @@ We compare the mean performance (over 100 trials) of the best weight agnostic ne
     <td style="width:50%; border:none;"><div id="demo_0032" class="unselectable"></div></td>
   </tr>
 </table>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/swingup_bottom.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/swingup_bottom.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <table cellspacing="0" cellpadding="0" style="border: none; width:100%">
   <tr>
@@ -319,7 +319,7 @@ We compare the mean performance (over 100 trials) of the best weight agnostic ne
 <p>As the networks discovered are small enough to interpret, we can derive insights into how they function by looking at network diagrams (See above figure). Examining the development of a WANN which solves <em>CartPoleSwingUp</em> is also illustrative of how relationships are encoded within an architecture. In the earliest generations the space of networks is explored in an essentially random fashion. By generation 32, preliminary structures arise which allow for consistent performance: the three inverters applied to the <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span></span></span></span> position keep the cart from leaving the track. The center of the track is at <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">0</span></span></span></span>, left is negative, right is positive. By applying positive force when the cart is in a negative position and vice versa a strong attractor towards the center of the track is encoded.</p>
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/champ_swingup.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_swingup.png" style="display: block; margin: auto; width: 100%;"/>
 <figcaption style="text-align: center;">
 CartpoleSwingUp champion network<br/>
 </figcaption>
@@ -341,21 +341,21 @@ To visualize the agent's performance outside of the training distribution, this 
 <p>WANN controllers for <em>BipedalWalker-v2</em> and <em>CarRacing-v0</em> are likewise remarkable in their simplicity and modularity. The biped controller uses only 17 of the 25 possible inputs, ignoring many LIDAR sensors and knee speeds. The WANN architecture not only solves the task without training the individual weights, but uses only 210 connections, an order of magnitude fewer than commonly used topologies (2804 connections used in the SOTA baseline <dt-cite key="ha2018designrl"></dt-cite>).</p>
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/champ_biped.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_biped.png" style="display: block; margin: auto; width: 100%;"/>
 <figcaption style="text-align: center;">
 BipedalWalker champion network<br/>
 </figcaption>
 </div>
 <div style="text-align: center;">
-<video class="b-lazy" data-src="assets/mp4/trial_biped_-1.5.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_biped_-1.5.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: center;">
 Weight set to -1.5<br/>
 </figcaption>
-<video class="b-lazy" data-src="assets/mp4/trial_example_biped_-1.0.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_example_biped_-1.0.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: center;">
 Weight set to -1.0<br/>
 </figcaption>
-<video class="b-lazy" data-src="assets/mp4/trained_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trained_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: center;">
 Fine-tuned individual weights of champion network (Average score 332 ± 1)<br/>
 </figcaption>
@@ -363,21 +363,21 @@ Fine-tuned individual weights of champion network (Average score 332 ± 1)<br/>
 <p>The architecture which encodes stable driving behavior in the car racer is also striking in its simplicity. Only a sparsely connected two layer network and a single weight value is required to encode competent driving behavior. While the SOTA baseline <dt-cite key="ha2018worldmodels"></dt-cite> also gave the hidden states of a pre-trained RNN world model, in addition to the VAE's representation to its controller, our controller operates on the VAE's latent space alone. Nonetheless, it was able to develop a feed-forward controller that achieves a comparable score. Future work will explore removing the feed-forward constraint from the search to allow WANNs to develop recurrent connections with memory states.</p>
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/champ_carracing.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_carracing.png" style="display: block; margin: auto; width: 100%;"/>
 <figcaption style="text-align: center;">
 Champion network for <i>CarRacing-v0</i><br/>
 </figcaption>
 </div>
 <div style="text-align: center;">
-<video class="b-lazy" data-src="assets/mp4/trial_racer_-1.4.800px.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_racer_-1.4.800px.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: center;">
 Weight set to -1.4<br/>
 </figcaption>
-<video class="b-lazy" data-src="assets/mp4/trial_racer_+1.0.800px.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_racer_+1.0.800px.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: center;">
 Weight set to +1.0<br/>
 </figcaption>
-<video class="b-lazy" data-src="assets/mp4/trained_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trained_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: center;">
 Fine-tuned individual weights of champion network (Average score 893 ± 74)<br/>
 </figcaption>
@@ -439,7 +439,7 @@ WANNs instantiated with multiple weight values acting as an ensemble perform far
 <p>Even in this high-dimensional classification task WANNs perform remarkably well. Restricted to a single weight value, WANNs are able to classify MNIST digits as well as a single layer neural network with thousands of weights trained by gradient descent. The architectures created still maintain the flexibility to allow weight training, allowing further improvements in accuracy.</p>
 <div style="text-align: center;">
 <br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="assets/png/digit_accuracy_by_weight.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/digit_accuracy_by_weight.png" style="display: block; margin: auto; width: 100%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Digit Accuracy by Weight</b><br/>
@@ -449,7 +449,7 @@ No single weight value has better accuracy on all digits. That WANNs can be inst
 <p>It is straight forward to sweep over the range of weights to find the value which performs best on the training set, but the structure of WANNs offers another intriguing possibility. At each weight value the prediction of a WANN is different. On MNIST this can be seen in the varied accuracy on each digit. Each weight value of the network can be thought of as a distinct classifier, creating the possibility of using a single WANN with multiple weight values as self-contained ensemble.</p>
 <div style="text-align: center;">
 <br/>
-<img id="mnist_figure" src="assets/png/mnist_all.png" style="display: block; margin: auto; width: 100%;"/>
+<img id="mnist_figure" src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/mnist_all.png" style="display: block; margin: auto; width: 100%;"/>
 <div class="btn-group">
   <button id="mnist_all">All</button>&nbsp;
   <button id="mnist_0">0</button>&nbsp;
@@ -507,17 +507,17 @@ Not all neurons and connections are used to predict each digit. Starting from th
 <h2>Performce Profiles</h2>
 <h3>Average Performance (100 trial) versus Weight for Champion Networks</h3>
 <div style="text-align: center;">
-<img src="assets/png/champ_swingup_profile.png" style="display: block; margin: auto; width: 60%;"/>
+<img src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_swingup_profile.png" style="display: block; margin: auto; width: 60%;"/>
 <figcaption style="text-align: center;">
 CartpoleSwingUp
 </figcaption>
 <br/>
-<img src="assets/png/champ_biped_profile.png" style="display: block; margin: auto; width: 60%;"/>
+<img src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_biped_profile.png" style="display: block; margin: auto; width: 60%;"/>
 <figcaption style="text-align: center;">
 BipedalWalker-v2
 </figcaption>
 <br/>
-<img src="assets/png/champ_carracing_profile.png" style="display: block; margin: auto; width: 60%;"/>
+<img src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_carracing_profile.png" style="display: block; margin: auto; width: 60%;"/>
 <figcaption style="text-align: center;">
 CarRacing-v0
 </figcaption>
@@ -525,20 +525,20 @@ CarRacing-v0
 <h2>Additional Bipedal Walker Results</h2>
 <h3>Increasing search space</h3>
 <div style="text-align: center;">
-<img src="assets/png/biped_net_outConns.png" style="display: block; margin: auto; width: 100%;"/>
+<img src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/biped_net_outConns.png" style="display: block; margin: auto; width: 100%;"/>
 <figcaption style="text-align: left;">If we allow connection between outputs (a small modification to the search space), we discovered a simple and elegant WANN for the Bipedal Walker task.</figcaption>
 </div>
 <div style="text-align: center;">
-<video class="b-lazy" data-src="assets/mp4/trial_outConns_-1.0.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_outConns_-1.0.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: left;">Rollout of policy using above network, weight set to -1.0. Gait is simpler compared to the network in the main text, possibly due to network's simplicity.</figcaption>
 </div>
 <h3>Bloopers</h3>
 <div style="text-align: center;">
-<video class="b-lazy" data-src="assets/mp4/trial_biped_failures.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_biped_failures.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: left;">Failure cases at bad weight values.</figcaption>
 </div>
 <div style="text-align: center;">
-<video class="b-lazy" data-src="assets/mp4/trial_balancer.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_balancer.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <figcaption style="text-align: left;">But even at some bad weights (here, weight set to +1.14), our agent performs non trivial actions like balancing.</figcaption>
 </div>
 </dt-appendix>
