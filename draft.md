@@ -29,7 +29,7 @@ Decades of neural network research have provided building blocks with strong ind
 <b>MNIST classification network evolved to work with random weights</b><br/>
 While a conventional network with random initialization will get ~ 10% accuracy on MNIST, this particular network architecture achieves a much better than chance accuracy on MNIST (> 80%) with random weights. Without any weight training, the accuracy increases to > 90% when we use an ensemble of untrained weights.
 <br/><br/>
-Networks that already work with random weight parameters are not only easily trainable, but as we will demonstrate, we can also use the same network with an ensemble of different weights to increase performance, without the need to explicitly train the weight parameters.
+Networks that already work with random weight parameters are not only easily trainable, but as we will demonstrate, we can also use the same network architecture with an ensemble of different weights to increase performance, without the need to explicitly train the weight parameters.
 </figcaption>
 </div>
 

@@ -144,7 +144,7 @@ dt-article figcaption b {
 <div style="text-align: center;">
 <video class="b-lazy" data-src="assets/mp4/wann_cover.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <table style="width: 100%;" cellspacing="0" cellpadding="0"><tr>
-<td width="50%"><figcaption style="text-align: center;">A weight agnostic neural network performing <i>BipedalWalker-v2</i> task at various <i>different</i> weight parameters.</figcaption></td>
+<td width="50%"><figcaption style="text-align: center;">A weight agnostic neural network performing <i>BipedalWalker-v2</i> task at various different weight parameters.</figcaption></td>
 </tr></table>
 
 </div>
@@ -201,7 +201,7 @@ We search for architectures by deemphasizing weights. In place of training, netw
 <b>MNIST classification network evolved to work with random weights</b><br/>
 While a conventional network with random initialization will get ~ 10% accuracy on MNIST, this particular network architecture achieves a much better than chance accuracy on MNIST (> 80%) with random weights. Without any weight training, the accuracy increases to > 90% when we use an ensemble of untrained weights.
 <br/><br/>
-Networks that already work with random weight parameters are not only easily trainable, but as we will demonstrate, we can also use the same network with an ensemble of different weights to increase performance, without the need to explicitly train the weight parameters.
+Networks that already work with random weight parameters are not only easily trainable, but as we will demonstrate, we can also use the same network architecture with an ensemble of different weights to increase performance, without the need to explicitly train the weight parameters.
 </figcaption>
 </div>
 <p>In order to find neural network architectures with strong inductive biases, we propose to search for architectures by deemphasizing the importance of weights. This is accomplished by <strong>(1)</strong> assigning a single shared weight parameter to every network connection and <strong>(2)</strong> evaluating the network on a wide range of this single weight parameter. In place of optimizing weights of a fixed network, we optimize instead for architectures that perform well over a wide range of weights. We demonstrate our approach can produce networks that can be expected to perform various continuous control tasks with a random weight parameter. As a proof of concept, we also apply our search method on a supervised learning domain, and find it can discover networks that, even without explicit weight training, can achieve a much higher than chance test accuracy of <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>∼</mo></mrow><annotation encoding="application/x-tex">\sim</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.36687em;"></span><span class="strut bottom" style="height:0.36687em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mrel">∼</span></span></span></span> 92% on MNIST. We hope our demonstration of such weight agnostic neural networks will encourage further research exploring novel neural network building blocks that not only possess useful inductive biases, but can also learn using algorithms that are not necessarily limited to gradient-based methods.</p>
@@ -483,7 +483,7 @@ Not all neurons and connections are used to predict each digit. Starting from th
 <h2>Acknowledgements</h2>
 <p>We would like to thank Douglas Eck, Geoffrey Hinton, Anja Austermann, Jeff Dean, Luke Metz, Ben Poole, Jean-Baptiste Mouret, Michiel Adriaan Unico Bacchiani, Heiga Zen, and Alexander M. Lamb for their thoughtful feedback.</p>
 <p>The experiments in this work were performed on 96-core CPU Linux virtual machines provided by <a href="https://cloud.google.com/">Google Cloud Platform</a>.</p>
-<p>This article was prepared using the <a href="https://distill.pub">Distill</a> <a href="https://github.com/distillpub/template">template</a>.</p>
+<p>This article was prepared using the <a href="https://distill.pub">Distill</a> <a href="https://github.com/distillpub/template">template</a>. Interactive demos were built with <a href="https://p5js.org">p5.js</a>.</p>
 <p>Any errors here are our own and do not reflect opinions of our proofreaders and colleagues. If you see mistakes or want to suggest changes, feel free to contribute feedback by participating in the discussion <a href="https://github.com/weightagnostic/weightagnostic.github.io/issues">forum</a> for this article.</p>
 <h3 id="citation">Citation</h3>
 <p>For attribution in academic contexts, please cite this work as</p>
@@ -501,7 +501,7 @@ Not all neurons and connections are used to predict each digit. Starting from th
 <p>We plan to release a general purpose tool, not only to facilitate reproduction, but also for further research in this direction. Our NumPy <dt-cite key="van2011numpy"></dt-cite> implementation of NEAT <dt-cite key="neat"></dt-cite> supports MPI <dt-cite key="mpi_library"></dt-cite> and OpenAI Gym <dt-cite key="openai_gym"></dt-cite> environments.</p>
 <p>The code to reproduce the experiments in this work will be released soon! (we promise ;-)</p>
 <h2>Reuse</h2>
-<p>Diagrams and text are licensed under Creative Commons Attribution <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> with the <a href="https://github.com/designrl/designrl.github.io">source available on GitHub</a>, unless noted otherwise. The figures that have been reused from other sources don’t fall under this license and can be recognized by the citations in their caption.</p>
+<p>Diagrams and text are licensed under Creative Commons Attribution <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> with the <a href="https://github.com/weightagnostic/weightagnostic.github.io">source available on GitHub</a>, unless noted otherwise. The figures that have been reused from other sources don’t fall under this license and can be recognized by the citations in their caption.</p>
 <h2>Supplementary Materials</h2>
 <p>For further discussion about the implementation details of the experiments, and results for multiple independent runs of the search algorithms, please refer to the Supplementary Materials section in the <a href="https://arxiv.org/">pdf</a> version of this article.</p>
 <h2>Performce Profiles</h2>
