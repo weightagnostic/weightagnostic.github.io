@@ -37,7 +37,7 @@ Diagrams and text are licensed under Creative Commons Attribution [CC-BY 4.0](ht
 
 ## Supplementary Materials
 
-For further discussion about the implementation details of the experiments, and results for multiple independent runs of the search algorithms, please refer to the Supplementary Materials section in the [pdf](https://arxiv.org/) version of this article.
+For further discussion about the implementation details of the experiments, and results for multiple independent runs of the search algorithms, please refer to the Supplementary Materials section in the [pdf](https://arxiv.org/abs/1906.04358) version of this article.
 
 ## Performce Profiles
 

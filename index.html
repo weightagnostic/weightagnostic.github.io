@@ -157,10 +157,1502 @@ dt-article figcaption b {
 
 
 </head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
 
+<!--<script src="lib/jquery-1.12.4.min.js"></script>
+<script src="lib/mobile-detect.min.js"></script>-->
+<script src="lib/template.v1.js"></script>
+
+<script type="text/front-matter">
+  title: "Weight Agnostic Neural Networks"
+  description: ""
+</script>
 <body>
+<div style="text-align: center;">
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/wann_cover.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<table style="width: 100%;" cellspacing="0" cellpadding="0"><tr>
+<td width="50%"><figcaption style="text-align: center;">A weight agnostic neural network performing <i>BipedalWalker-v2</i> task at various different weight parameters.</figcaption></td>
+</tr></table>
 
-<h1>nothing to see here yet.</h1>
+</div>
 
+<dt-article id="dtbody">
+
+<dt-byline class="l-page transparent"></dt-byline>
+<h1>Weight Agnostic Neural Networks</h1>
+<p></p>
+<dt-byline class="l-page" id="authors_section" hidden>
+<div class="byline">
+  <div class="authors">
+    <div class="author">
+        <a class="name" href="https://scholar.google.com/citations?user=GGyARB8AAAAJ&hl=en">Adam Gaier</a>
+        <a class="affiliation" href="https://g.co/brain">Google Brain</a>
+    </div>
+    <div class="author">
+        <a class="name" href="http://blog.otoro.net/">David Ha</a>
+        <a class="affiliation" href="https://g.co/brain">Google Brain</a>
+    </div>
+  </div>
+  <div class="date">
+    <div class="month">June 12</div>
+    <div class="year">2019</div>
+  </div>
+  <div class="date">
+    <div class="month">Download</div>
+    <div class="year" style="color: #FF6C00;"><a href="https://arxiv.org/abs/1906.04358" target="_blank">PDF</a></div>
+  </div>
+</div>
+</dt-byline>
+</dt-byline>
+<h2>Abstract</h2>
+<p>Not all neural network architectures are created equal, some perform much better than others for certain tasks. But how important are the weight parameters of a neural network compared to its architecture? In this work, we question to what extent neural network architectures alone, without learning any weight parameters, can encode solutions for a given task. We propose a search method for neural network architectures that can already perform a task without any explicit weight training. To evaluate these networks, we populate the connections with a single shared weight parameter sampled from a uniform random distribution, and measure the expected performance. We demonstrate that our method can find minimal neural network architectures that can perform several reinforcement learning tasks without weight training. On supervised learning domain, we find architectures that can achieve much higher than chance accuracy on MNIST using random weights.</p>
+<hr>
+<h2>Introduction</h2>
+<p>In biology, precocial species are those whose young already possess certain abilities from the moment of birth <dt-cite key="bbc_islands"></dt-cite>. There is evidence to show that lizard <dt-cite key="miles1995morphological"></dt-cite> and snake <dt-cite key="burger1998antipredator,mori2000does"></dt-cite> hatchlings already possess behaviors to escape from predators. Shortly after hatching, ducks are able to swim and eat on their own <dt-cite key="starck1998patterns"></dt-cite>, and turkeys can visually recognize predators <dt-cite key="goth2001innate"></dt-cite>. In contrast, when we train artificial agents to perform a task, we typically choose a neural network architecture we believe to be suitable for encoding a policy for the task, and find the weight parameters of this policy using a learning algorithm. Inspired by precocial behaviors evolved in nature, in this work, we develop neural networks with architectures that are naturally capable of performing a given task even when its weight parameters are randomly sampled. By using such neural network architectures, our agents can already perform well in their environment without the need to learn weight parameters.</p>
+<div style="text-align: center;">
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/square_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/square_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video>
+<br/><br/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/rl_cover.png" style="display: block; margin: auto; width: 100%;"/>
+<br/>
+<figcaption style="text-align: left;">
+<b>Examples of Weight Agnostic Neural Networks: Bipedal Walker (left), Car Racing (right)</b><br/>
+We search for architectures by deemphasizing weights. In place of training, networks are assigned a single shared weight value at each rollout. Architectures that are optimized for expected performance over a wide range of weight values are still able to perform various tasks without weight training.
+</figcaption>
+</div>
+<!--<div style="text-align: center;">
+<br/><br/>
+<video class="b-lazy" data-src="assets/mp4/square_swingup.mp4" type="video/mp4" autoplay muted playsinline loop style="width:33.33%;" ></video><video class="b-lazy" data-src="assets/mp4/square_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="width:33.33%;" ></video><video class="b-lazy" data-src="assets/mp4/square_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="width:33.33%;" ></video>
+<br/><br/>
+<img class="b-lazy" src="assets/png/rl_cover_all.png" style="display: block; margin: auto; width: 100%;"/>
+<br/>
+<figcaption style="text-align: left;">
+<b>(all three demos)</b><br/>
+We search for architectures by deemphasizing weights. In place of training, networks are assigned a single shared weight value at each rollout. Architectures that are optimized for expected performance over a wide range of weight values are still able to perform various tasks without weight training.
+</figcaption>
+</div>-->
+<p>Decades of neural network research have provided building blocks with strong inductive biases for various task domains. Convolutional networks <dt-cite key="lecun1995convolutional,fukushima1982neocognitron"></dt-cite> are especially suited for image processing <dt-cite key="cohen2016inductive"></dt-cite>. For example, <dt-cite key="ulyanov2018deep">Ulyanov et al.</dt-cite> demonstrated that even a randomly-initialized CNN can be used as a handcrafted prior for image processing tasks such as superresolution and inpainting. <dt-cite key="evolino">Schmidhuber et al.</dt-cite> have shown that a randomly-initialized LSTM <dt-cite key="lstm"></dt-cite> with a learned linear output layer can predict time series where traditional RNNs fail. More recent developments in self-attention <dt-cite key="vaswani2017attention"></dt-cite> and capsule <dt-cite key="sabour2017dynamic"></dt-cite> networks expand the toolkit of building blocks for creating architectures with strong inductive biases for various tasks. Fascinated by the intrinsic capabilities of randomly-initialized CNNs and LSTMs, we aim to search for <em>weight agnostic neural networks</em>, architectures with strong inductive biases that can already perform various tasks with random weights.</p>
+<div style="text-align: center;">
+<br/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/mnist_cover.png" style="display: block; margin: auto; width: 100%;"/>
+<br/>
+<figcaption style="text-align: left;">
+<b>MNIST classification network evolved to work with random weights</b><br/>
+<!--Networks that already work with random weight parameters are not only easily trainable, but as we will demonstrate, we can also use the same network architecture with an ensemble of different weights to increase performance, without the need to explicitly train the weight parameters.-->
+Network architectures that already work with random weights are not only easily trainable, they also offer other advantages too. For instance, we can give the same network an ensemble of (untrained) weights to increase performance, without the need to explicitly train any weight parameters.
+<br/><br/>
+While a conventional network with random initialization will get ~ 10% accuracy on MNIST, this particular network architecture achieves a much better than chance accuracy on MNIST (> 80%) with random weights. Without any weight training, the accuracy increases to > 90% when we use an ensemble of untrained weights.
+</figcaption>
+</div>
+<p>In order to find neural network architectures with strong inductive biases, we propose to search for architectures by deemphasizing the importance of weights. This is accomplished by <strong>(1)</strong> assigning a single shared weight parameter to every network connection and <strong>(2)</strong> evaluating the network on a wide range of this single weight parameter. In place of optimizing weights of a fixed network, we optimize instead for architectures that perform well over a wide range of weights. We demonstrate our approach can produce networks that can be expected to perform various continuous control tasks with a random weight parameter. As a proof of concept, we also apply our search method on a supervised learning domain, and find it can discover networks that, even without explicit weight training, can achieve a much higher than chance test accuracy of <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>∼</mo></mrow><annotation encoding="application/x-tex">\sim</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.36687em;"></span><span class="strut bottom" style="height:0.36687em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mrel">∼</span></span></span></span> 92% on MNIST. We hope our demonstration of such weight agnostic neural networks will encourage further research exploring novel neural network building blocks that not only possess useful inductive biases, but can also learn using algorithms that are not necessarily limited to gradient-based methods.</p>
+<div style="text-align: center;">
+<br/>
+<div id="intro_demo" class="unselectable" style="text-align: center;"></div>
+<br/>
+<figcaption style="color:#FF6C00;">Interactive Demo</figcaption>
+<figcaption style="text-align: left;">
+A weight agnostic neural network performing <i>CartpoleSwingup</i> task. Drag the slider to control the weight parameter and observe the performance at various shared weight parameters. You can also fine-tune the individual weights of all connections in this demo.
+</figcaption>
+</div>
+<hr>
+<h2>Related Work</h2>
+<p>Our work has connections to existing work not only in deep learning, but also to various other fields:</p>
+<p><strong>Architecture Search</strong>  Search algorithms for neural network topologies originated from the field of evolutionary computing in the 1990s <dt-cite key="harp1990designing,dasgupta1992designing,fullmer1992using"></dt-cite><dt-cite key="mandischer1993representation,zhang1993evolving,maniezzo1994genetic"></dt-cite><dt-cite key="angeline1994evolutionary,opitz1997connectionist,pujol1998evolving"></dt-cite><dt-cite key="yao1998towards,lee1996evolutionary,gruau1996comparison"></dt-cite><dt-cite key="krishnan1994delta,braun1993evolving"></dt-cite>. Our method is based on <dt-cite key="neat"></dt-cite>, an established topology search algorithm notable for its ability to optimize the weights and structure of networks simultaneously. In order to achieve state-of-the-art results, recent methods narrow the search space to architectures composed of basic building blocks with strong domain priors such as CNNs <dt-cite key="zoph2016neural,real2017large,liu2017hierarchical,miikkulainen2019evolving"></dt-cite>, recurrent cells <dt-cite key="jozefowicz2015empirical,zoph2016neural,miikkulainen2019evolving"></dt-cite> and self-attention <dt-cite key="so2019evolved"></dt-cite>. It has been shown that random search can already achieve SOTA results if such priors are used <dt-cite key="li2019random,sciuto2019evaluating,real2018regularized"></dt-cite>. The inner loop for training the weights of each candidate architecture before evaluation makes the search costly, although efforts have been made to improve efficiency <dt-cite key="pham2018efficient,brock2017smash,liu2018darts"></dt-cite>. In our approach, we evaluate architectures without weight training, bypassing the costly inner loop, similar to the random trial approach developed by <dt-cite key="hinton1996learning,smith1987learning">Hinton et al.</dt-cite> in the 1990s that evolved architectures to be more weight tolerant, based on the <dt-cite key="baldwin1896new">Baldwin effect</dt-cite> in evolution.</p>
+<p><strong>Bayesian Neural Networks</strong>  The weight parameters of a BNN <dt-cite key="mackay1992bayesian,hinton1993keeping,barber1998ensemble"></dt-cite><dt-cite key="bishop2006pattern,neal2012bayesian,gal2016uncertainty"></dt-cite> are not fixed values, but sampled from a distribution. While the parameters of this distribution can be learned <dt-cite key="graves2011practical,krueger2017bayesian"></dt-cite>, the number of parameters is often greater than the number of weights. Recently, <dt-cite key="neklyudov2018variance">Neklyudov et al.</dt-cite> proposed variance networks, which sample each weight from a distribution with a zero mean and a learned variance parameter, and show that ensemble evaluations can improve performance on image recognition tasks. We employ a similar approach, sampling weights from a fixed uniform distribution with zero mean, as well as evaluating performance on network ensembles.</p>
+<p><strong>Algorithmic Information Theory</strong>  In AIT <dt-cite key="solomonoff1964formal"></dt-cite>, the Kolmogorov complexity <dt-cite key="kolmogorov1965three"></dt-cite> of a computable object is the minimum length of the program that can compute it. The Minimal Description Length (MDL) <dt-cite key="rissanen1978modeling,grunwald2007minimum,rissanen2007information"></dt-cite> is a formalization of Occam's razor, in which a good model is one that is best at compressing its data, including the cost of describing of the model itself. Ideas related to MDL for making neural networks “simple” was proposed in the 1990s, such as simplifying networks by soft-weight sharing <dt-cite key="nowlan1992simplifying"></dt-cite>, reducing the amount of information in weights by making them noisy <dt-cite key="hinton1993keeping"></dt-cite>, and simplifying the search space of its weights <dt-cite key="schmidhuber1997discovering"></dt-cite>. Recent works offer a modern treatment <dt-cite key="blier2018description"></dt-cite> and application <dt-cite key="li2018measuring,trask2018neural"></dt-cite> of these principles in the context of larger network architectures.</p>
+<p>While the aforementioned works focus on the information capacity required to represent the <em>weights</em> of a predefined network architecture, in this work we focus on finding minimal <em>architectures</em> that can represent solutions to various tasks. As our networks still require weights, we borrow ideas from AIT and BNN, and take them a bit further. Motivated by MDL, in our approach, we apply weight-sharing to the entire network and treat the weight as a random variable sampled from a fixed distribution.</p>
+<p><strong>Network Pruning</strong>  By removing connections with small weight values from a trained neural network, pruning approaches <dt-cite key="lecun1990optimal,hassibi1993second,han2015learning"></dt-cite><dt-cite key="guo2016dynamic,li2016pruning,molchanov2016pruning"></dt-cite><dt-cite key="luo2017thinet,liu2018rethinking,mallya2018piggyback"></dt-cite> can produce sparse networks that keep only a small fraction of the connections, while maintaining similar performance on image classification tasks compared to the full network. By retaining the original weight initialization values, these sparse networks can even be trained from scratch to achieve a higher test accuracy <dt-cite key="frankle2018lottery"></dt-cite> than the original network. Similar to our work, a concurrent work <dt-cite key="zhou2019deconstructing"></dt-cite> found pruned networks that can achieve image classification accuracies that are much better than chance even with randomly initialized weights.</p>
+<p>Network pruning is a complementary approach to ours; it starts with a full, trained network, and takes away connections, while in our approach, we start with no connections, and add complexity as needed. Compared to our approach, pruning requires prior training of the full network to obtain useful information about each weight in advance. In addition, the architectures produced by pruning are limited to the full network, while in our method there is no upper bound on the network's complexity.</p>
+<p><strong>Neuroscience</strong>  A <em>connectome</em> <dt-cite key="seung2012connectome,seung2012ted"></dt-cite> is the “wiring diagram” or mapping of all neural connections of the brain. While it is a challenge to map out the human connectome <dt-cite key="sporns2005human"></dt-cite>, with our 90 billion neurons and 150 trillion synapses, the connectome of simple organisms such as roundworms <dt-cite key="white1986structure,varshney2011structural"></dt-cite> has been constructed, and recent works <dt-cite key="eichler2017complete,takemura2017connectome"></dt-cite> mapped out the entire brain of a small fruit fly. A motivation for examining the connectome, even of an insect, is that it will help guide future research on how the brain learns and represents memories in its connections. For humans it is evident, especially during early childhood <dt-cite key="huttenlocher1990morphometric,tierney2009brain"></dt-cite>, that we learn skills and form memories by forming new synaptic connections, and our brain rewires itself based on our new experiences <dt-cite key="black1990learning,bruer1999neural,kleim2002motor,dayan2011neuroplasticity"></dt-cite>.</p>
+<p>The connectome can be viewed as a graph <dt-cite key="bullmore2009complex,he2010graph,van2011rich"></dt-cite>, and analyzed using rich tools from graph theory, network science and computer simulation. Our work also aims to learn network graphs that can encode skills and knowledge for an artificial agent in a simulation environment. By deemphasizing learning of weight parameters, we encourage the agent instead to develop ever-growing networks that can encode acquired skills based on its interactions with the environment. Like the connectome of simple organisms, the networks discovered by our approach are small enough to be analyzed.</p>
+<hr>
+<h2>Weight Agnostic Neural Network Search</h2>
+<p>Creating network architectures which encode solutions is a fundamentally different problem than that addressed by neural architecture search (NAS). The goal of NAS techniques is to produce architectures which, once trained, outperform those designed by humans. It is never claimed that the solution is innate to the structure of the network. Networks created by NAS are exceedingly ‘trainable’ -- but no one supposes these networks will solve the task without training the weights. The weights <em>are</em> the solution; the found architectures merely a better substrate for the weights to inhabit.</p>
+<p>To produce architectures that themselves encode solutions, the importance of weights must be minimized. Rather than judging networks by their performance with optimal weight values, we can instead measure their performance when their weight values are drawn from a random distribution. Replacing weight training with weight sampling ensures that performance is a product of the network topology alone. Unfortunately, due to the high dimensionality, reliable sampling of the weight space is infeasible for all but the simplest of networks. Though the curse of dimensionality prevents us from efficiently sampling high dimensional weight spaces, by enforcing weight-sharing on <em>all</em> weights, the number of weight values is reduced to one. Systematically sampling a single weight value is straight-forward and efficient, enabling us to approximate network performance in only a handful of trials. This approximation can then be used to drive the search for ever better architectures.</p>
+<div style="text-align: center;">
+<br/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/schematic.png" style="display: block; margin: auto; width: 100%;"/>
+<br/>
+<figcaption style="text-align: left;">
+<b>Overview of Weight Agnostic Neural Network Search</b><br/>
+Weight Agnostic Neural Network Search avoids weight training while exploring the space of neural network topologies by sampling a single shared weight at each rollout. Networks are evaluated over several rollouts. At each rollout a value for the single shared weight is assigned and the cumulative reward over the trial is recorded. The population of networks is then ranked according to their performance and complexity. The highest ranking networks are then chosen probabilistically and varied randomly to form a new population, and the process repeats.
+</figcaption>
+</div>
+<p>The search for these weight agnostic neural networks (WANNs) can be summarized as follows (See above figure for an overview):</p>
+<p><strong>1.</strong>  An initial population of minimal neural network topologies is created.</p>
+<p><strong>2.</strong>  Each network is evaluated over multiple rollouts, with a different shared weight value assigned at each rollout.</p>
+<p><strong>3.</strong>  Networks are ranked according to their performance <em>and</em> complexity.</p>
+<p><strong>4.</strong>  A new population is created by varying the highest ranked network topologies, chosen probabilistically through tournament selection <dt-cite key="tournamentSelection"></dt-cite>.</p>
+<p>The algorithm then repeats from <strong>(2)</strong>, yielding weight agnostic topologies of gradually increasing complexity that perform better over successive generations.</p>
+<p><strong>Topology Search</strong>  The operators used to search for neural network topologies are inspired by the well-established neuroevolution algorithm NEAT <dt-cite key="neat"></dt-cite>. While in NEAT the topology and weight values are optimized simultaneously, we ignore the weights and apply only topological search operators.</p>
+<div style="text-align: center;">
+<br/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/operators.png" style="display: block; margin: auto; width: 100%;"/>
+<br/>
+<figcaption style="text-align: left;">
+<b>Operators for searching the space of network topologies</b><br/>
+<i>Left:</i> A minimal network topology, with input and outputs only partially connected. 
+<br/>
+<i>Middle:</i> Networks are altered in one of three ways:<br/>
+&nbsp;&nbsp;<i>(1) Insert Node</i>: a new node is inserted by splitting an existing connection.<br/>
+&nbsp;&nbsp;<i>(2) Add Connection</i>: a new connection is added by connecting two previously unconnected nodes.<br/>
+&nbsp;&nbsp;<i>(3) Change Activation</i>: the activation function of a hidden node is reassigned.<br/>
+<i>Right:</i> Possible activation functions (linear, step, sin, cosine, Gaussian, tanh, sigmoid, inverse, absolute value, ReLU) shown over the range [2, 2].
+</figcaption>
+</div>
+<p>The initial population is composed of sparsely connected networks, networks with no hidden nodes and only a fraction of the possible connections between input and output. New networks are created by modifying existing networks using one of three operators: insert node, add connection, or change activation (See figure above). To insert a node, we split an existing connection into two connections that pass through this new hidden node. The activation function of this new node is randomly assigned. New connections are added between previously unconnected nodes, respecting the feed-forward property of the network. When activation functions of hidden nodes are changed, they are assigned at random. Activation functions include both the common (e.g. linear, sigmoid, ReLU) and more exotic (Gaussian, sinusoid, step), encoding a variety of relationships between inputs and outputs.</p>
+<p><strong>Performance and Complexity</strong>  Network topologies are evaluated using several shared weight values. At each rollout a new weight value is assigned to <em>all</em> connections, and the network is tested on the task. In these experiments we used a fixed series of weight values (-2, -1, -0.5, +0.5, +1, +2) to decrease the variance between evaluations.<dt-fn>Variations on these particular values had little effect, though weight values in the range [-2, 2] showed the most variance in performance. Networks whose weight values were set to greater than 3 tended to perform similarly -- presumably saturating many of the activation functions. Weight values near 0 were also omitted to reduce computation, as regardless of the topology little to no signal was sent to the output.</dt-fn> We calculate the mean performance of a network topology by averaging its cumulative reward over all rollouts using these different weight values.</p>
+<p>Motivated by algorithmic information theory <dt-cite key="solomonoff1964formal"></dt-cite>, we are not interested in searching merely for <em>any</em> weight agnostic neural networks, but networks that can be described with a minimal description length <dt-cite key="rissanen1978modeling,grunwald2007minimum,rissanen2007information"></dt-cite>. Given two different networks with similar performance we prefer the simpler network. By formulating the search as a multi-objective optimization problem <dt-cite key="konak2006multi,mouret2011novelty"></dt-cite> we take into account the size of the network as well as its performance when ranking it in the population. We apply the connection cost technique from <dt-cite key="clune2013evolutionary"></dt-cite> shown to produce networks that are more simple, modular, and evolvable. Networks topologies are judged based on three criteria: mean performance over all weight values, max performance of the single best weight value, and the number of connections in the network. Rather than attempting to balance these criteria with a hand-crafted reward function for each new task, we rank the solutions based on dominance relations <dt-cite key="nsga2"></dt-cite>.</p>
+<p>Ranking networks in this way requires that any increase in complexity is accompanied by an increase in performance. While encouraging minimal and modular networks, this constraint can make larger structural changes -- which may require several additions before paying off -- difficult to achieve. To relax this constraint we rank by complexity only probabilistically: in 80% of cases networks are ranked according to mean performance and the number of connections, in the other 20% ranking is done by mean performance and max performance.</p>
+<hr>
+<h2>Experimental Results</h2>
+<p><strong>Continuous Control</strong>  Weight agnostic neural networks (WANNs) are evaluated on three continuous control tasks.</p>
+<p>The first, <em>CartPoleSwingUp</em>, is a classic control problem where, given a cart-pole system, a pole must be swung from a resting to upright position and then balanced, without the cart going beyond the bounds of the track. The swingup task is more challenging than the simpler <em>CartPole</em> <dt-cite key="openai_gym"></dt-cite>, where the pole starts upright. Unlike the simpler task, it cannot be solved with a linear controller <dt-cite key="tedrake2009underactuated,raiko2009variational"></dt-cite>. The reward at every timestep is based on the distance of the cart from track edge and the angle of the pole. Our environment is closely based on the one described in <dt-cite key="gal2016improving,deepPILCOgithub"></dt-cite>.</p>
+<p>The second task, <em>BipedalWalker-v2</em> <dt-cite key="openai_gym"></dt-cite>, is to guide a two-legged agent across randomly generated terrain. Rewards are awarded for distance traveled, with a cost for motor torque to encourage efficient movement. Each leg is controlled by a hip and knee joint in reaction to 24 inputs, including LIDAR sensors which detect the terrain and proprioceptive information such as the agent's joint speeds. Compared to the low dimensional <em>CartPoleSwingUp</em>, <em>BipedalWalker-v2</em> has a non-trivial number of possible connections, requiring WANNs to be selective about the wiring of inputs to outputs.</p>
+<p>The third, <em>CarRacing-v0</em> <dt-cite key="openai_gym"></dt-cite>, is a top-down car racing from pixels environment. A car, controlled with three continuous commands (gas, steer, brake) is tasked with visiting as many tiles as possible of a randomly generated track within a time limit. Following the approach described in <dt-cite key="ha2018worldmodels"></dt-cite>, we delegate the pixel interpretation element of the task to a pre-trained variational autoencoder <dt-cite key="kingma2013auto,vae_dm"></dt-cite> (VAE) which compresses the pixel representation to 16 latent dimensions. These dimensions are given as input to the network. The use of learned features tests the ability of WANNs to learn abstract associations rather than encoding explicit geometric relationships between inputs.</p>
+<p>Hand-designed networks found in the literature <dt-cite key="ha2018designrl,ha2018worldmodels"></dt-cite> are compared to the best weight agnostic networks found for each task. We compare the mean performance over 100 trials under 4 conditions:</p>
+<p><strong>1.</strong>  <em>Random weights</em>:  individual weights drawn from <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mrow><mi mathvariant="script">U</mi></mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo separator="true">,</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">\mathcal{U}(-2,2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord textstyle uncramped"><span class="mord mathcal" style="margin-right:0.09931em;">U</span></span><span class="mopen">(</span><span class="mord">−</span><span class="mord mathrm">2</span><span class="mpunct">,</span><span class="mord mathrm">2</span><span class="mclose">)</span></span></span></span>.</p>
+<p><strong>2.</strong>  <em>Random shared weight</em>:  a single shared weight drawn from <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mrow><mi mathvariant="script">U</mi></mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo separator="true">,</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">\mathcal{U}(-2,2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mord textstyle uncramped"><span class="mord mathcal" style="margin-right:0.09931em;">U</span></span><span class="mopen">(</span><span class="mord">−</span><span class="mord mathrm">2</span><span class="mpunct">,</span><span class="mord mathrm">2</span><span class="mclose">)</span></span></span></span>.</p>
+<p><strong>3.</strong>  <em>Tuned shared weight</em>:  the highest performing shared weight value in range <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>(</mo><mo>−</mo><mn>2</mn><mo separator="true">,</mo><mn>2</mn><mo>)</mo></mrow><annotation encoding="application/x-tex">(-2,2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mopen">(</span><span class="mord">−</span><span class="mord mathrm">2</span><span class="mpunct">,</span><span class="mord mathrm">2</span><span class="mclose">)</span></span></span></span>.</p>
+<p><strong>4.</strong>  <em>Tuned weights</em>:  individual weights tuned using population-based REINFORCE <dt-cite key="williams1992simple"></dt-cite>.</p>
+<div style="text-align: center;">
+<br/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/control_results.png" style="display: block; margin: auto; width: 100%;"/>
+<br/>
+<figcaption style="text-align: left;">
+<b>Performance of Randomly Sampled and Trained Weights for Continuous Control Tasks</b><br/>
+We compare the mean performance (over 100 trials) of the best weight agnostic network architectures found with standard feed forward network policies commonly used in previous work (i.e. we use SOTA baselines from <dt-cite key="ha2018designrl"></dt-cite> for Biped and <dt-cite key="ha2018worldmodels"></dt-cite> for CarRacing). The intrinsic bias of a network topology can be observed by measuring its performance using a shared weight sampled from a uniform distribution. By tuning this shared weight parameter we can measure its maximum performance. To facilitate comparison to baseline architectures we also conduct experiments where networks are allowed unique weight parameters and tuned.
+</figcaption>
+</div>
+<p>The results are summarized in the above table.<dt-fn>We conduct several independent search runs to measure variability of results in Supplementary Materials.</dt-fn> In contrast to the conventional fixed topology networks used as baselines, which only produce useful behaviors after extensive tuning, WANNs perform even with random shared weights. Though their architectures encode a strong bias toward solutions, WANNs are not completely independent of the weight values -- they do fail when individual weight values are assigned randomly. WANNs function by encoding relationships between inputs and outputs, and so while the importance of the magnitude of the weights is not critical, their consistency, especially consistency of sign, is. An added benefit of a single shared weight is that it becomes trivial to tune this single parameter, without requiring the use of gradient-based methods.</p>
+<p>The best performing shared weight value produces satisfactory if not optimal behaviors: a balanced pole after a few swings, effective if inefficient gaits, wild driving behaviour that cuts corners. These basic behaviors are encoded entirely within the architecture of the network. And while WANNs are able to perform without training, this predisposition does not prevent them from reaching similar state-of-the-art performance when the weights <em>are</em> trained.</p>
+<div style="text-align: center;">
+<br/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/swingup_top.png" style="display: block; margin: auto; width: 100%;"/>
+<br/>
+<table cellspacing="0" cellpadding="0" style="border: none; width:100%">
+  <tr>
+    <td style="width:50%; border:none;"><div id="demo_0008" class="unselectable"></div></td>
+    <td style="width:50%; border:none;"><div id="demo_0032" class="unselectable"></div></td>
+  </tr>
+</table>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/swingup_bottom.png" style="display: block; margin: auto; width: 100%;"/>
+<br/>
+<table cellspacing="0" cellpadding="0" style="border: none; width:100%">
+  <tr>
+    <td style="width:50%; border:none;"><div id="demo_0128" class="unselectable"></div></td>
+    <td style="width:50%; border:none;"><div id="demo_1024" class="unselectable"></div></td>
+  </tr>
+</table>
+<figcaption style="color:#FF6C00;">Interactive Demo</figcaption>
+<figcaption style="text-align: left;">
+<b>Development of Weight Agnostic topologies over time</b><br/>
+<i>Generation 8</i>: An early network which performs poorly with nearly all weights.
+<br/>
+<i>Generation 32</i>: Relationships between the position of the cart and velocity of the pole are established. The tension between these relationships produces both centering and swing-up behavior.
+<br/>
+<i>Generation 128</i>: Complexity is added to refine the balancing behavior of the elevated pole.
+<br/>
+<i>Generation 1024</i>: Letting the evolution run for many more generations to further refine the architecture.
+</figcaption>
+</div>
+<p>As the networks discovered are small enough to interpret, we can derive insights into how they function by looking at network diagrams (See above figure). Examining the development of a WANN which solves <em>CartPoleSwingUp</em> is also illustrative of how relationships are encoded within an architecture. In the earliest generations the space of networks is explored in an essentially random fashion. By generation 32, preliminary structures arise which allow for consistent performance: the three inverters applied to the <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span></span></span></span> position keep the cart from leaving the track. The center of the track is at <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.64444em;"></span><span class="strut bottom" style="height:0.64444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathrm">0</span></span></span></span>, left is negative, right is positive. By applying positive force when the cart is in a negative position and vice versa a strong attractor towards the center of the track is encoded.</p>
+<div style="text-align: center;">
+<br/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_swingup.png" style="display: block; margin: auto; width: 100%;"/>
+<figcaption style="text-align: center;">
+CartpoleSwingUp champion network<br/>
+</figcaption>
+</div>
+<p>The interaction between the regulation of position and the Gaussian activation on <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mi>θ</mi></mrow><annotation encoding="application/x-tex">d\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">d</span><span class="mord mathit" style="margin-right:0.02778em;">θ</span></span></span></span> is responsible for the swing-up behavior, also developed by generation 32. At the start of the trial the pole is stationary: the Gaussian activation of <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mi>θ</mi></mrow><annotation encoding="application/x-tex">d\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">d</span><span class="mord mathit" style="margin-right:0.02778em;">θ</span></span></span></span> is 1 and force is applied. As the pole moves toward the edge the nodes connected to the <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span></span></span></span> input, which keep the cart in the center, begin sending an opposing force signal. The cart's progress toward the edge is slowed and the change in acceleration causes the pole to swing, increasing <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mi>θ</mi></mrow><annotation encoding="application/x-tex">d\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">d</span><span class="mord mathit" style="margin-right:0.02778em;">θ</span></span></span></span> and so decreasing the signal that is pushing the cart toward the edge. This slow down causes further acceleration of the pole, setting in motion a feedback loop that results in the rapid dissipation of signal from <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>d</mi><mi>θ</mi></mrow><annotation encoding="application/x-tex">d\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">d</span><span class="mord mathit" style="margin-right:0.02778em;">θ</span></span></span></span>. The resulting snap back of the cart towards the center causes the pole to swing up. As the pole falls and settles the same swing up behavior is repeated, and the controller is rewarded whenever the pole is upright.</p>
+<div style="text-align: center;">
+<br/>
+<div id="final_demo" class="unselectable" style="text-align: center;"></div>
+<br/>
+<figcaption style="color:#FF6C00;">Interactive Demo</figcaption>
+<figcaption style="text-align: left;">
+<b>Tuned weights for champion network at generation 1024</b><br/>
+We can easily train each individual weight connection of our network by using the best shared weight as a starting point and solving for the offsets from the shared weight parameter. We used population-based REINFORCE <dt-cite key="williams1992simple"></dt-cite> to fine-tune our weights, but in principle any learning algorithm can be used.
+<br/><br/>
+To visualize the agent's performance outside of the training distribution, this demo uses more chaotic initial conditions than the original settings (in both the architecture search and individual fine-tuned training).
+</figcaption>
+</div>
+<p>As the search process continues, some of these controllers linger in the upright position longer than others, and by generation 128, the lingering duration is long enough for the pole to be kept balanced. Though this more complicated balancing mechanism is less reliable under variable weights than the swing-up and centering behaviors, the more reliable behaviors ensure that the system recovers and tries again until a balanced state is found. Notably, as these networks encode relationships and rely on tension between systems set against each other, their behavior is consistent with a wide range of shared weight values.</p>
+<p>WANN controllers for <em>BipedalWalker-v2</em> and <em>CarRacing-v0</em> are likewise remarkable in their simplicity and modularity. The biped controller uses only 17 of the 25 possible inputs, ignoring many LIDAR sensors and knee speeds. The WANN architecture not only solves the task without training the individual weights, but uses only 210 connections, an order of magnitude fewer than commonly used topologies (2804 connections used in the SOTA baseline <dt-cite key="ha2018designrl"></dt-cite>).</p>
+<div style="text-align: center;">
+<br/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_biped.png" style="display: block; margin: auto; width: 100%;"/>
+<figcaption style="text-align: center;">
+BipedalWalker champion network<br/>
+</figcaption>
+</div>
+<div style="text-align: center;">
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_biped_-1.5.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: center;">
+Weight set to -1.5<br/>
+</figcaption>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_example_biped_-1.0.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: center;">
+Weight set to -1.0<br/>
+</figcaption>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trained_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: center;">
+Fine-tuned individual weights of champion network (Average score 332 ± 1)<br/>
+</figcaption>
+</div>
+<p>The architecture which encodes stable driving behavior in the car racer is also striking in its simplicity. Only a sparsely connected two layer network and a single weight value is required to encode competent driving behavior. While the SOTA baseline <dt-cite key="ha2018worldmodels"></dt-cite> also gave the hidden states of a pre-trained RNN world model, in addition to the VAE's representation to its controller, our controller operates on the VAE's latent space alone. Nonetheless, it was able to develop a feed-forward controller that achieves a comparable score. Future work will explore removing the feed-forward constraint from the search to allow WANNs to develop recurrent connections with memory states.</p>
+<div style="text-align: center;">
+<br/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_carracing.png" style="display: block; margin: auto; width: 100%;"/>
+<figcaption style="text-align: center;">
+Champion network for <i>CarRacing-v0</i><br/>
+</figcaption>
+</div>
+<div style="text-align: center;">
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_racer_-1.4.800px.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: center;">
+Weight set to -1.4<br/>
+</figcaption>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_racer_+1.0.800px.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: center;">
+Weight set to +1.0<br/>
+</figcaption>
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trained_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: center;">
+Fine-tuned individual weights of champion network (Average score 893 ± 74)<br/>
+</figcaption>
+</div>
+<hr>
+<p><strong>Classification</strong>  Promising results on reinforcement learning tasks lead us to consider how widely a WANN approach can be applied. WANNs which encode relationships between inputs are well suited to RL tasks: low-dimensional inputs coupled with internal states and environmental interaction allow discovery of reactive and adaptive controllers. Classification, however, is a far less fuzzy and forgiving problem. A problem where, unlike RL, design of architectures has long been a focus. As a proof of concept, we investigate how WANNs perform on the <dt-cite key="lecun1998mnist">MNIST</dt-cite> dataset, an image classification task which has been a focus of human-led architecture design for decades <dt-cite key="lecun1998gradient,chollet2015keras,sabour2017dynamic"></dt-cite>.</p>
+<table>
+<thead>
+<tr>
+<th>WANN</th>
+<th>Test Accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Random Weight</td>
+<td>82.0% <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>±</mo></mrow><annotation encoding="application/x-tex">\pm</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.58333em;"></span><span class="strut bottom" style="height:0.66666em;vertical-align:-0.08333em;"></span><span class="base textstyle uncramped"><span class="mord">±</span></span></span></span> 18.7%</td>
+</tr>
+<tr>
+<td>Ensemble Weights  </td>
+<td>91.6%</td>
+</tr>
+<tr>
+<td>Tuned Weight</td>
+<td>91.9%</td>
+</tr>
+<tr>
+<td>Trained Weights</td>
+<td>94.2%</td>
+</tr>
+</tbody>
+</table>
+<br/>
+<table>
+<thead>
+<tr>
+<th>ANN</th>
+<th>Test Accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Linear Regression  </td>
+<td>91.6% <dt-cite key="lecun1998gradient"></dt-cite></td>
+</tr>
+<tr>
+<td>Two-Layer CNN</td>
+<td>99.3% <dt-cite key="chollet2015keras"></dt-cite></td>
+</tr>
+</tbody>
+</table>
+<div style="text-align: center;">
+<br/>
+<figcaption style="text-align: left;">
+<b>Classification Accuracy on MNIST</b><br/>
+WANNs instantiated with multiple weight values acting as an ensemble perform far better than when weights are sampled at random, and as well as a linear classifier with thousands of weights.
+</figcaption>
+</div>
+<p>Even in this high-dimensional classification task WANNs perform remarkably well. Restricted to a single weight value, WANNs are able to classify MNIST digits as well as a single layer neural network with thousands of weights trained by gradient descent. The architectures created still maintain the flexibility to allow weight training, allowing further improvements in accuracy.</p>
+<div style="text-align: center;">
+<br/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/digit_accuracy_by_weight.png" style="display: block; margin: auto; width: 100%;"/>
+<br/>
+<figcaption style="text-align: left;">
+<b>Digit Accuracy by Weight</b><br/>
+No single weight value has better accuracy on all digits. That WANNs can be instantiated as several <i>different</i> networks has intriguing possibilities for the creation of ensembles.
+</figcaption>
+</div>
+<p>It is straight forward to sweep over the range of weights to find the value which performs best on the training set, but the structure of WANNs offers another intriguing possibility. At each weight value the prediction of a WANN is different. On MNIST this can be seen in the varied accuracy on each digit. Each weight value of the network can be thought of as a distinct classifier, creating the possibility of using a single WANN with multiple weight values as self-contained ensemble.</p>
+<div style="text-align: center;">
+<br/>
+<img id="mnist_figure" src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/mnist_all.png" style="display: block; margin: auto; width: 100%;"/>
+<div class="btn-group">
+  <button id="mnist_all">All</button>&nbsp;
+  <button id="mnist_0">0</button>&nbsp;
+  <button id="mnist_1">1</button>&nbsp;
+  <button id="mnist_2">2</button>&nbsp;
+  <button id="mnist_3">3</button>&nbsp;
+  <button id="mnist_4">4</button>&nbsp;
+  <button id="mnist_5">5</button>&nbsp;
+  <button id="mnist_6">6</button>&nbsp;
+  <button id="mnist_7">7</button>&nbsp;
+  <button id="mnist_8">8</button>&nbsp;
+  <button id="mnist_9">9</button>
+</div>
+<br/>
+<figcaption style="color:#FF6C00;">Interactive Demo</figcaption>
+<figcaption style="text-align: left;">
+<b>MNIST Classifier</b><br/>
+Not all neurons and connections are used to predict each digit. Starting from the output connection for a particular digit, we can map out the part of the network used to classify that digit. We can also see which parts of the inputs are used for classification.
+</figcaption>
+</div>
+<p>In the simplest ensemble approach, a collection of networks are created by instantiating a WANN with a range of weight values. Each of these networks is given a single vote, and the ensemble classifies samples according to the category which received the most votes. This approach yields predictions far more accurate than randomly selected weight values, and only slightly worse than the best possible weight. That the result of this naive ensemble is successful is encouraging for experimenting with more sophisticated ensemble techniques when making predictions or searching for architectures.</p>
+<hr>
+<h2>Discussion and Future Work</h2>
+<p>In this work we introduced a method to search for simple neural network architectures with strong inductive biases for performing a given task. Since the networks are optimized to perform well using a single weight parameter over a range of values, this single parameter can easily be tuned to increase performance. Individual weight values can then be further tuned as offsets from the best shared weight. The ability to quickly fine-tune weights is useful in few-shot learning <dt-cite key="finn2017model"></dt-cite> and may find uses in continual lifelong learning where agents continually acquire, fine-tune, and transfer skills throughout their lifespan <dt-cite key="parisi2018continual"></dt-cite>. Early works <dt-cite key="hinton1996learning,smith1987learning"></dt-cite> connected the evolution of weight tolerant networks to the Baldwin effect <dt-cite key="baldwin1896new"></dt-cite>. To develop a single WANN capable of encoding many different useful tasks in its environment, one might consider developing a WANN with a strong intrinsic bias for intrinsic motivation <dt-cite key="schmidhuber1991curious,oudeyer2007intrinsic,pathak2017curiosity"></dt-cite>, and continuously optimize its architecture to perform well at pursuing novelty in an open-ended environment <dt-cite key="lehman2008exploiting"></dt-cite>. Such a WANN might encode, through a curiosity reward signal, a multitude of skills that can easily be fine-tuned for particular downstream tasks in its environment.</p>
+<p>While our approach learns network architectures of increasing complexity by adding connections, network pruning approaches find new architectures by their removal. It is also possible to learn  a pruned network capable of performing additional tasks without learning weights <dt-cite key="mallya2018piggyback"></dt-cite>. A concurrent work <dt-cite key="zhou2019deconstructing"></dt-cite> to ours learns a <em>supermask</em> where the sub-network pruned using this mask performs well at image recognition even with randomly initialized weights -- it is interesting that their approach achieves a similar range of performance on MNIST compared to ours. While our search method is based on evolution, future work may extend the approach by incorporating recent ideas that formulate architecture search in a differentiable manner <dt-cite key="liu2018darts"></dt-cite> to make the search more efficient.</p>
+<p>The success of deep learning is attributed to our ability to train the weights of large neural networks that consist of well-designed building blocks on large datasets, using gradient descent. While much progress has been made, there are also limitations, as we are confined to the space of architectures that gradient descent is able to train. For instance, effectively training models that rely on discrete components <dt-cite key="jang2016categorical,graves2014neural"></dt-cite> or utilize adaptive computation mechanisms <dt-cite key="graves2016adaptive"></dt-cite> with gradient-based methods remain a challenging research area. We hope this work will encourage further research that facilitates the discovery of new architectures that not only possess inductive biases for practical domains, but can also be trained with algorithms that may not require gradient computation.</p>
+<p>That the networks found in this work do not match the performance of convolutional neural networks is not surprising. It would be an almost embarrassing achievement if they did. For decades CNN architectures have been refined by human scientists and engineers -- but it was not the reshuffling of existing structures which originally unlocked the capabilities of CNNs. Convolutional layers were themselves once novel building blocks, building blocks with strong biases toward vision tasks, whose discovery and application have been instrumental in the incredible progress made in deep learning. The computational resources available to the research community have grown significantly since the time convolutional neural networks were discovered. If we are devoting such resources to automated discovery and hope to achieve more than incremental improvements in network architectures, we believe it is also worth experimenting with new building blocks, not just their arrangements.</p>
+<p><em>If you would like to discuss any issues or give feedback, please visit the <a href="https://github.com/weightagnostic/weightagnostic.github.io/issues">GitHub</a> repository of this page for more information.</em></p>
+</dt-article>
+<dt-appendix>
+<h2>Acknowledgements</h2>
+<p>We would like to thank Douglas Eck, Geoffrey Hinton, Anja Austermann, Jeff Dean, Luke Metz, Ben Poole, Jean-Baptiste Mouret, Michiel Adriaan Unico Bacchiani, Heiga Zen, and Alexander M. Lamb for their thoughtful feedback.</p>
+<p>The experiments in this work were performed on 96-core CPU Linux virtual machines provided by <a href="https://cloud.google.com/">Google Cloud Platform</a>.</p>
+<p>This article was prepared using the <a href="https://distill.pub">Distill</a> <a href="https://github.com/distillpub/template">template</a>. Interactive demos were built with <a href="https://p5js.org">p5.js</a>.</p>
+<p>Any errors here are our own and do not reflect opinions of our proofreaders and colleagues. If you see mistakes or want to suggest changes, feel free to contribute feedback by participating in the discussion <a href="https://github.com/weightagnostic/weightagnostic.github.io/issues">forum</a> for this article.</p>
+<h3 id="citation">Citation</h3>
+<p>For attribution in academic contexts, please cite this work as</p>
+<pre class="citation short">Adam Gaier and David Ha, "Weight Agnostic Neural Networks", 2019.</pre>
+<p>BibTeX citation</p>
+<pre class="citation long">@article{wann2019,
+  author = {Adam Gaier and David Ha},
+  title  = {Weight Agnostic Neural Networks},
+  eprint = {arXiv:1906.XXXXX},
+  url    = {https://weightagnostic.github.io},
+  note   = "\url{https://weightagnostic.github.io}",
+  year   = {2019}
+}</pre>
+<h2>Open Source Code</h2>
+<p>We plan to release a general purpose tool, not only to facilitate reproduction, but also for further research in this direction. Our NumPy <dt-cite key="van2011numpy"></dt-cite> implementation of NEAT <dt-cite key="neat"></dt-cite> supports MPI <dt-cite key="mpi_library"></dt-cite> and OpenAI Gym <dt-cite key="openai_gym"></dt-cite> environments.</p>
+<p>The code to reproduce the experiments in this work will be released soon! (we promise ;-)</p>
+<h2>Reuse</h2>
+<p>Diagrams and text are licensed under Creative Commons Attribution <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> with the <a href="https://github.com/weightagnostic/weightagnostic.github.io">source available on GitHub</a>, unless noted otherwise. The figures that have been reused from other sources don’t fall under this license and can be recognized by the citations in their caption.</p>
+<h2>Supplementary Materials</h2>
+<p>For further discussion about the implementation details of the experiments, and results for multiple independent runs of the search algorithms, please refer to the Supplementary Materials section in the <a href="https://arxiv.org/abs/1906.04358">pdf</a> version of this article.</p>
+<h2>Performce Profiles</h2>
+<h3>Average Performance (100 trial) versus Weight for Champion Networks</h3>
+<div style="text-align: center;">
+<img src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_swingup_profile.png" style="display: block; margin: auto; width: 60%;"/>
+<figcaption style="text-align: center;">
+CartpoleSwingUp
+</figcaption>
+<br/>
+<img src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_biped_profile.png" style="display: block; margin: auto; width: 60%;"/>
+<figcaption style="text-align: center;">
+BipedalWalker-v2
+</figcaption>
+<br/>
+<img src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_carracing_profile.png" style="display: block; margin: auto; width: 60%;"/>
+<figcaption style="text-align: center;">
+CarRacing-v0
+</figcaption>
+</div>
+<h2>Additional Bipedal Walker Results</h2>
+<h3>Increasing the search space</h3>
+<div style="text-align: center;">
+<img src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/biped_net_outConns.png" style="display: block; margin: auto; width: 100%;"/>
+<figcaption style="text-align: left;">If we allow connection between outputs (a small modification to the search space), we discovered a simple and elegant WANN for the Bipedal Walker task. This particular network notably ignores many LIDAR, angle, and other input signals that are not required for the task. Refer to section on <i>Performance and Complexity</i> in the main text.</figcaption>
+</div>
+<div style="text-align: center;">
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_outConns_-1.0.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: left;">Rollout of policy using above network, weight set to -1.0. Gait is simpler compared to the network in the main text, possibly due to network's simplicity.</figcaption>
+</div>
+<h3>Bloopers</h3>
+<div style="text-align: center;">
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_biped_failures.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: left;">Failure cases at bad weight values.</figcaption>
+</div>
+<div style="text-align: center;">
+<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/trial_balancer.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<figcaption style="text-align: left;">But even at some bad weights (here, weight set to +1.14), our agent performs non trivial actions like balancing.</figcaption>
+</div>
+</dt-appendix>
+</dt-appendix>
 </body>
+<script type="text/bibliography">
+@article{openai_gym,
+  title={Openai gym},
+  author={Brockman, Greg and Cheung, Vicki and Pettersson, Ludwig and Schneider, Jonas and Schulman, John and Tang, Jie and Zaremba, Wojciech},
+  journal={arXiv preprint arXiv:1606.01540},
+  year={2016},
+  url = {https://arxiv.org/abs/1606.01540},
+}
+@article{bbc_islands,
+    title={Iguana vs Snakes},
+    journal={Planet Earth II, Episode 1},
+    publisher={BBC Natural History},
+    author={Elizabeth White},
+    year=2016,
+    url={https://youtu.be/Rv9hn4IGofM}
+}
+@article{miles1995morphological,
+  title={Morphological correlates of locomotor performance in hatchling Amblyrhynchus cristatus},
+  author={Miles, Donald B and Fitzgerald, Lee A and Snell, Howard L},
+  journal={Oecologia},
+  volume={103},
+  number={2},
+  pages={261--264},
+  year={1995},
+  url={http://tiny.cc/t5iv7y},
+  publisher={Springer}
+}
+@article{burger1998antipredator,
+  title={Antipredator behaviour of hatchling snakes: effects of incubation temperature and simulated predators},
+  author={Burger, Joanna},
+  journal={Animal Behaviour},
+  volume={56},
+  number={3},
+  pages={547--553},
+  year={1998},
+  publisher={Elsevier}
+}
+@article{mori2000does,
+  title={Does prey matter? Geographic variation in antipredator responses of hatchlings of a Japanese natricine snake (Rhabdophis tigrinus).},
+  author={Mori, Akira and Burghardt, Gordon M},
+  journal={Journal of Comparative Psychology},
+  volume={114},
+  number={4},
+  pages={408},
+  year={2000},
+  url={http://tiny.cc/r8iv7y},
+  publisher={American Psychological Association}
+}
+@article{starck1998patterns,
+  title={Patterns of development: the altricial-precocial spectrum},
+  author={Starck, J Matthias and Ricklefs, Robert E},
+  journal={Oxford Ornithology Series},
+  volume={8},
+  pages={3--30},
+  year={1998},
+  publisher={Oxford University Press}
+}
+@article{goth2001innate,
+  title={Innate predator-recognition in Australian brush-turkey (Alectura lathami, Megapodiidae) hatchlings},
+  author={Goth, A},
+  journal={Behaviour},
+  volume={138},
+  number={1},
+  pages={117},
+  year={2001},
+  publisher={Leiden, Netherlands: EJ Brill, 1947-}
+}
+@article{lecun1995convolutional,
+  title={Convolutional networks for images, speech, and time series},
+  author={LeCun, Yann and Bengio, Yoshua},
+  journal={The handbook of brain theory and neural networks},
+  volume={3361},
+  number={10},
+  url={http://yann.lecun.com/exdb/publis/pdf/lecun-bengio-95a.pdf},
+  year={1995}
+}
+@article{fukushima1982neocognitron,
+  title={Neocognitron: A new algorithm for pattern recognition tolerant of deformations and shifts in position},
+  author={Fukushima, Kunihiko and Miyake, Sei},
+  journal={Pattern recognition},
+  volume={15},
+  number={6},
+  pages={455--469},
+  year={1982},
+  url={http://www.cs.cmu.edu/afs/cs/user/bhiksha/WWW/courses/deeplearning/Fall.2016/pdfs/Fukushima_Miyake.pdf},
+  publisher={Elsevier}
+}
+@inproceedings{cohen2016inductive,
+  title={Inductive bias of deep convolutional networks through pooling geometry},
+  author={Cohen, Nadav and Shashua, Amnon},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2017},
+  url={https://openreview.net/forum?id=BkVsEMYel},
+}
+@inproceedings{ulyanov2018deep,
+  title={Deep image prior},
+  author={Ulyanov, Dmitry and Vedaldi, Andrea and Lempitsky, Victor},
+  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
+  pages={9446--9454},
+  url={https://dmitryulyanov.github.io/deep_image_prior},
+  year={2018}
+}
+@article{evolino,
+  title={Training recurrent networks by evolino},
+  author={Schmidhuber, J{\"u}rgen and Wierstra, Daan and Gagliolo, Matteo and Gomez, Faustino},
+  journal={Neural computation},
+  volume={19},
+  number={3},
+  pages={757--779},
+  year={2007},
+  url={http://people.idsia.ch/~juergen/evolino.html},
+  publisher={MIT Press}
+}
+@article{lstm,
+  title={Long short-term memory},
+  author={Hochreiter, Sepp and Schmidhuber, J{\"u}rgen},
+  journal={Neural computation},
+  volume={9},
+  number={8},
+  pages={1735--1780},
+  year={1997},
+  url={http://people.idsia.ch/~juergen/rnn.html},
+  publisher={MIT Press}
+}
+@inproceedings{vaswani2017attention,
+  title={Attention is all you need},
+  author={Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N and Kaiser, {\L}ukasz and Polosukhin, Illia},
+  booktitle={Advances in neural information processing systems},
+  pages={5998--6008},
+  url={https://arxiv.org/abs/1706.03762},
+  year={2017}
+}
+@inproceedings{sabour2017dynamic,
+  title={Dynamic routing between capsules},
+  author={Sabour, Sara and Frosst, Nicholas and Hinton, Geoffrey E},
+  booktitle={Advances in neural information processing systems},
+  pages={3856--3866},
+  url={https://arxiv.org/abs/1710.09829},
+  year={2017}
+}
+@inproceedings{harp1990designing,
+  title={Designing application-specific neural networks using the genetic algorithm},
+  author={Harp, Steven A and Samad, Tariq and Guha, Aloke},
+  booktitle={Advances in neural information processing systems},
+  pages={447--454},
+  url={https://papers.nips.cc/paper/263-designing-application-specific-neural-networks-using-the-genetic-algorithm.pdf},
+  year={1990}
+}
+@inproceedings{dasgupta1992designing,
+  title={Designing application-specific neural networks using the structured genetic algorithm},
+  author={Dasgupta, Dipankar and McGregor, Douglas R},
+  booktitle={[Proceedings] COGANN-92: International Workshop on Combinations of Genetic Algorithms and Neural Networks},
+  pages={87--96},
+  year={1992},
+  url={http://tiny.cc/2ggv7y},
+  organization={IEEE}
+}
+@inproceedings{fullmer1992using,
+  title={Using marker-based genetic encoding of neural networks to evolve finite-state behaviour},
+  author={Fullmer, Brad and Miikkulainen, Risto},
+  booktitle={Toward a Practice of Autonomous Systems: Proceedings of the First European Conference on Artificial Life},
+  pages={255--262},
+  year={1992},
+  url={http://tiny.cc/lggv7y},
+  organization={MIT Press}
+}
+@inproceedings{mandischer1993representation,
+  title={Representation and evolution of neural networks},
+  author={Mandischer, Martin},
+  booktitle={Artificial Neural Nets and Genetic Algorithms},
+  pages={643--649},
+  year={1993},
+  url={http://tiny.cc/ofgv7y},
+  organization={Springer}
+}
+@article{zhang1993evolving,
+  title={Evolving optimal neural networks using genetic algorithms with Occam's razor},
+  author={Zhang, Byoung-Tak and Muhlenbein, Heinz},
+  journal={Complex systems},
+  volume={7},
+  number={3},
+  pages={199--220},
+  year={1993},
+  url={http://muehlenbein.org/gpevolv93.pdf},
+  publisher={[Champaign, IL, USA: Complex Systems Publications, Inc., c1987-}
+}
+@article{maniezzo1994genetic,
+  title={Genetic evolution of the topology and weight distribution of neural networks},
+  author={Maniezzo, Vittorio},
+  journal={IEEE Transactions on neural networks},
+  volume={5},
+  number={1},
+  pages={39--53},
+  year={1994},
+  url={http://tiny.cc/mhgv7y},
+  publisher={IEEE}
+}
+@article{angeline1994evolutionary,
+  title={An evolutionary algorithm that constructs recurrent neural networks},
+  author={Angeline, Peter J and Saunders, Gregory M and Pollack, Jordan B},
+  journal={IEEE transactions on Neural Networks},
+  volume={5},
+  number={1},
+  pages={54--65},
+  year={1994},
+  url={http://tiny.cc/3hgv7y},
+  publisher={IEEE}
+}
+@article{opitz1997connectionist,
+  title={Connectionist theory refinement: Genetically searching the space of network topologies},
+  author={Opitz, David W and Shavlik, Jude W},
+  journal={Journal of Artificial Intelligence Research},
+  volume={6},
+  pages={177--209},
+  url={http://tiny.cc/oigv7y},
+  year={1997}
+}
+@article{pujol1998evolving,
+  title={Evolving the topology and the weights of neural networks using a dual representation},
+  author={Pujol, Jo{\~a}o Carlos Figueira and Poli, Riccardo},
+  journal={Applied Intelligence},
+  volume={8},
+  number={1},
+  pages={73--84},
+  year={1998},
+  url={http://tiny.cc/uigv7y},
+  publisher={Springer}
+}
+@article{yao1998towards,
+  title={Towards designing artificial neural networks by evolution},
+  author={Yao, Xin and Liu, Yong},
+  journal={Applied Mathematics and Computation},
+  volume={91},
+  number={1},
+  pages={83--90},
+  year={1998},
+  url={http://tiny.cc/gjgv7y},
+  publisher={Elsevier}
+}
+@inproceedings{lee1996evolutionary,
+  title={Evolutionary ordered neural network with a linked-list encoding scheme},
+  author={Lee, Chi-Ho and Kim, Jong-Hwan},
+  booktitle={Proceedings of IEEE International Conference on Evolutionary Computation},
+  pages={665--669},
+  year={1996},
+  organization={IEEE}
+}
+@inproceedings{gruau1996comparison,
+  title={A comparison between cellular encoding and direct encoding for genetic neural networks},
+  author={Gruau, Fr{\'e}d{\'e}ric and Whitley, Darrell and Pyeatt, Larry},
+  booktitle={Proceedings of the 1st annual conference on genetic programming},
+  pages={81--89},
+  year={1996},
+  organization={MIT Press}
+}
+@inproceedings{krishnan1994delta,
+  title={Delta-gann: A new approach to training neural networks using genetic algorithms},
+  author={Krishnan, Rajendra and Ciesielski, Victor B},
+  booktitle={University of Queensland},
+  year={1994},
+  organization={Citeseer}
+}
+@inproceedings{braun1993evolving,
+  title={Evolving feedforward neural networks},
+  author={Braun, Heinrich and Weisbrod, Joachim},
+  booktitle={Proceedings of ANNGA93, International Conference on Artificial Neural Networks and Genetic Algorithms},
+  pages={25--32},
+  year={1993},
+  organization={Springer Berlin}
+}
+@article{neat,
+  title={Evolving neural networks through augmenting topologies},
+  author={Stanley, Kenneth O and Miikkulainen, Risto},
+  journal={Evolutionary computation},
+  volume={10},
+  number={2},
+  pages={99--127},
+  year={2002},
+  url={http://www.cs.ucf.edu/~kstanley/neat.html},
+  publisher={MIT Press}
+}
+@inproceedings{zoph2016neural,
+  title={Neural architecture search with reinforcement learning},
+  author={Zoph, Barret and Le, Quoc V},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2017},
+  url={https://openreview.net/forum?id=r1Ue8Hcxg},
+}
+@inproceedings{real2017large,
+  title={Large-scale evolution of image classifiers},
+  author={Real, Esteban and Moore, Sherry and Selle, Andrew and Saxena, Saurabh and Suematsu, Yutaka Leon and Tan, Jie and Le, Quoc V and Kurakin, Alexey},
+  booktitle={Proceedings of the 34th International Conference on Machine Learning-Volume 70},
+  pages={2902--2911},
+  year={2017},
+  url={https://arxiv.org/abs/1703.01041},
+  organization={JMLR. org}
+}
+@inproceedings{liu2017hierarchical,
+  title={Hierarchical Representations for Efficient Architecture Search},
+  author={Hanxiao Liu and Karen Simonyan and Oriol Vinyals and Chrisantha Fernando and Koray Kavukcuoglu},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2018},
+  url={https://openreview.net/forum?id=BJQRKzbA-},
+}
+@incollection{miikkulainen2019evolving,
+  title={Evolving deep neural networks},
+  author={Miikkulainen, Risto and Liang, Jason and Meyerson, Elliot and Rawal, Aditya and Fink, Daniel and Francon, Olivier and Raju, Bala and Shahrzad, Hormoz and Navruzyan, Arshak and Duffy, Nigel},
+  booktitle={Artificial Intelligence in the Age of Neural Networks and Brain Computing},
+  pages={293--312},
+  year={2019},
+  url={https://arxiv.org/abs/1703.00548},
+  publisher={Elsevier}
+}
+@inproceedings{jozefowicz2015empirical,
+  title={An empirical exploration of recurrent network architectures},
+  author={Jozefowicz, Rafal and Zaremba, Wojciech and Sutskever, Ilya},
+  booktitle={International Conference on Machine Learning},
+  pages={2342--2350},
+  url={http://proceedings.mlr.press/v37/jozefowicz15.pdf},
+  year={2015}
+}
+@article{so2019evolved,
+  title={The Evolved Transformer},
+  author={So, David R and Liang, Chen and Le, Quoc V},
+  journal={arXiv preprint arXiv:1901.11117},
+  url={https://arxiv.org/abs/1901.11117},
+  year={2019}
+}
+@article{li2019random,
+  title={Random search and reproducibility for neural architecture search},
+  author={Li, Liam and Talwalkar, Ameet},
+  journal={arXiv preprint arXiv:1902.07638},
+  url={https://arxiv.org/abs/1902.07638},
+  year={2019}
+}
+@article{sciuto2019evaluating,
+  title={Evaluating the Search Phase of Neural Architecture Search},
+  author={Sciuto, Christian and Yu, Kaicheng and Jaggi, Martin and Musat, Claudiu and Salzmann, Mathieu},
+  journal={arXiv preprint arXiv:1902.08142},
+  url={https://arxiv.org/abs/1902.08142},
+  year={2019}
+}
+@inproceedings{real2018regularized,
+  title={Regularized evolution for image classifier architecture search},
+  author={Real, Esteban and Aggarwal, Alok and Huang, Yanping and Le, Quoc V},
+  booktitle={Association for the Advancement of Artificial Intelligence (AAAI)},
+  year={2019},
+  url={https://arxiv.org/abs/1802.01548},
+}
+@inproceedings{pham2018efficient,
+  title={Efficient Neural Architecture Search via Parameter Sharing},
+  author={Pham, Hieu and Guan, Melody and Zoph, Barret and Le, Quoc and Dean, Jeff},
+  booktitle={International Conference on Machine Learning},
+  pages={4092--4101},
+  url={https://arxiv.org/abs/1802.03268},
+  year={2018}
+}
+@inproceedings{brock2017smash,
+  title={SMASH: One-shot model architecture search through hypernetworks},
+  author={Brock, Andrew and Lim, Theodore and Ritchie, James M and Weston, Nick},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2018},
+  url={https://openreview.net/forum?id=rydeCEhs-},
+}
+@inproceedings{
+  liu2018darts,
+  title={DARTS: Differentiable Architecture Search},
+  author={Hanxiao Liu and Karen Simonyan and Yiming Yang},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2019},
+  url={https://openreview.net/forum?id=S1eYHoC5FX},
+}
+@article{hinton1996learning,
+  title={How learning can guide evolution},
+  author={Hinton, Geoffrey E and Nowlan, Steven J},
+  journal={Adaptive individuals in evolving populations: models and algorithms},
+  volume={26},
+  pages={447--454},
+  year={1996},
+  url={http://www.cogsci.ucsd.edu/~rik/courses/cogs184_w10/readings/HintonNowlan97.pdf},
+  publisher={Addison-Wesley Reading, MA}
+}
+@article{smith1987learning,
+  title={When learning guides evolution},
+  author={Smith, John Maynard},
+  journal={Nature},
+  volume={329},
+  number={6142},
+  pages={761},
+  year={1987},
+  url={https://www.nature.com/articles/329761a0.pdf},
+  publisher={Nature Publishing Group}
+}
+@article{baldwin1896new,
+  title={A new factor in evolution},
+  author={Baldwin, J Mark},
+  journal={The american naturalist},
+  volume={30},
+  number={354},
+  pages={441--451},
+  year={1896},
+  url={https://en.wikipedia.org/wiki/Baldwin_effect},
+  publisher={Edwards and Docker}
+}
+@article{mackay1992bayesian,
+  title={Bayesian interpolation},
+  author={MacKay, David JC},
+  journal={Neural computation},
+  volume={4},
+  number={3},
+  pages={415--447},
+  year={1992},
+  url={https://authors.library.caltech.edu/13792/1/MACnc92a.pdf},
+  publisher={MIT Press}
+}
+@inproceedings{hinton1993keeping,
+  title={Keeping neural networks simple by minimizing the description length of the weights},
+  author={Hinton, Geoffrey and Van Camp, Drew},
+  booktitle={in Proc. of the 6th Ann. ACM Conf. on Computational Learning Theory},
+  year={1993},
+  url={https://www.cs.toronto.edu/~hinton/absps/colt93.pdf},
+  organization={Citeseer}
+}
+@article{barber1998ensemble,
+  title={Ensemble learning in Bayesian neural networks},
+  author={Barber, D and Bishop, CM},
+  journal={NATO ASI series. Series F: computer and system sciences},
+  pages={215--237},
+  year={1998},
+  url={http://tiny.cc/8jgv7y},
+  publisher={Plenum}
+}
+@article{bishop2006pattern,
+  title={Pattern recognition and machine learning},
+  author={Bishop, Christopher M},
+  year={2006},
+  url={https://aka.ms/prml},
+  publisher={Springer (but now offered as free download, see url.)}
+}
+@article{neal2012bayesian,
+  title={Bayesian learning for neural networks},
+  author={Neal, Radford M},
+  year={2012},
+  url={http://tiny.cc/vkgv7y},
+  publisher={Springer Science and Business Media}
+}
+@phdthesis{gal2016uncertainty,
+  title={Uncertainty in deep learning},
+  author={Gal, Yarin},
+  year={2016},
+  url={http://mlg.eng.cam.ac.uk/yarin/thesis/thesis.pdf},
+  school={PhD thesis, University of Cambridge}
+}
+@inproceedings{graves2011practical,
+  title={Practical variational inference for neural networks},
+  author={Graves, Alex},
+  booktitle={Advances in neural information processing systems},
+  pages={2348--2356},
+  url={https://papers.nips.cc/paper/4329-practical-variational-inference-for-neural-networks},
+  year={2011}
+}
+@article{krueger2017bayesian,
+  title={Bayesian hypernetworks},
+  author={Krueger, David and Huang, Chin-Wei and Islam, Riashat and Turner, Ryan and Lacoste, Alexandre and Courville, Aaron},
+  journal={arXiv preprint arXiv:1710.04759},
+  url={https://arxiv.org/abs/1710.04759},
+  year={2017}
+}
+@inproceedings{neklyudov2018variance,
+  title={Variance Networks: When Expectation Does Not Meet Your Expectations},
+  author={Kirill Neklyudov and Dmitry Molchanov and Arsenii Ashukha and Dmitry Vetrov},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2019},
+  url={https://openreview.net/forum?id=B1GAUs0cKQ},
+}
+@article{solomonoff1964formal,
+  title={A formal theory of inductive inference. Part I},
+  author={Solomonoff, Ray J},
+  journal={Information and control},
+  volume={7},
+  number={1},
+  pages={1--22},
+  year={1964},
+  url={http://tiny.cc/7cgv7y},
+  publisher={Elsevier}
+}
+@article{kolmogorov1965three,
+  title={Three approaches to the quantitative definition of information},
+  author={Kolmogorov, Andrei N},
+  journal={Problems of information transmission},
+  volume={1},
+  number={1},
+  pages={1--7},
+  url={http://tiny.cc/xmgv7y},
+  year={1965}
+}
+@article{rissanen1978modeling,
+  title={Modeling by shortest data description},
+  author={Rissanen, Jorma},
+  journal={Automatica},
+  volume={14},
+  number={5},
+  pages={465--471},
+  year={1978},
+  url={http://tiny.cc/dngv7y},
+  publisher={Elsevier}
+}
+@book{grunwald2007minimum,
+  title={The minimum description length principle},
+  author={Gr{\"u}nwald, Peter D},
+  year={2007},
+  publisher={MIT press},
+  url={https://mitpress.mit.edu/books/minimum-description-length-principle},
+}
+@book{rissanen2007information,
+  title={Information and complexity in statistical modeling},
+  author={Rissanen, Jorma},
+  year={2007},
+  publisher={Springer Science and Business Media},
+  url={https://www.springer.com/gp/book/9780387366104},
+}
+@article{nowlan1992simplifying,
+  title={Simplifying neural networks by soft weight-sharing},
+  author={Nowlan, Steven J and Hinton, Geoffrey E},
+  journal={Neural computation},
+  volume={4},
+  number={4},
+  pages={473--493},
+  year={1992},
+  url={http://www.cs.toronto.edu/~hinton/absps/sunspots.pdf},
+  publisher={MIT Press}
+}
+@inproceedings{hinton1993keeping,
+  title={Keeping neural networks simple by minimizing the description length of the weights},
+  author={Hinton, Geoffrey and Van Camp, Drew},
+  booktitle={In Proc. of the 6th Ann. ACM Conf. on Computational Learning Theory},
+  year={1993},
+  url={http://www.cs.toronto.edu/~fritz/absps/colt93.pdf},
+  organization={Citeseer}
+}
+@article{schmidhuber1997discovering,
+  title={Discovering neural nets with low Kolmogorov complexity and high generalization capability},
+  author={Schmidhuber, J{\"u}rgen},
+  journal={Neural Networks},
+  volume={10},
+  number={5},
+  pages={857--873},
+  year={1997},
+  url={ftp://ftp.idsia.ch/pub/juergen/loconet.pdf},
+  publisher={Elsevier}
+}
+@inproceedings{blier2018description,
+  title={The description length of deep learning models},
+  author={Blier, L{\'e}onard and Ollivier, Yann},
+  booktitle={Advances in Neural Information Processing Systems},
+  pages={2216--2226},
+  url={https://arxiv.org/abs/1802.07044},
+  year={2018}
+}
+@inproceedings{li2018measuring,
+  title={Measuring the Intrinsic Dimension of Objective Landscapes},
+  author={Chunyuan Li and Heerad Farkhoor and Rosanne Liu and Jason Yosinski},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2018},
+  url={https://openreview.net/forum?id=ryup8-WCW},
+}
+@inproceedings{trask2018neural,
+  title={Neural arithmetic logic units},
+  author={Trask, Andrew and Hill, Felix and Reed, Scott E and Rae, Jack and Dyer, Chris and Blunsom, Phil},
+  booktitle={Advances in Neural Information Processing Systems},
+  pages={8035--8044},
+  url={https://arxiv.org/abs/1808.00508},
+  year={2018}
+}
+@inproceedings{lecun1990optimal,
+  title={Optimal brain damage},
+  author={LeCun, Yann and Denker, John S and Solla, Sara A},
+  booktitle={Advances in neural information processing systems},
+  pages={598--605},
+  url={http://yann.lecun.com/exdb/publis/pdf/lecun-90b.pdf},
+  year={1990}
+}
+@inproceedings{hassibi1993second,
+  title={Second order derivatives for network pruning: Optimal brain surgeon},
+  author={Hassibi, Babak and Stork, David G},
+  booktitle={Advances in neural information processing systems},
+  pages={164--171},
+  url={http://papers.nips.cc/paper/647-second-order-derivatives-for-network-pruning-optimal-brain-surgeon.pdf},
+  year={1993}
+}
+@inproceedings{han2015learning,
+  title={Learning both weights and connections for efficient neural network},
+  author={Han, Song and Pool, Jeff and Tran, John and Dally, William},
+  booktitle={Advances in neural information processing systems},
+  pages={1135--1143},
+  url={https://papers.nips.cc/paper/5784-learning-both-weights-and-connections-for-efficient-neural-network.pdf},
+  year={2015}
+}
+@inproceedings{guo2016dynamic,
+  title={Dynamic network surgery for efficient dnns},
+  author={Guo, Yiwen and Yao, Anbang and Chen, Yurong},
+  booktitle={Advances In Neural Information Processing Systems},
+  pages={1379--1387},
+  url={http://papers.nips.cc/paper/6165-dynamic-network-surgery-for-efficient-dnns.pdf},
+  year={2016}
+}
+@inproceedings{li2016pruning,
+  title={Pruning filters for efficient convnets},
+  author={Li, Hao and Kadav, Asim and Durdanovic, Igor and Samet, Hanan and Graf, Hans Peter},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2017},
+  url={https://openreview.net/forum?id=rJqFGTslg},
+}
+@inproceedings{molchanov2016pruning,
+  title={Pruning convolutional neural networks for resource efficient inference},
+  author={Molchanov, Pavlo and Tyree, Stephen and Karras, Tero and Aila, Timo and Kautz, Jan},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2017},
+  url={https://openreview.net/forum?id=SJGCiw5gl},
+}
+@inproceedings{luo2017thinet,
+  title={Thinet: A filter level pruning method for deep neural network compression},
+  author={Luo, Jian-Hao and Wu, Jianxin and Lin, Weiyao},
+  booktitle={Proceedings of the IEEE international conference on computer vision},
+  pages={5058--5066},
+  url={https://arxiv.org/abs/1707.06342},
+  year={2017}
+}
+@inproceedings{liu2018rethinking,
+  title={Rethinking the Value of Network Pruning},
+  author={Zhuang Liu and Mingjie Sun and Tinghui Zhou and Gao Huang and Trevor Darrell},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2019},
+  url={https://openreview.net/forum?id=rJlnB3C5Ym},
+}
+@inproceedings{frankle2018lottery,
+  title={The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks},
+  author={Jonathan Frankle and Michael Carbin},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2019},
+  url={https://openreview.net/forum?id=rJl-b3RcF7},
+}
+@article{zhou2019deconstructing,
+  title={Deconstructing Lottery Tickets: Zeros, Signs, and the Supermask},
+  author={Zhou, Hattie and Lan, Janice and Liu, Rosanne and Yosinski, Jason},
+  journal={arXiv preprint arXiv:1905.01067},
+  url={https://arxiv.org/abs/1905.01067},
+  year={2019}
+}
+@inproceedings{mallya2018piggyback,
+  title={Piggyback: Adapting a single network to multiple tasks by learning to mask weights},
+  author={Mallya, Arun and Davis, Dillon and Lazebnik, Svetlana},
+  booktitle={Proceedings of the European Conference on Computer Vision (ECCV)},
+  pages={67--82},
+  url={https://arxiv.org/abs/1801.06519},
+  year={2018}
+}
+@book{seung2012connectome,
+  title={Connectome: How the brain's wiring makes us who we are},
+  author={Seung, Sebastian},
+  year={2012},
+  url={https://en.wikipedia.org/wiki/Connectome_(book)},
+  publisher={HMH}
+}
+@misc{seung2012ted,
+    title = {I am my connectome},
+    year = {2010},
+    journal = {TED Talk},
+    author = {Seung, Sebastian},
+    url = {https://www.ted.com/talks/sebastian_seung},
+}
+@article{sporns2005human,
+  title={The human connectome: a structural description of the human brain},
+  author={Sporns, Olaf and Tononi, Giulio and K{\"o}tter, Rolf},
+  journal={PLoS computational biology},
+  volume={1},
+  number={4},
+  pages={e42},
+  year={2005},
+  url={https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.0010042},
+  publisher={Public Library of Science}
+}
+@article{white1986structure,
+  title={The structure of the nervous system of the nematode Caenorhabditis elegans},
+  author={White, John G and Southgate, Eileen and Thomson, J Nichol and Brenner, Sydney},
+  journal={Philos Trans R Soc Lond B Biol Sci},
+  volume={314},
+  number={1165},
+  pages={1--340},
+  url={http://tiny.cc/kiiv7y},
+  year={1986}
+}
+@article{varshney2011structural,
+  title={Structural properties of the Caenorhabditis elegans neuronal network},
+  author={Varshney, Lav R and Chen, Beth L and Paniagua, Eric and Hall, David H and Chklovskii, Dmitri B},
+  journal={PLoS computational biology},
+  volume={7},
+  number={2},
+  pages={e1001066},
+  year={2011},
+  url={https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1001066},
+  publisher={Public Library of Science}
+}
+@article{eichler2017complete,
+  title={The complete connectome of a learning and memory centre in an insect brain},
+  author={Eichler, Katharina and Li, Feng and Litwin-Kumar, Ashok and Park, Youngser and Andrade, Ingrid and Schneider-Mizell, Casey M and Saumweber, Timo and Huser, Annina and Eschbach, Claire and Gerber, Bertram},
+  journal={Nature},
+  volume={548},
+  number={7666},
+  pages={175},
+  year={2017},
+  url={https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5806122/},
+  publisher={Nature Publishing Group}
+}
+@article{takemura2017connectome,
+  title={A connectome of a learning and memory center in the adult Drosophila brain},
+  author={Takemura, Shin-ya and Aso, Yoshinori and Hige, Toshihide and Wong, Allan and Lu, Zhiyuan and Xu, C Shan and Rivlin, Patricia K and Hess, Harald and Zhao, Ting and Parag, Toufiq},
+  journal={Elife},
+  volume={6},
+  pages={e26975},
+  year={2017},
+  url={https://elifesciences.org/articles/26975},
+  publisher={eLife Sciences Publications Limited}
+}
+@article{huttenlocher1990morphometric,
+  title={Morphometric study of human cerebral cortex development},
+  author={Huttenlocher, Peter R},
+  journal={Neuropsychologia},
+  volume={28},
+  number={6},
+  pages={517--527},
+  year={1990},
+  publisher={Elsevier}
+}
+@article{tierney2009brain,
+  title={Brain development and the role of experience in the early years},
+  author={Tierney, Adrienne L and Nelson III, Charles A},
+  journal={Zero to three},
+  volume={30},
+  number={2},
+  pages={9},
+  year={2009},
+  url={https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3722610/},
+  publisher={NIH Public Access}
+}
+@article{black1990learning,
+  title={Learning causes synaptogenesis, whereas motor activity causes angiogenesis, in cerebellar cortex of adult rats.},
+  author={Black, James E and Isaacs, Krystyna R and Anderson, Brenda J and Alcantara, Adriana A and Greenough, William T},
+  journal={Proceedings of the National Academy of Sciences},
+  volume={87},
+  number={14},
+  pages={5568--5572},
+  year={1990},
+  url={https://www.pnas.org/content/pnas/87/14/5568.full.pdf},
+  publisher={National Acad Sciences}
+}
+@article{bruer1999neural,
+  title={Neural connections: Some you use, some you lose},
+  author={Bruer, John T},
+  journal={The Phi Delta Kappan},
+  volume={81},
+  number={4},
+  pages={264--277},
+  year={1999},
+  url={http://www.oecd.org/education/ceri/31709587.pdf},
+  publisher={JSTOR}
+}
+@article{kleim2002motor,
+  title={Motor learning-dependent synaptogenesis is localized to functionally reorganized motor cortex},
+  author={Kleim, Jeffrey A and Barbay, Scott and Cooper, Natalie R and Hogg, Theresa M and Reidel, Chelsea N and Remple, Michael S and Nudo, Randolph J},
+  journal={Neurobiology of learning and memory},
+  volume={77},
+  number={1},
+  pages={63--77},
+  year={2002},
+  publisher={Elsevier}
+}
+@article{dayan2011neuroplasticity,
+  title={Neuroplasticity subserving motor skill learning},
+  author={Dayan, Eran and Cohen, Leonardo G},
+  journal={Neuron},
+  volume={72},
+  number={3},
+  pages={443--454},
+  year={2011},
+  url={http://tiny.cc/1ziv7y},
+  publisher={Elsevier}
+}
+@article{bullmore2009complex,
+  title={Complex brain networks: graph theoretical analysis of structural and functional systems},
+  author={Bullmore, Ed and Sporns, Olaf},
+  journal={Nature reviews neuroscience},
+  volume={10},
+  number={3},
+  pages={186},
+  year={2009},
+  url={http://tiny.cc/xyiv7y},
+  publisher={Nature Publishing Group}
+}
+@article{he2010graph,
+  title={Graph theoretical modeling of brain connectivity},
+  author={He, Yong and Evans, Alan},
+  journal={Current opinion in neurology},
+  volume={23},
+  number={4},
+  pages={341--350},
+  year={2010},
+  url={http://tiny.cc/82iv7y},
+  publisher={LWW}
+}
+@article{van2011rich,
+  title={Rich-club organization of the human connectome},
+  author={Van Den Heuvel, Martijn P and Sporns, Olaf},
+  journal={Journal of Neuroscience},
+  volume={31},
+  number={44},
+  pages={15775--15786},
+  year={2011},
+  url={http://www.jneurosci.org/content/jneuro/31/44/15775.full.pdf},
+  publisher={Soc Neuroscience}
+}
+@article{tournamentSelection,
+  title={Genetic algorithms, tournament selection, and the effects of noise},
+  author={Miller, Brad L and Goldberg, David E},
+  journal={Complex systems},
+  volume={9},
+  number={3},
+  pages={193--212},
+  year={1995},
+  url={http://tiny.cc/4ckv7y},
+  publisher={[Champaign, IL, USA: Complex Systems Publications, Inc., c1987-}
+}
+@incollection{mouret2011novelty,
+  title={Novelty-based multiobjectivization},
+  author={Mouret, Jean-Baptiste},
+  booktitle={New horizons in evolutionary robotics},
+  pages={139--154},
+  year={2011},
+  url={http://tiny.cc/uelv7y},
+  publisher={Springer}
+}
+@article{konak2006multi,
+  title={Multi-objective optimization using genetic algorithms: A tutorial},
+  author={Konak, Abdullah and Coit, David W and Smith, Alice E},
+  journal={Reliability Engineering and System Safety},
+  volume={91},
+  number={9},
+  pages={992--1007},
+  year={2006},
+  url={http://tiny.cc/bglv7y},
+  publisher={Elsevier}
+}
+@article{clune2013evolutionary,
+  title={The evolutionary origins of modularity},
+  author={Clune, Jeff and Mouret, Jean-Baptiste and Lipson, Hod},
+  journal={Proceedings of the Royal Society b: Biological sciences},
+  volume={280},
+  number={1755},
+  year={2013},
+  url={https://royalsocietypublishing.org/doi/pdf/10.1098/rspb.2012.2863},
+  publisher={The Royal Society}
+}
+@article{nsga2,
+  title={A fast and elitist multiobjective genetic algorithm: NSGA-II},
+  author={Deb, Kalyanmoy and Pratap, Amrit and Agarwal, Sameer and Meyarivan, TAMT},
+  journal={IEEE transactions on evolutionary computation},
+  volume={6},
+  number={2},
+  pages={182--197},
+  year={2002},
+  url={http://www.dmi.unict.it/mpavone/nc-cs/materiale/NSGA-II.pdf},
+  publisher={IEEE}
+}
+@article{tedrake2009underactuated,
+  title={Underactuated Robotics: Learning, Planning, and Control for Efficient and Agile Machines: Course Notes for MIT 6.832},
+  author={Tedrake, Russ},
+  journal={Working draft edition},
+  volume={3},
+  year={2009},
+  url={http://tiny.cc/v8lv7y},
+  publisher={Citeseer}
+}
+@article{raiko2009variational,
+  title={Variational Bayesian learning of nonlinear hidden state-space models for model predictive control},
+  author={Raiko, T and Tornio, M},
+  journal={Neurocomputing},
+  year={2009},
+  url={https://users.ics.aalto.fi/praiko/papers/raikotornio2009.pdf},
+  publisher={Elsevier}
+}
+@inproceedings{gal2016improving,
+  title={Improving PILCO with Bayesian neural network dynamics models},
+  author={Gal, Yarin and McAllister, Rowan and Rasmussen, Carl Edward},
+  booktitle={Data-Efficient Machine Learning workshop, ICML},
+  volume={4},
+  url={http://mlg.eng.cam.ac.uk/yarin/website/PDFs/DeepPILCO.pdf},
+  year={2016}
+}
+@article{deepPILCOgithub,
+  author = {Zuo, Xingdong},
+  title = {PyTorch implementation of Improving PILCO with Bayesian neural network dynamics models},
+  year = {2018},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  url = {https://github.com/zuoxingdong/DeepPILCO},
+}
+@incollection{ha2018worldmodels,
+  title = {Recurrent World Models Facilitate Policy Evolution},
+  author = {Ha, David and Schmidhuber, J{\"u}rgen},
+  booktitle = {Advances in Neural Information Processing Systems 31},
+  pages = {2451--2463},
+  year = {2018},
+  publisher = {Curran Associates, Inc.},
+  url = {https://worldmodels.github.io},
+}
+@inproceedings{kingma2013auto,
+  title={Auto-encoding variational bayes},
+  author={Kingma, Diederik P and Welling, Max},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2014},
+  url={https://openreview.net/forum?id=33X9fd2-9FyZd},
+}
+@inproceedings{vae_dm,
+  title={Stochastic Backpropagation and Approximate Inference in Deep Generative Models},
+  author={Rezende, Danilo Jimenez and Mohamed, Shakir and Wierstra, Daan},
+  booktitle={International Conference on Machine Learning},
+  pages={1278--1286},
+  url={https://arxiv.org/abs/1401.4082},
+  year={2014}
+}
+@article{ha2018designrl,
+  author = {David Ha},
+  title  = {Reinforcement Learning for Improving Agent Design},
+  journal = {arXiv:1810.03779},
+  url    = {https://designrl.github.io},
+  year   = {2018}
+}
+@article{williams1992simple,
+  title={Simple statistical gradient-following algorithms for connectionist reinforcement learning},
+  author={Williams, Ronald J},
+  journal={Machine learning},
+  volume={8},
+  number={3-4},
+  pages={229--256},
+  year={1992},
+  url={http://www-anw.cs.umass.edu/~barto/courses/cs687/williams92simple.pdf},
+  publisher={Springer}
+}
+@misc{lecun1998mnist,
+  title={The MNIST database of handwritten digits},
+  author={LeCun, Yann},
+  url={http://yann.lecun.com/exdb/mnist/},
+  year={1998}
+}
+@article{lecun1998gradient,
+  title={Gradient-based learning applied to document recognition},
+  author={LeCun, Yann and Bottou, L{\'e}on and Bengio, Yoshua and Haffner, Patrick and others},
+  journal={Proceedings of the IEEE},
+  url={http://yann.lecun.com/exdb/publis/pdf/lecun-01a.pdf},
+  year={1998},
+}
+@misc{chollet2015keras,
+  title={Keras},
+  author={Chollet, Fran{\c{c}}ois},
+  url={https://github.com/keras-team/keras/blob/master/examples/mnist_cnn.py},
+  year={2015}
+}
+@article{parisi2018continual,
+  title={Continual Lifelong Learning with Neural Networks: A Review},
+  author={Parisi, German I and Kemker, Ronald and Part, Jose L and Kanan, Christopher and Wermter, Stefan},
+  journal={arXiv preprint arXiv:1802.07569},
+  url={https://arxiv.org/abs/1802.07569},
+  year={2018}
+}
+@inproceedings{schmidhuber1991curious,
+  title={Curious model-building control systems},
+  author={Schmidhuber, J{\"u}rgen},
+  booktitle={[Proceedings] 1991 IEEE International Joint Conference on Neural Networks},
+  pages={1458--1463},
+  year={1991},
+  url={http://people.idsia.ch/~juergen/interest.html},
+  organization={IEEE}
+}
+@article{oudeyer2007intrinsic,
+  title={Intrinsic motivation systems for autonomous mental development},
+  author={Oudeyer, Pierre-Yves and Kaplan, Frdric and Hafner, Verena V},
+  journal={IEEE transactions on evolutionary computation},
+  volume={11},
+  number={2},
+  pages={265--286},
+  year={2007},
+  url={http://www.pyoudeyer.com/ims.pdf},
+  publisher={IEEE}
+}
+@inproceedings{pathak2017curiosity,
+  title={Curiosity-driven exploration by self-supervised prediction},
+  author={Pathak, Deepak and Agrawal, Pulkit and Efros, Alexei A and Darrell, Trevor},
+  booktitle={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition Workshops},
+  pages={16--17},
+  url={https://pathak22.github.io/noreward-rl/},
+  year={2017}
+}
+@inproceedings{lehman2008exploiting,
+  title={Exploiting open-endedness to solve problems through the search for novelty.},
+  author={Lehman, Joel and Stanley, Kenneth O},
+  booktitle={ALIFE},
+  pages={329--336},
+  url={https://www.cs.ucf.edu/eplex/noveltysearch/userspage/},
+  year={2008}
+}
+@inproceedings{jang2016categorical,
+  title={Categorical Reparameterization with Gumbel-Softmax},
+  author={Jang, Eric and Gu, Shixiang and Poole, Ben},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2017},
+  url={https://openreview.net/forum?id=rkE3y85ee},
+}
+@article{graves2014neural,
+  title={Neural Turing Machines},
+  author={Graves, Alex and Wayne, Greg and Danihelka, Ivo},
+  journal={arXiv preprint arXiv:1410.5401},
+  url={https://arxiv.org/abs/1410.5401},
+  year={2014}
+}
+@article{graves2016adaptive,
+  title={Adaptive computation time for recurrent neural networks},
+  author={Graves, Alex},
+  journal={arXiv preprint arXiv:1603.08983},
+  url={https://arxiv.org/abs/1603.08983},
+  year={2016}
+}
+@inproceedings{finn2017model,
+  title={Model-agnostic meta-learning for fast adaptation of deep networks},
+  author={Finn, Chelsea and Abbeel, Pieter and Levine, Sergey},
+  booktitle={Proceedings of the 34th International Conference on Machine Learning-Volume 70},
+  pages={1126--1135},
+  year={2017},
+  url={https://arxiv.org/abs/1703.03400},
+  organization={JMLR. org}
+}
+@article{van2011numpy,
+  title={The NumPy array: a structure for efficient numerical computation},
+  author={Van Der Walt, Stefan and Colbert, S Chris and Varoquaux, Gael},
+  journal={Computing in Science and Engineering},
+  volume={13},
+  number={2},
+  pages={22},
+  year={2011},
+  publisher={IEEE Computer Society},
+  url={https://www.numpy.org/},
+}
+@book{mpi_library,
+  title={Using MPI: portable parallel programming with the message-passing interface},
+  author={Gropp, William D and Gropp, William and Lusk, Ewing and Skjellum, Anthony},
+  year={1999},
+  publisher={MIT press},
+  url={https://www.mpi-forum.org/},
+}
+</script>
+<!--
 
+
+-->
+<script language="javascript" type="text/javascript" src="lib/p5.min.js"></script>
+<script language="javascript" type="text/javascript" src="lib/p5.dom.js"></script>
+<script language="javascript" type="text/javascript" src="lib/numjs.js"></script>
+<script language="javascript" type="text/javascript" src="lib/agent.js"></script>
+<script language="javascript" type="text/javascript" src="lib/wann_agent.js"></script>
+<script language="javascript" type="text/javascript" src="lib/swingup.js"></script>
+<script src="lib/blazy.js"></script>
+<script language="javascript" type="text/javascript" src="lib/jquery-1.12.4.min.js"></script>
+<script language="javascript" type="text/javascript" src="lib/demo.js"></script>
+<script language="javascript" type="text/javascript" src="lib/controller.js"></script>
