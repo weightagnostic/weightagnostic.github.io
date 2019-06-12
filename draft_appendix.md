@@ -19,7 +19,7 @@ BibTeX citation
 <pre class="citation long">@article{wann2019,
   author = {Adam Gaier and David Ha},
   title  = {Weight Agnostic Neural Networks},
-  eprint = {arXiv:1906.XXXXX},
+  eprint = {arXiv:1906.04358},
   url    = {https://weightagnostic.github.io},
   note   = "\url{https://weightagnostic.github.io}",
   year   = {2019}
