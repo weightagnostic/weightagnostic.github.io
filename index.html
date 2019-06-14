@@ -230,7 +230,7 @@ We search for architectures by deemphasizing weights. In place of training, netw
 We search for architectures by deemphasizing weights. In place of training, networks are assigned a single shared weight value at each rollout. Architectures that are optimized for expected performance over a wide range of weight values are still able to perform various tasks without weight training.
 </figcaption>
 </div>-->
-<p>Decades of neural network research have provided building blocks with strong inductive biases for various task domains. Convolutional networks <dt-cite key="lecun1995convolutional,fukushima1982neocognitron"></dt-cite> are especially suited for image processing <dt-cite key="cohen2016inductive"></dt-cite>. For example, <dt-cite key="ulyanov2018deep">Ulyanov et al.</dt-cite> demonstrated that even a randomly-initialized CNN can be used as a handcrafted prior for image processing tasks such as superresolution and inpainting. <dt-cite key="evolino">Schmidhuber et al.</dt-cite> have shown that a randomly-initialized LSTM <dt-cite key="lstm"></dt-cite> with a learned linear output layer can predict time series where traditional RNNs fail. More recent developments in self-attention <dt-cite key="vaswani2017attention"></dt-cite> and capsule <dt-cite key="sabour2017dynamic"></dt-cite> networks expand the toolkit of building blocks for creating architectures with strong inductive biases for various tasks. Fascinated by the intrinsic capabilities of randomly-initialized CNNs and LSTMs, we aim to search for <em>weight agnostic neural networks</em>, architectures with strong inductive biases that can already perform various tasks with random weights.</p>
+<p>Decades of neural network research have provided building blocks with strong inductive biases for various task domains. Convolutional networks <dt-cite key="lecun1995convolutional,fukushima1982neocognitron"></dt-cite> are especially suited for image processing <dt-cite key="cohen2016inductive"></dt-cite>. Recent work <dt-cite key="he2016powerful,ulyanov2018deep"></dt-cite> demonstrated that even randomly-initialized CNNs can be used effectively for image processing tasks such as superresolution, inpainting and style transfer. <dt-cite key="evolino">Schmidhuber et al.</dt-cite> have shown that a randomly-initialized LSTM <dt-cite key="lstm"></dt-cite> with a learned linear output layer can predict time series where traditional RNNs trained using reservoir methods <dt-cite key="reservoir"></dt-cite> fail. More recent developments in self-attention <dt-cite key="vaswani2017attention"></dt-cite> and capsule <dt-cite key="sabour2017dynamic"></dt-cite> networks expand the toolkit of building blocks for creating architectures with strong inductive biases for various tasks. Fascinated by the intrinsic capabilities of randomly-initialized CNNs and LSTMs, we aim to search for <em>weight agnostic neural networks</em>, architectures with strong inductive biases that can already perform various tasks with random weights.</p>
 <div style="text-align: center;">
 <br/>
 <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/mnist_cover.png" style="display: block; margin: auto; width: 100%;"/>
@@ -257,7 +257,7 @@ A weight agnostic neural network performing <i>CartpoleSwingup</i> task. Drag th
 <h2>Related Work</h2>
 <p>Our work has connections to existing work not only in deep learning, but also to various other fields:</p>
 <p><strong>Architecture Search</strong>  Search algorithms for neural network topologies originated from the field of evolutionary computing in the 1990s <dt-cite key="harp1990designing,dasgupta1992designing,fullmer1992using"></dt-cite><dt-cite key="mandischer1993representation,zhang1993evolving,maniezzo1994genetic"></dt-cite><dt-cite key="angeline1994evolutionary,opitz1997connectionist,pujol1998evolving"></dt-cite><dt-cite key="yao1998towards,lee1996evolutionary,gruau1996comparison"></dt-cite><dt-cite key="krishnan1994delta,braun1993evolving"></dt-cite>. Our method is based on <dt-cite key="neat">NEAT</dt-cite>, an established topology search algorithm notable for its ability to optimize the weights and structure of networks simultaneously. In order to achieve state-of-the-art results, recent methods narrow the search space to architectures composed of basic building blocks with strong domain priors such as CNNs <dt-cite key="zoph2016neural,real2017large,liu2017hierarchical,miikkulainen2019evolving"></dt-cite>, recurrent cells <dt-cite key="jozefowicz2015empirical,zoph2016neural,miikkulainen2019evolving"></dt-cite> and self-attention <dt-cite key="so2019evolved"></dt-cite>. It has been shown that random search can already achieve SOTA results if such priors are used <dt-cite key="li2019random,sciuto2019evaluating,real2018regularized"></dt-cite>. The inner loop for training the weights of each candidate architecture before evaluation makes the search costly, although efforts have been made to improve efficiency <dt-cite key="pham2018efficient,brock2017smash,liu2018darts"></dt-cite>. In our approach, we evaluate architectures without weight training, bypassing the costly inner loop, similar to the random trial approach developed by <dt-cite key="hinton1996learning,smith1987learning">Hinton et al.</dt-cite> in the 1990s that evolved architectures to be more weight tolerant, based on the <dt-cite key="baldwin1896new">Baldwin effect</dt-cite> in evolution.</p>
-<p><strong>Bayesian Neural Networks</strong>  The weight parameters of a BNN <dt-cite key="mackay1992bayesian,hinton1993keeping,barber1998ensemble"></dt-cite><dt-cite key="bishop2006pattern,neal2012bayesian,gal2016uncertainty"></dt-cite> are not fixed values, but sampled from a distribution. While the parameters of this distribution can be learned <dt-cite key="graves2011practical,krueger2017bayesian"></dt-cite>, the number of parameters is often greater than the number of weights. Recently, <dt-cite key="neklyudov2018variance">Neklyudov et al.</dt-cite> proposed variance networks, which sample each weight from a distribution with a zero mean and a learned variance parameter, and show that ensemble evaluations can improve performance on image recognition tasks. We employ a similar approach, sampling weights from a fixed uniform distribution with zero mean, as well as evaluating performance on network ensembles.</p>
+<p><strong>Bayesian Neural Networks</strong>  The weight parameters of a BNN <dt-cite key="mackay1992bayesian,hinton1993keeping,barber1998ensemble"></dt-cite><dt-cite key="bishop2006pattern,neal2012bayesian,gal2016uncertainty"></dt-cite> are not fixed values, but sampled from a distribution. While the parameters of this distribution can be learned <dt-cite key="hanson1990meiosis,hanson1990stochastic,graves2011practical,krueger2017bayesian"></dt-cite>, the number of parameters is often greater than the number of weights. Recently, <dt-cite key="neklyudov2018variance">Neklyudov et al.</dt-cite> proposed variance networks, which sample each weight from a distribution with a zero mean and a learned variance parameter, and show that ensemble evaluations can improve performance on image recognition tasks. We employ a similar approach, sampling weights from a fixed uniform distribution with zero mean, as well as evaluating performance on network ensembles.</p>
 <p><strong>Algorithmic Information Theory</strong>  In AIT <dt-cite key="solomonoff1964formal"></dt-cite>, the Kolmogorov complexity <dt-cite key="kolmogorov1965three"></dt-cite> of a computable object is the minimum length of the program that can compute it. The Minimal Description Length (MDL) <dt-cite key="rissanen1978modeling,grunwald2007minimum,rissanen2007information"></dt-cite> is a formalization of Occam's razor, in which a good model is one that is best at compressing its data, including the cost of describing of the model itself. Ideas related to MDL for making neural networks “simple” was proposed in the 1990s, such as simplifying networks by soft-weight sharing <dt-cite key="nowlan1992simplifying"></dt-cite>, reducing the amount of information in weights by making them noisy <dt-cite key="hinton1993keeping"></dt-cite>, and simplifying the search space of its weights <dt-cite key="schmidhuber1997discovering"></dt-cite>. Recent works offer a modern treatment <dt-cite key="blier2018description"></dt-cite> and application <dt-cite key="li2018measuring,trask2018neural"></dt-cite> of these principles in the context of larger network architectures.</p>
 <p>While the aforementioned works focus on the information capacity required to represent the <em>weights</em> of a predefined network architecture, in this work we focus on finding minimal <em>architectures</em> that can represent solutions to various tasks. As our networks still require weights, we borrow ideas from AIT and BNN, and take them a bit further. Motivated by MDL, in our approach, we apply weight-sharing to the entire network and treat the weight as a random variable sampled from a fixed distribution.</p>
 <p><strong>Network Pruning</strong>  By removing connections with small weight values from a trained neural network, pruning approaches <dt-cite key="lecun1990optimal,hassibi1993second,han2015learning"></dt-cite><dt-cite key="guo2016dynamic,li2016pruning,molchanov2016pruning"></dt-cite><dt-cite key="luo2017thinet,liu2018rethinking,mallya2018piggyback"></dt-cite> can produce sparse networks that keep only a small fraction of the connections, while maintaining similar performance on image classification tasks compared to the full network. By retaining the original weight initialization values, these sparse networks can even be trained from scratch to achieve a higher test accuracy <dt-cite key="frankle2018lottery"></dt-cite> than the original network. Similar to our work, a concurrent work <dt-cite key="zhou2019deconstructing"></dt-cite> found pruned networks that can achieve image classification accuracies that are much better than chance even with randomly initialized weights.</p>
@@ -677,6 +677,14 @@ CarRacing-v0
   year={2017},
   url={https://openreview.net/forum?id=BkVsEMYel},
 }
+@inproceedings{he2016powerful,
+  title={A powerful generative model using random weights for the deep image representation},
+  author={He, Kun and Wang, Yan and Hopcroft, John},
+  booktitle={Advances in Neural Information Processing Systems},
+  pages={631--639},
+  url={https://arxiv.org/abs/1606.04801},
+  year={2016}
+}
 @inproceedings{ulyanov2018deep,
   title={Deep image prior},
   author={Ulyanov, Dmitry and Vedaldi, Andrea and Lempitsky, Victor},
@@ -695,6 +703,12 @@ CarRacing-v0
   year={2007},
   url={http://people.idsia.ch/~juergen/evolino.html},
   publisher={MIT Press}
+}
+@misc{reservoir,
+  title={Introduction to Reservoir Computing Methods},
+  author={Roli, Andrea and Melandri, Luca},
+  url={https://amslaurea.unibo.it/8268/1/melandri_luca_tesi.pdf},
+  year={2014}
 }
 @article{lstm,
   title={Long short-term memory},
@@ -1035,6 +1049,25 @@ CarRacing-v0
   year={2016},
   url={http://mlg.eng.cam.ac.uk/yarin/thesis/thesis.pdf},
   school={PhD thesis, University of Cambridge}
+}
+@inproceedings{hanson1990meiosis,
+  title={Meiosis networks},
+  author={Hanson, Stephen Jos{\'e}},
+  booktitle={Advances in neural information processing systems},
+  pages={533--541},
+  url={http://papers.nips.cc/paper/227-meiosis-networks.pdf},
+  year={1990}
+}
+@article{hanson1990stochastic,
+  title={A stochastic version of the delta rule},
+  author={Hanson, Stephen Jos{\'e}},
+  journal={Physica D: Nonlinear Phenomena},
+  volume={42},
+  number={1-3},
+  pages={265--272},
+  year={1990},
+  url={https://github.com/theSage21/stochastic_delta_rule},
+  publisher={Elsevier}
 }
 @inproceedings{graves2011practical,
   title={Practical variational inference for neural networks},
