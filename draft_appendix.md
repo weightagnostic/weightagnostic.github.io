@@ -39,7 +39,7 @@ Diagrams and text are licensed under Creative Commons Attribution [CC-BY 4.0](ht
 
 For further discussion about the implementation details of the experiments, and results for multiple independent runs of the search algorithms, please refer to the Supplementary Materials section in the [pdf](https://arxiv.org/abs/1906.04358) version of this article.
 
-## Performce Profiles
+## Performance Profiles
 
 ### Average Performance (100 trial) versus Weight for Champion Networks
 

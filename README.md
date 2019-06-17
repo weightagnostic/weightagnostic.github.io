@@ -20,8 +20,8 @@ Run `python -m http.server` to serve on the base directory to view `index.html` 
 
 ### Instructions to Build and Test
 ```bash
-git clone https://github.com/anonwann/anonwann.github.io.git
-cd anonwann.github.io
+git clone https://github.com/weightagnostic/weightagnostic.github.io.git
+cd weightagnostic.github.io
 npm install
 ```
 
