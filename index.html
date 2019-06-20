@@ -212,7 +212,7 @@ dt-article figcaption b {
 <div style="text-align: center;">
 <video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/square_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/square_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video>
 <br/><br/>
-<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/rl_cover.png" style="display: block; margin: auto; width: 100%;"/>
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/rl_cover_left.png" style="width: 50%;"/><img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/rl_cover_right.png" style="width: 50%;"/>
 <br/>
 <figcaption style="text-align: left;">
 <b>Examples of Weight Agnostic Neural Networks: Bipedal Walker (left), Car Racing (right)</b><br/>
@@ -379,7 +379,15 @@ To visualize the agent's performance outside of the training distribution, this 
 </figcaption>
 </div>
 <p>As the search process continues, some of these controllers linger in the upright position longer than others, and by generation 128, the lingering duration is long enough for the pole to be kept balanced. Though this more complicated balancing mechanism is less reliable under variable weights than the swing-up and centering behaviors, the more reliable behaviors ensure that the system recovers and tries again until a balanced state is found. Notably, as these networks encode relationships and rely on tension between systems set against each other, their behavior is consistent with a wide range of shared weight values.</p>
-<p>WANN controllers for <em>BipedalWalker-v2</em> and <em>CarRacing-v0</em> are likewise remarkable in their simplicity and modularity. The biped controller uses only 17 of the 25 possible inputs, ignoring many LIDAR sensors and knee speeds. The WANN architecture not only solves the task without training the individual weights, but uses only 210 connections, an order of magnitude fewer than commonly used topologies (2804 connections used in the SOTA baseline <dt-cite key="ha2018designrl"></dt-cite>).</p>
+<hr>
+<div style="text-align: center;">
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/rl_cover_left.png" style="width: 50%;"/><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/square_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video>
+<br/>
+<figcaption style="text-align: left;">
+A minimal architecture discovered in earlier generations that is still capable of controlling the Bipedal Walker to walk forward, despite not achieve an excellent score.
+</figcaption>
+</div>
+<p>WANN controllers for <em>BipedalWalker-v2</em> and <em>CarRacing-v0</em> are likewise remarkable in their simplicity and modularity. The biped controller uses only 17 of the 25 possible inputs, ignoring many LIDAR sensors and knee speeds. The best WANN architecture (below) not only solves the task without training the individual weights, but uses only 210 connections, an order of magnitude fewer than commonly used topologies (2804 connections used in the SOTA baseline <dt-cite key="ha2018designrl"></dt-cite>).</p>
 <div style="text-align: center;">
 <br/>
 <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_biped.png" style="display: block; margin: auto; width: 100%;"/>
@@ -401,7 +409,16 @@ Weight set to -1.0<br/>
 Fine-tuned individual weights of champion network (Average score 332 ± 1)<br/>
 </figcaption>
 </div>
-<p>The architecture which encodes stable driving behavior in the car racer is also striking in its simplicity. Only a sparsely connected two layer network and a single weight value is required to encode competent driving behavior. While the SOTA baseline <dt-cite key="ha2018worldmodels"></dt-cite> also gave the hidden states of a pre-trained RNN world model, in addition to the VAE's representation to its controller, our controller operates on the VAE's latent space alone. Nonetheless, it was able to develop a feed-forward controller that achieves a comparable score. Future work will explore removing the feed-forward constraint from the search to allow WANNs to develop recurrent connections with memory states.</p>
+<hr>
+<p>The architecture which encodes stable driving behavior in the car racer is also striking in its simplicity. Only a sparsely connected two layer network (below) and a single weight value is required to encode capable, but imperfect driving behavior.</p>
+<div style="text-align: center;">
+<img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/rl_cover_right.png" style="width: 50%;"/><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/square_racer.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video>
+<br/>
+<figcaption style="text-align: left;">
+A minimal architecture discovered in earlier generations for <i>CarRacing-v0</i>.
+</figcaption>
+</div>
+<p>While the SOTA baseline <dt-cite key="ha2018worldmodels"></dt-cite> also gave the hidden states of a pre-trained RNN world model, in addition to the VAE's representation to its controller, our controller operates on the VAE's latent space alone. Nonetheless, our search procedure was able to find a feed-forward controller (below) that achieves a comparable score. Future work will explore removing the feed-forward constraint from the search to allow WANNs to develop recurrent connections with memory states.</p>
 <div style="text-align: center;">
 <br/>
 <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/champ_carracing.png" style="display: block; margin: auto; width: 100%;"/>
