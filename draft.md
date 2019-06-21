@@ -239,7 +239,7 @@ ______
 <img class="b-lazy" src=data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw== data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/png/rl_cover_left.png" style="width: 50%;"/><video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/square_biped.mp4" type="video/mp4" autoplay muted playsinline loop style="width:50%;" ></video>
 <br/>
 <figcaption style="text-align: left;">
-A minimal architecture discovered in earlier generations that is still capable of controlling the Bipedal Walker to walk forward, despite not achieve an excellent score.
+A minimal architecture discovered in earlier generations that is still capable of controlling the Bipedal Walker to walk forward, despite not achieving an excellent score.
 </figcaption>
 </div>
 
