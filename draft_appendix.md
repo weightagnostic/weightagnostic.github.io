@@ -27,9 +27,9 @@ BibTeX citation
 
 ## Open Source Code
 
-We plan to release a general purpose tool, not only to facilitate reproduction, but also for further research in this direction. Our NumPy <dt-cite key="van2011numpy"></dt-cite> implementation of NEAT <dt-cite key="neat"></dt-cite> supports MPI <dt-cite key="mpi_library"></dt-cite> and OpenAI Gym <dt-cite key="openai_gym"></dt-cite> environments.
+We release a general purpose tool, not only to facilitate reproduction, but also for further research in this direction. Our NumPy <dt-cite key="van2011numpy"></dt-cite> implementation of NEAT <dt-cite key="neat"></dt-cite> supports MPI <dt-cite key="mpi_library"></dt-cite> and OpenAI Gym <dt-cite key="openai_gym"></dt-cite> environments.
 
-The code to reproduce the experiments in this work will be released soon! (we promise ;-)
+Please see our [repo](https://github.com/google/brain-tokyo-workshop/tree/master/WANNRelease) for details about the code release.
 
 ## Reuse
 
