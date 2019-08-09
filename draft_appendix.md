@@ -39,6 +39,32 @@ Diagrams and text are licensed under Creative Commons Attribution [CC-BY 4.0](ht
 
 For further discussion about the implementation details of the experiments, and results for multiple independent runs of the search algorithms, please refer to the Supplementary Materials section in the [pdf](https://arxiv.org/abs/1906.04358) version of this article.
 
+## “Have you also thought about trying ... ?”
+
+In this section, we highlight things that we have attempted, but did not explore in sufficient depth.
+
+### Searching for network architecture using a single weight rather than range of weights.
+
+We experimented with setting all weights to a single fixed value, e.g. 0.7, and saw that the search is faster and the end result better. However, if we then nudge that value by a small amount, to say 0.6, the network fails completely at the task. By training on a wide range of weight parameters, akin to training on uniform samples weight values, networks were able to perform outside of the training values. In fact, the best performing values were outside of this training set.
+
+### Searching for network architecture using random weights for each connection.
+
+This was the first thing we tried, and did not have much luck. We tried quite a few things to get this to work--at one point it seemed like we finally had it, poles were balanced and walkers walking, but it turned out to be a bug in the code! Instead of setting all of the weights to different random values we had set all of the weights to the *same* random value. It was in the course of trying to understand this result that we began to view and approach the problem through the lens of MDL and AIT.
+
+### Adding noise to the single weight values.
+
+We experimented adding Gaussian noise to the weight values so that each weight would be different, but vary around a set mean at each rollout. We only did limited experiments on swing-up and found no large difference, except with very high levels of noise where it performed poorly. Our intuition is that adding noise would make the final topologies even more robust to changes in weight value, but at the cost of making the evaluation of topologies more noisy (or more rollouts to mitigate the variance between trials). With no clear benefit we chose to keep the approach as conceptually simple as possible--but see this as a logical next step towards making the networks more weight tolerant.
+
+### Using backpropagation to fine-tune weights of a WANN.
+
+We explored the use of autograd packages such as <dt-cite key="jax_library">JAX</dt-cite> to fine-tune individual weights of WANNs for the MNIST experiment. Performance improved, but ultimately we find that black-box optimization methods such as CMA-ES and population-based REINFORCE can find better solutions for the WANN architectures evolved for MNIST, suggesting that the various activations proposed by the WANN search algorithm may have produced optimization landscapes that are more difficult for gradient-based methods to traverse compared to standard ReLU-based deep network architectures.
+
+### Why did you choose to use many different activation functions in the same network? Why not just ReLU? Wouldn't too many activations break biological plausibility?
+
+Without concrete weight values to lean on, we instead relied on encoding relationships between inputs into the network. This could have been done with ReLUs or sigmoids, but including relationships such as symmetry and repetition allow for more compact networks.
+
+We didn't do much experimentation, but our intuition is that the variety of activations is key. That is not to say that all of them are necessary, but we're not confident this could have been accomplished with only linear activations. As for biological corollaries, we're not going to claim that a cosine activation is an accurate model of a how neurons fire--but don't think a feed forward network of instantaneously communicating sigmoidal neurons would be any more biologically plausible.
+
 ## Performance Profiles
 
 ### Average Performance (100 trial) versus Weight for Champion Networks
