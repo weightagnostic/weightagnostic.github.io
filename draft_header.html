@@ -126,7 +126,7 @@ dt-article figcaption b {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <!-- roboto font -->
-  <link href='https://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+  <!--<link href='https://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>-->
 
   <meta name="theme-color" content="#ffffff" />
 
@@ -157,7 +157,7 @@ dt-article figcaption b {
 
 
 </head>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.5.1/katex.min.css">
+<link rel="stylesheet" href="css/katex.min.css">
 
 <!--<script src="lib/jquery-1.12.4.min.js"></script>
 <script src="lib/mobile-detect.min.js"></script>-->
@@ -168,8 +168,14 @@ dt-article figcaption b {
   description: ""
 </script>
 <body>
+  <div id="no_javasript_warning">
+    <h3>This page requires Javascript. Please enable it for <code>https://weightagnostic.github.io/</code></h3>
+  </div>
+  <script>
+    document.getElementById("no_javasript_warning").style.display = "none";
+  </script>
 <div style="text-align: center;">
-<video class="b-lazy" data-src="https://storage.googleapis.com/quickdraw-models/sketchRNN/wann/mp4/wann_cover.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
+<video class="b-lazy" data-src="assets/mp4/wann_cover.mp4" type="video/mp4" autoplay muted playsinline loop style="display: block; margin: auto; width: 100%;" ></video>
 <table style="width: 100%;" cellspacing="0" cellpadding="0"><tr>
 <td width="50%"><figcaption style="text-align: center;">A weight agnostic neural network performing <i>BipedalWalker-v2</i> task at various different weight parameters.</figcaption></td>
 </tr></table>
